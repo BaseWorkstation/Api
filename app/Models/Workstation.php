@@ -19,6 +19,13 @@ class Workstation extends Model implements Auditable
     protected $guarded = [];
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['retainers'];
+
+    /**
      * Get the services for the workstation.
      */
     public function services()

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Workstation;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Retainer\RetainerResource;
 
 class WorkstationResource extends JsonResource
 {
@@ -24,6 +25,7 @@ class WorkstationResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'currency_code' => $this->currency_code,
+            'retainers' => RetainerResource::collection($this->retainers),
         ];
     }
 }

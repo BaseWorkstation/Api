@@ -30,7 +30,7 @@ class RoleAndPermissionSeeder extends Seeder
         /**
         *   Create Permissions
         */
-        Permission::create(['name' => 'see_customer_pin']);
+        //Permission::create(['name' => 'see_customer_pin']);
         Permission::create(['name' => 'update_workstation_details']);
 
         /**
@@ -42,6 +42,6 @@ class RoleAndPermissionSeeder extends Seeder
 
         // customer
         $role = Role::create(['name' => 'customer']);
-        $role->givePermissionTo('see_customer_pin');
+        //$role->givePermissionTo('see_customer_pin');
     }
 }

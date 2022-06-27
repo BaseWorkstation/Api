@@ -55,7 +55,7 @@ class PriceRepository
      * @param  App\Models\Service $service
      * @return \Illuminate\Http\Resources\Price\PriceResource
      */
-    public function store(Request $request, $service)
+    public function store(Request $request, Service $service)
     {
         // persist request details and store in a variable
         $price = Price::create([

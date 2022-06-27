@@ -2,20 +2,20 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\Workstation\WorkstationResource;
-use App\Http\Resources\Workstation\WorkstationCollection;
-use App\Events\Workstation\NewWorkstationCreatedEvent;
+use App\Http\Resources\Retainer\RetainerResource;
+use App\Http\Resources\Retainer\RetainerCollection;
 use Illuminate\Http\Request;
+use App\Models\Retainer;
 use App\Models\Workstation;
 use Carbon\Carbon;
 
-class WorkstationRepository
+class RetainerRepository
 {
     /**
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Resources\Workstation\WorkstationCollection
+     * @return \Illuminate\Http\Resources\Retainer\RetainerCollection
      */
     public function index(Request $request)
     {
@@ -28,8 +28,8 @@ class WorkstationRepository
             $to_date = $request->to_date."T23:59:59.000Z": 
             $to_date = Carbon::now();
 
-        // fetch workstations from db using filters when they are available in the request
-        $workstations = Workstation::when($keywords, function ($query, $keywords) {
+        // fetch Retainers from db using filters when they are available in the request
+        $retainers = Retainer::when($keywords, function ($query, $keywords) {
                                         return $query->where("name", "like", "%{$keywords}%");
                                     })
                                     ->when($from_date, function ($query, $from_date) {
@@ -42,41 +42,60 @@ class WorkstationRepository
 
         // if user asks that the result be paginated
         if ($request->filled('paginate') && $request->paginate) {
-            return new WorkstationCollection($workstations->paginate($request->paginate_per_page)->withPath('/'));
+            return new RetainerCollection($retainers->paginate($request->paginate_per_page)->withPath('/'));
         }
 
         // return collection
-        return new WorkstationCollection($workstations->get());
+        return new RetainerCollection($retainers->get());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Resources\Workstation\WorkstationResource
+     * @return \Illuminate\Http\Resources\Retainer\RetainerResource
      */
     public function store(Request $request)
     {
         // persist request details and store in a variable
-        $workstation = Workstation::create($request->all());
-
-        // call event that a new workstation has been created
-        event(new NewWorkstationCreatedEvent($request, $workstation));
+        $retainer = Retainer::create([
+            'name' => $request->name,
+        ]);
 
         // return resource
-        return new WorkstationResource($workstation);
+        return new RetainerResource($retainer);
+    }
+
+    /**
+     * Store a newly created resource in storage after a workstation is created
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  App\Models\Workstation $workstation
+     * @return \Illuminate\Http\Resources\Retainer\RetainerResource
+     */
+    public function storeRetainerWhenWorkstationIsCreated(Request $request, Workstation $workstation)
+    {
+        // persist request details and store in a variable
+        $retainer = Retainer::create([
+            'name' => env('DEFAULT_RETAINER_NAME'),
+            'category' => env('DEFAULT_RETAINER_CATEGORY'),
+            'workstation_id' => $workstation->id,
+        ]);
+
+        // return resource
+        return new RetainerResource($retainer);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Resources\Workstation\WorkstationResource
+     * @return \Illuminate\Http\Resources\Retainer\RetainerResource
      */
     public function show($id)
     {
         // return resource
-        return new WorkstationResource(Workstation::findOrFail($id));
+        return new RetainerResource(Retainer::findOrFail($id));
     }
 
     /**
@@ -84,30 +103,30 @@ class WorkstationRepository
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Resources\Workstation\WorkstationResource
+     * @return \Illuminate\Http\Resources\Retainer\RetainerResource
      */
     public function update(Request $request, $id)
     {
         // find the instance
-        $workstation = $this->getWorkstationById($id);
+        $retainer = $this->getRetainerById($id);
 
         // filter the request of null values then update the instance
-        $workstation->update(array_filter($request->all()));
+        $retainer->update(array_filter($request->all()));
 
         // return resource
-        return new WorkstationResource($workstation);
+        return new RetainerResource($retainer);
     }
 
     /**
-     * find a specific workstation using ID.
+     * find a specific Retainer using ID.
      *
      * @param  int  $id
-     * @return \App\Models\Workstation
+     * @return \App\Models\Retainer
      */
-    public function getWorkstationById($id)
+    public function getRetainerById($id)
     {
         // find and return the instance
-        return Workstation::findOrFail($id);
+        return Retainer::findOrFail($id);
     }
 
     /**
@@ -119,6 +138,6 @@ class WorkstationRepository
     public function destroy($id)
     {
         // softdelete instance
-        $this->getWorkstationById($id)->delete();
+        $this->getRetainerById($id)->delete();
     }
 }

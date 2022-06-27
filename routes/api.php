@@ -19,12 +19,15 @@ use App\Http\Controllers\service\ServiceController;
 
 $router->post('/register',[UserController::class, 'register']);
 $router->post('/login',[UserController::class, 'login']);
+$router->get('/user',[UserController::class, 'getUserByToken']);
 
-Route::apiResources([
-    'workstations' => WorkstationController::class,
-    'services' => ServiceController::class,
-]);
+Route::group([
+        'middleware' => 'auth:api'
+    ], function () {
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+        Route::apiResources([
+            'workstations' => WorkstationController::class,
+            'services' => ServiceController::class,
+        ]);
+
 });

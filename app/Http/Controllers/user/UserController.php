@@ -29,7 +29,7 @@ class UserController extends Controller
     /**
      * Register a new user.
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \App\Repositories\UserRepository
      */
     public function register(Request $request)
     {
@@ -46,7 +46,7 @@ class UserController extends Controller
     /**
      * Login user.
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \App\Repositories\UserRepository
      */
     public function login(Request $request)
     {
@@ -56,5 +56,16 @@ class UserController extends Controller
         ]);
 
         return $this->userRepository->login($data);
+    }
+
+    /**
+     * get user using Token
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Repositories\UserRepository
+     */
+    public function getUserByToken(Request $request)
+    {
+        return $this->userRepository->getUserByToken($request);
     }
 }

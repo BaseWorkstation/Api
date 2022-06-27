@@ -2,12 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Interfaces\UserInterface;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-class UserRepository implements UserInterface
+class UserRepository
 {
     /**
      * logic to register a user
@@ -50,5 +49,16 @@ class UserRepository implements UserInterface
         $token = auth()->user()->createToken('API Token')->accessToken;
 
         return response(['user' => auth()->user(), 'token' => $token]);
+    }
+
+    /**
+     * Get User using token
+     *
+     * @param  Request $request
+     * @return App\Models\User
+     */
+    public function getUserByToken(Request $request)
+    {
+        return auth('api')->user();
     }
 }
