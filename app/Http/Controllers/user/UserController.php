@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\UserInterface;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -18,10 +18,10 @@ class UserController extends Controller
     /**
      * Dependency Injection of userRepository.
      *
-     * @param  \App\Repositories\Interfaces\UserInterface  $userRepository
+     * @param  \App\Repositories\UserRepository $userRepository
      * @return void
      */
-    public function __construct(UserInterface $userRepository)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
