@@ -44,9 +44,14 @@ class WorkstationController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \App\Http\Repositories\WorkstationRepository
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
+        // authorization
+        $this->authorize('create', Workstation::class);
+
         // validation
         $request->validate([
             'name' => 'required|max:255',
@@ -81,9 +86,14 @@ class WorkstationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \App\Http\Repositories\WorkstationRepository
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, $id)
     {
+        // authorization
+        $this->authorize('update', Workstation::find($id));
+
         // validation
         $request->validate([
             'name' => 'sometimes|max:255',
@@ -103,9 +113,14 @@ class WorkstationController extends Controller
      *
      * @param  int  $id
      * @return \App\Http\Repositories\WorkstationRepository
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy($id)
     {
+        // authorization
+        $this->authorize('delete', Workstation::find($id));
+
         // run in the repository
         return $this->workstationRepository->destroy($id);
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\ServiceRepository;
 use Illuminate\Validation\Rule;
+use App\Models\Service;
 
 class ServiceController extends Controller
 {
@@ -44,9 +45,14 @@ class ServiceController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \App\Http\Repositories\ServiceRepository
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
+        // authorization
+        $this->authorize('create', Service::class);
+
         // validation
         $request->validate([
             'name' => 'required|max:255',
@@ -76,9 +82,14 @@ class ServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \App\Http\Repositories\ServiceRepository
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, $id)
     {
+        // authorization
+        $this->authorize('update', Service::findOrFail($id));
+
         // validation
         $request->validate([
             'name' => 'required|max:255',
@@ -94,10 +105,15 @@ class ServiceController extends Controller
      *
      * @param  int  $id
      * @return \App\Http\Repositories\ServiceRepository
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy($id)
     {
+        // authorization
+        $this->authorize('delete', Service::findOrFail($id));
+
         // run in the repository
-        return $this->workstationRepository->destroy($id);
+        return $this->serviceRepository->destroy($id);
     }
 }

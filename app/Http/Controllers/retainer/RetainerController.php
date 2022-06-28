@@ -22,10 +22,13 @@ class RetainerController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
-        //
+        // authorization
+        $this->authorize('create', Service::class);
     }
 
     /**
@@ -45,10 +48,13 @@ class RetainerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, $id)
     {
-        //
+        // authorization
+        $this->authorize('update', Retainer::find($id));
     }
 
     /**
@@ -56,9 +62,12 @@ class RetainerController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy($id)
     {
-        //
+        // authorization
+        $this->authorize('delete', Retainer::find($id));
     }
 }

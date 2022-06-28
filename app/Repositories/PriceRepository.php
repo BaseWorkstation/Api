@@ -6,6 +6,7 @@ use App\Http\Resources\Price\PriceResource;
 use App\Http\Resources\Price\PriceCollection;
 use Illuminate\Http\Request;
 use App\Models\Price;
+use App\Models\Service;
 use Carbon\Carbon;
 
 class PriceRepository
