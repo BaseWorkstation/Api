@@ -40,4 +40,20 @@ class Workstation extends Model implements Auditable
     {
         return $this->hasMany(Retainer::class);
     }
+
+    /**
+     * Get first fee-paying retainer of the workstation
+     */
+    public function getFirstFeePayingRetainerAttribute()
+    {
+        return $this->retainers->where('category', 'fee-paying')->first();
+    }
+
+    /**
+     * The owners of the workstation.
+     */
+    public function owners()
+    {
+        return $this->belongsToMany(User::class, 'owners_pivot', 'workstation_id', 'user_id');
+    }
 }

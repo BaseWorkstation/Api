@@ -44,4 +44,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The workstations owned by the user.
+     */
+    public function assets()
+    {
+        return $this->belongsToMany(Workstation::class, 'owners_pivot', 'user_id', 'workstation_id');
+    }
 }

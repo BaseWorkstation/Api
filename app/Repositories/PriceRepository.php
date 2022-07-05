@@ -7,6 +7,7 @@ use App\Http\Resources\Price\PriceCollection;
 use Illuminate\Http\Request;
 use App\Models\Price;
 use App\Models\Service;
+use App\Models\Workstation;
 use Carbon\Carbon;
 
 class PriceRepository
@@ -58,10 +59,15 @@ class PriceRepository
      */
     public function store(Request $request, Service $service)
     {
+        // fetch workstation
+        $workstation = Workstation::findOrFail($service->workstation_id);
+
         // persist request details and store in a variable
         $price = Price::create([
             'amount' => $request->price,
             'service_id' => $service->id,
+            'workstation_id' => $service->workstation_id,
+            'retainer_id' => $workstation->first_fee_paying_retainer->id,
         ]);
 
         // return resource

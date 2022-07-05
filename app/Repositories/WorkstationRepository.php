@@ -5,9 +5,11 @@ namespace App\Repositories;
 use App\Http\Resources\Workstation\WorkstationResource;
 use App\Http\Resources\Workstation\WorkstationCollection;
 use App\Events\Workstation\NewWorkstationCreatedEvent;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Workstation;
 use Carbon\Carbon;
+use Auth;
 
 class WorkstationRepository
 {
@@ -120,5 +122,34 @@ class WorkstationRepository
     {
         // softdelete instance
         $this->getWorkstationById($id)->delete();
+    }
+
+     /**
+     * attach newly created workstation to its owner
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Workstation  $workstation
+     * @return array
+     */
+    public function saveUserOwnedWorkstation(Request $request, $workstation)
+    {
+        $check = DB::table('owners_pivot')
+                            ->where([
+                                'workstation_id' => $workstation->id,
+                                'user_id' => Auth::id(),
+                            ])->first();
+
+        if (!$check) {
+            $new_entry = DB::table('owners_pivot')
+                                ->insert([
+                                    'workstation_id' => $workstation->id,
+                                    'user_id' => Auth::id(),
+                                    'created_at' => Carbon::now(),
+                                    'updated_at' => Carbon::now(),
+                                ]);
+
+            return $new_entry;
+        }
+
     }
 }

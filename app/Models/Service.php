@@ -18,6 +18,7 @@ class Service extends Model
     protected $fillable = [
         'name',
         'category',
+        'workstation_id',
     ];
 
     /**

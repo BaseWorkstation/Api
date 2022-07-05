@@ -55,6 +55,7 @@ class ServiceController extends Controller
 
         // validation
         $request->validate([
+            'workstation_id' => 'required|integer',
             'name' => 'required|max:255',
             'price' => 'required|integer',
             'category' => ["required", Rule::in(config('enums.service_category'))],
