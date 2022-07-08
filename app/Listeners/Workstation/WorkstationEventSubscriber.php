@@ -16,6 +16,7 @@ class WorkstationEventSubscriber
      * @var WorkstationRepository $workstationRepository
      */
     public $retainerRepository;
+    public $workstationRepository;
 
     /**
      * Dependency Injection of variables

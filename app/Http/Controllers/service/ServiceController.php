@@ -11,7 +11,7 @@ use App\Models\Service;
 class ServiceController extends Controller
 {
     /**
-     * declaration of user repository
+     * declaration of service repository
      *
      * @var ServiceRepository
      */

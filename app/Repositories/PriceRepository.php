@@ -98,7 +98,7 @@ class PriceRepository
         // find the instance
         $price = $this->getPriceById($id);
 
-        // filter the request of null values then update the instance
+        // remove or filter null values from the request data then update the instance
         $price->update(array_filter($request->all()));
 
         // return resource

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Team;
 use App\Models\User;
-use App\Models\Workstation;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class WorkstationPolicy
+class TeamPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class WorkstationPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workstation  $workstation
+     * @param  \App\Models\Team  $team
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Workstation $workstation)
+    public function view(User $user, Team $team)
     {
         //
     }
@@ -41,57 +41,57 @@ class WorkstationPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('admin');
+        return $user;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workstation  $workstation
+     * @param  \App\Models\Team  $team
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Workstation $workstation)
+    public function update(User $user, Team $team)
     {
         // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $workstation->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workstation  $workstation
+     * @param  \App\Models\Team  $team
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Workstation $workstation)
+    public function delete(User $user, Team $team)
     {
         // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $workstation->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workstation  $workstation
+     * @param  \App\Models\Team  $team
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Workstation $workstation)
+    public function restore(User $user, Team $team)
     {
         // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $workstation->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Workstation  $workstation
+     * @param  \App\Models\Team  $team
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Workstation $workstation)
+    public function forceDelete(User $user, Team $team)
     {
-        return $user->hasRole('medispark_admin');
+        $user->hasRole('medispark_admin');
     }
 }

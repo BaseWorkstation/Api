@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\workstation\WorkstationController;
 use App\Http\Controllers\service\ServiceController;
+use App\Http\Controllers\team\TeamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::group([
         Route::apiResources([
             'workstations' => WorkstationController::class,
             'services' => ServiceController::class,
+            'teams' => TeamController::class,
         ]);
 
 });

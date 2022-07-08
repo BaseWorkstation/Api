@@ -93,7 +93,7 @@ class WorkstationRepository
         // find the instance
         $workstation = $this->getWorkstationById($id);
 
-        // filter the request of null values then update the instance
+        // remove or filter null values from the request data then update the instance
         $workstation->update(array_filter($request->all()));
 
         // return resource

@@ -1,84 +1,83 @@
 <?php
 
-namespace App\Http\Controllers\workstation;
+namespace App\Http\Controllers\team;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Repositories\WorkstationRepository;
+use App\Repositories\TeamRepository;
 use Illuminate\Validation\Rule;
-use App\Models\Workstation;
+use App\Models\Team;
 
-class WorkstationController extends Controller
+class TeamController extends Controller
 {
     /**
-     * declaration of workstation repository
+     * declaration of team repository
      *
-     * @var workstationRepository
+     * @var teamRepository
      */
-    private $workstationRepository;
+    private $teamRepository;
 
     /**
-     * Dependency Injection of workstationRepository.
+     * Dependency Injection of teamRepository.
      *
-     * @param  \App\Repositories\WorkstationRepository  $workstationRepository
+     * @param  \App\Repositories\TeamRepository  $teamRepository
      * @return void
      */
-    public function __construct(WorkstationRepository $workstationRepository)
+    public function __construct(TeamRepository $teamRepository)
     {
-        $this->workstationRepository = $workstationRepository;
+        $this->teamRepository = $teamRepository;
     }
 
     /**
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \App\Http\Repositories\WorkstationRepository
+     * @return \App\Http\Repositories\TeamRepository
      */
     public function index(Request $request)
     {
         // run in the repository
-        return $this->workstationRepository->index($request);
+        return $this->teamRepository->index($request);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \App\Http\Repositories\WorkstationRepository
+     * @return \App\Http\Repositories\TeamRepository
      * 
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
         // authorization
-        $this->authorize('create', Workstation::class);
+        $this->authorize('create', Team::class);
 
         // validation
         $request->validate([
             'name' => 'required|max:255',
-            'street' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'country_iso' => 'required',
-            'phone' => 'required|unique:workstations',
-            'email' => 'required|unique:workstations',
-            'currency_code' => ["required", Rule::in(config('enums.currency_code'))],
+            'street' => 'sometimes',
+            'city' => 'sometimes',
+            'state' => 'sometimes',
+            'country_iso' => 'sometimes',
+            'phone' => 'sometimes|unique:teams',
+            'email' => 'sometimes|unique:teams',
         ]);
 
         // run in the repository
-        return $this->workstationRepository->store($request);
+        return $this->teamRepository->store($request);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \App\Http\Repositories\WorkstationRepository
+     * @return \App\Http\Repositories\TeamRepository
      */
     public function show($id)
     {
         // run in the repository
-        return $this->workstationRepository->show($id);
+        return $this->teamRepository->show($id);
     }
 
     /**
@@ -86,14 +85,14 @@ class WorkstationController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \App\Http\Repositories\WorkstationRepository
+     * @return \App\Http\Repositories\TeamRepository
      * 
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, $id)
     {
         // authorization
-        $this->authorize('update', Workstation::find($id));
+        $this->authorize('update', Team::findOrFail($id));
 
         // validation
         $request->validate([
@@ -106,23 +105,23 @@ class WorkstationController extends Controller
         ]);
 
         // run in the repository
-        return $this->workstationRepository->update($request, $id);
+        return $this->teamRepository->update($request, $id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \App\Http\Repositories\WorkstationRepository
+     * @return \App\Http\Repositories\TeamRepository
      * 
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy($id)
     {
         // authorization
-        $this->authorize('delete', Workstation::find($id));
+        $this->authorize('delete', Team::find($id));
 
         // run in the repository
-        return $this->workstationRepository->destroy($id);
+        return $this->teamRepository->destroy($id);
     }
 }

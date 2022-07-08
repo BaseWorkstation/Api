@@ -8,6 +8,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Listeners\Service\ServiceEventSubscriber;
 use App\Listeners\Workstation\WorkstationEventSubscriber;
+use App\Listeners\Team\TeamEventSubscriber;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -40,5 +41,6 @@ class EventServiceProvider extends ServiceProvider
     protected $subscribe = [
         ServiceEventSubscriber::class,
         WorkstationEventSubscriber::class,
+        TeamEventSubscriber::class,
     ];
 }

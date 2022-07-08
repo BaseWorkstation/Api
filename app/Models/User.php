@@ -48,8 +48,16 @@ class User extends Authenticatable
     /**
      * The workstations owned by the user.
      */
-    public function assets()
+    public function owned_workstations()
     {
         return $this->belongsToMany(Workstation::class, 'workstation_owners_pivot', 'user_id', 'workstation_id');
+    }
+
+    /**
+     * The teams owned by the user.
+     */
+    public function owned_teams()
+    {
+        return $this->belongsToMany(Team::class, 'team_owners_pivot', 'user_id', 'team_id');
     }
 }

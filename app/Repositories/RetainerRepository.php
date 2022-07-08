@@ -110,7 +110,7 @@ class RetainerRepository
         // find the instance
         $retainer = $this->getRetainerById($id);
 
-        // filter the request of null values then update the instance
+        // remove or filter null values from the request data then update the instance
         $retainer->update(array_filter($request->all()));
 
         // return resource

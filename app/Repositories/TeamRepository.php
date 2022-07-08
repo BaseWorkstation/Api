@@ -2,20 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\Service\ServiceResource;
-use App\Http\Resources\Service\ServiceCollection;
-use App\Events\Service\NewServiceCreatedEvent;
+use App\Http\Resources\Team\TeamResource;
+use App\Http\Resources\Team\TeamCollection;
+use App\Events\Team\NewTeamCreatedEvent;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Models\Service;
+use App\Models\Team;
 use Carbon\Carbon;
+use Auth;
 
-class ServiceRepository
+class TeamRepository
 {
     /**
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Resources\Service\ServiceCollection
+     * @return \Illuminate\Http\Resources\Team\TeamCollection
      */
     public function index(Request $request)
     {
@@ -28,8 +30,8 @@ class ServiceRepository
             $to_date = $request->to_date."T23:59:59.000Z": 
             $to_date = Carbon::now();
 
-        // fetch Services from db using filters when they are available in the request
-        $services = Service::when($keywords, function ($query, $keywords) {
+        // fetch Teams from db using filters when they are available in the request
+        $teams = Team::when($keywords, function ($query, $keywords) {
                                         return $query->where("name", "like", "%{$keywords}%");
                                     })
                                     ->when($from_date, function ($query, $from_date) {
@@ -42,41 +44,41 @@ class ServiceRepository
 
         // if user asks that the result be paginated
         if ($request->filled('paginate') && $request->paginate) {
-            return new ServiceCollection($services->paginate($request->paginate_per_page)->withPath('/'));
+            return new TeamCollection($teams->paginate($request->paginate_per_page)->withPath('/'));
         }
 
         // return collection
-        return new ServiceCollection($services->get());
+        return new TeamCollection($teams->get());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Resources\Service\ServiceResource
+     * @return \Illuminate\Http\Resources\Team\TeamResource
      */
     public function store(Request $request)
     {
         // persist request details and store in a variable
-        $service = Service::create($request->all());
+        $team = Team::create($request->all());
 
-        // call event that a new service has been created
-        event(new NewServiceCreatedEvent($request, $service));
+        // call event that a new team has been created
+        event(new NewTeamCreatedEvent($request, $team));
 
         // return resource
-        return new ServiceResource($service);
+        return new TeamResource($team);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Resources\Service\ServiceResource
+     * @return \Illuminate\Http\Resources\Team\TeamResource
      */
     public function show($id)
     {
         // return resource
-        return new ServiceResource(Service::findOrFail($id));
+        return new TeamResource(Team::findOrFail($id));
     }
 
     /**
@@ -84,30 +86,30 @@ class ServiceRepository
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Resources\Service\ServiceResource
+     * @return \Illuminate\Http\Resources\Team\TeamResource
      */
     public function update(Request $request, $id)
     {
         // find the instance
-        $service = $this->getServiceById($id);
+        $team = $this->getTeamById($id);
 
         // remove or filter null values from the request data then update the instance
-        $service->update(array_filter($request->all()));
+        $team->update(array_filter($request->all()));
 
         // return resource
-        return new ServiceResource($service);
+        return new TeamResource($team);
     }
 
     /**
-     * find a specific Service using ID.
+     * find a specific Team using ID.
      *
      * @param  int  $id
-     * @return \App\Models\Service
+     * @return \App\Models\Team
      */
-    public function getServiceById($id)
+    public function getTeamById($id)
     {
         // find and return the instance
-        return Service::findOrFail($id);
+        return Team::findOrFail($id);
     }
 
     /**
@@ -119,6 +121,35 @@ class ServiceRepository
     public function destroy($id)
     {
         // softdelete instance
-        $this->getServiceById($id)->delete();
+        $this->getTeamById($id)->delete();
+    }
+
+     /**
+     * attach newly created Team to its owner
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Team  $team
+     * @return array
+     */
+    public function saveUserOwnedTeam(Request $request, $team)
+    {
+        $check = DB::table('team_owners_pivot')
+                            ->where([
+                                'team_id' => $team->id,
+                                'user_id' => Auth::id(),
+                            ])->first();
+
+        if (!$check) {
+            $new_entry = DB::table('team_owners_pivot')
+                                ->insert([
+                                    'team_id' => $team->id,
+                                    'user_id' => Auth::id(),
+                                    'created_at' => Carbon::now(),
+                                    'updated_at' => Carbon::now(),
+                                ]);
+
+            return $new_entry;
+        }
+
     }
 }
