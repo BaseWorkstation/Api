@@ -133,14 +133,14 @@ class WorkstationRepository
      */
     public function saveUserOwnedWorkstation(Request $request, $workstation)
     {
-        $check = DB::table('owners_pivot')
+        $check = DB::table('workstation_owners_pivot')
                             ->where([
                                 'workstation_id' => $workstation->id,
                                 'user_id' => Auth::id(),
                             ])->first();
 
         if (!$check) {
-            $new_entry = DB::table('owners_pivot')
+            $new_entry = DB::table('workstation_owners_pivot')
                                 ->insert([
                                     'workstation_id' => $workstation->id,
                                     'user_id' => Auth::id(),

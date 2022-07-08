@@ -50,6 +50,6 @@ class User extends Authenticatable
      */
     public function assets()
     {
-        return $this->belongsToMany(Workstation::class, 'owners_pivot', 'user_id', 'workstation_id');
+        return $this->belongsToMany(Workstation::class, 'workstation_owners_pivot', 'user_id', 'workstation_id');
     }
 }

@@ -54,6 +54,6 @@ class Workstation extends Model implements Auditable
      */
     public function owners()
     {
-        return $this->belongsToMany(User::class, 'owners_pivot', 'workstation_id', 'user_id');
+        return $this->belongsToMany(User::class, 'workstation_owners_pivot', 'workstation_id', 'user_id');
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('owners_pivot', function (Blueprint $table) {
+        Schema::create('workstation_owners_pivot', function (Blueprint $table) {
             $table->id();
             $table->integer('workstation_id');
             $table->integer('user_id');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('owners_pivot');
+        Schema::dropIfExists('workstation_owners_pivot');
     }
 };
