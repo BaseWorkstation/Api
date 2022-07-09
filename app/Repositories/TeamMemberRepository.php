@@ -51,16 +51,17 @@ class TeamMemberRepository
             // fetch user via email
             $user = User::where('email', $email)->get()->first();
 
-            // if user exists, add user as a member on the pivot table then send an invite to join the team. Note that user is only verified as a member when email is confirmed.
+            // if user has an account, add user as a member of the team on the pivot table then send a notification for the user to verify. Note that user is only verified as a member when email is confirmed.
             if ($user) {
-                $this->saveUserJoinedTeam($user, $team);
+                $this->saveUserAsTeamMember($user, $team);
             } else {
-                // if the user doesn't exist then send an invite to join base
-                return 'no user exists';
+                // if the user has no account, add user's email to pending_team_invites table then send a notification invite to signup on Base
+                $this->saveUserAsUnregisteredMember($email['email_id'], $team);
             }
         }
 
-        // return team with members
+        // return all team members
+        return new TeamMemberCollection($team->members);
     }
 
     /**
@@ -89,7 +90,7 @@ class TeamMemberRepository
      * @param  \App\Models\Team  $team
      * @return array
      */
-    public function saveUserJoinedTeam(User $user, Team $team)
+    public function saveUserAsTeamMember(User $user, Team $team)
     {
         $check = DB::table('team_members_pivot')
                             ->where([
@@ -109,5 +110,33 @@ class TeamMemberRepository
             return $new_entry;
         }
 
+    }
+
+     /**
+     * save unregistered members invites
+     *
+     * @param  string $email
+     * @param  \App\Models\Team  $team
+     * @return array
+     */
+    public function saveUserAsUnregisteredMember($email, Team $team)
+    {
+        $check = DB::table('unregistered_members_invites')
+                            ->where([
+                                'team_id' => $team->id,
+                                'email' => $email,
+                            ])->first();
+
+        if (!$check) {
+            $new_entry = DB::table('unregistered_members_invites')
+                                ->insert([
+                                    'team_id' => $team->id,
+                                    'email' => $email,
+                                    'created_at' => Carbon::now(),
+                                    'updated_at' => Carbon::now(),
+                                ]);
+
+            return $new_entry;
+        }
     }
 }

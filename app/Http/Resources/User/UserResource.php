@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class UserResource extends JsonResource
 {
@@ -18,6 +19,26 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'last_name' => $this->last_name,
             'first_name' => $this->first_name,
+            'pending_team_invites' => $this->mergeTeamInvites(),
         ];
+    }
+
+    /**
+     * merge both invites that were sent before and after user had authentication
+     *
+     * @return array
+     */
+    public function mergeTeamInvites()
+    {
+        $team_invites_after_auth = $this->joined_teams()
+                                        ->wherePivot('verified_at', null)
+                                        ->wherePivot('user_id', $this->id)
+                                        ->pluck('team_id')->all();
+
+        $team_invites_before_auth = DB::table('unregistered_members_invites')
+                                        ->where('email', $this->email)
+                                        ->pluck('team_id')->all();
+
+        return array_unique(array_merge($team_invites_before_auth, $team_invites_after_auth));
     }
 }
