@@ -6,6 +6,7 @@ use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\workstation\WorkstationController;
 use App\Http\Controllers\service\ServiceController;
 use App\Http\Controllers\team\TeamController;
+use App\Http\Controllers\teamMember\TeamMemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +27,18 @@ Route::group([
         'middleware' => 'auth:api'
     ], function () {
 
+        // routes prefixed with "teams" e.g. /teams/members
+        Route::prefix('teams')->group(function () {
+            Route::delete('/members',[TeamMemberController::class, 'remove']);
+
+            Route::apiResources([
+                'members' => TeamMemberController::class,
+            ]);
+        });
+
         Route::apiResources([
             'workstations' => WorkstationController::class,
             'services' => ServiceController::class,
             'teams' => TeamController::class,
         ]);
-
 });

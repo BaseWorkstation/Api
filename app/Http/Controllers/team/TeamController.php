@@ -101,7 +101,6 @@ class TeamController extends Controller
             'city' => 'sometimes',
             'state' => 'sometimes',
             'country_iso' => 'sometimes',
-            'currency_code' => ["sometimes", Rule::in(config('enums.currency_code'))],
         ]);
 
         // run in the repository

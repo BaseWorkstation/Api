@@ -60,4 +60,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Team::class, 'team_owners_pivot', 'user_id', 'team_id');
     }
+
+    /**
+     * The teams joined by the user.
+     */
+    public function joined_teams()
+    {
+        return $this->belongsToMany(Team::class, 'team_members_pivot', 'user_id', 'team_id')
+                    ->withPivot('verified_at', 'deleted_at');
+    }
 }

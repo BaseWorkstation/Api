@@ -94,4 +94,30 @@ class TeamPolicy
     {
         $user->hasRole('medispark_admin');
     }
+
+    /**
+     * Determine whether the user can add member to the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Team  $team
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function createMember(User $user, Team $team)
+    {
+        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+    }
+
+    /**
+     * Determine whether the user can delete member from the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Team  $team
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function removeMember(User $user, Team $team)
+    {
+        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+    }
 }
