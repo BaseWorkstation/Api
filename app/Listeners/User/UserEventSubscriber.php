@@ -6,6 +6,7 @@ use App\Repositories\UserRepository;
 use App\Events\User\NewUserCreatedEvent;
 use App\Listeners\User\UserEventSubscriber;
 use Illuminate\Support\Facades\Log;
+use App\Notifications\UserPinCreated;
  
 class UserEventSubscriber
 {
@@ -28,10 +29,10 @@ class UserEventSubscriber
     }
 
     /**
-     * Handle storing of Users.
+     * send pin notification.
      */
-    public function logEvent($event) {
-        Log::info($event->user);
+    public function sendNotificationAboutUserPin($event) {
+        $event->user->notify(new UserPinCreated($event->user));
     }
  
     /**
@@ -44,7 +45,7 @@ class UserEventSubscriber
     {
         $events->listen(
             NewUserCreatedEvent::class,
-            [UserEventSubscriber::class, 'logEvent']
+            [UserEventSubscriber::class, 'sendNotificationAboutUserPin']
         );
     }
 }

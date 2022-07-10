@@ -38,9 +38,9 @@ class UserSeeder extends Seeder
     {
         // create new request
         $request = new Request([
-                "last_name" => "Opara",
-                "first_name" => "uju",
-                "email" => "uju@gmail.com",
+                "last_name" => "Oyeniyi",
+                "first_name" => "Gbenga",
+                "email" => "oyeniyiemmanuel@gmail.com",
                 "password" => "pass",
                 "password_confirmation" => "pass",
             ]);
