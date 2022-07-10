@@ -7,6 +7,7 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use App\Listeners\Service\ServiceEventSubscriber;
+use App\Listeners\User\UserEventSubscriber;
 use App\Listeners\Workstation\WorkstationEventSubscriber;
 use App\Listeners\Team\TeamEventSubscriber;
 
@@ -39,6 +40,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
+        UserEventSubscriber::class,
         ServiceEventSubscriber::class,
         WorkstationEventSubscriber::class,
         TeamEventSubscriber::class,
