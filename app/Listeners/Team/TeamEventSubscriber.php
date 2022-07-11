@@ -3,6 +3,7 @@
 namespace App\Listeners\Team;
  
 use App\Repositories\TeamRepository;
+use App\Repositories\PlanRepository;
 use App\Events\Team\NewTeamCreatedEvent;
 use App\Events\TeamMember\NewRegisteredTeamMemberInvitedEvent;
 use App\Events\TeamMember\NewUnRegisteredTeamMemberInvitedEvent;
@@ -18,8 +19,10 @@ class TeamEventSubscriber
      * Public declaration of variables.
      *
      * @var TeamRepository $teamRepository
+     * @var PlanRepository $planRepository
      */
     public $teamRepository;
+    public $planRepository;
 
     /**
      * Dependency Injection of variables
@@ -27,9 +30,10 @@ class TeamEventSubscriber
      * @param TeamRepository $teamRepository
      * @return void
      */
-    public function __construct(TeamRepository $teamRepository)
+    public function __construct(TeamRepository $teamRepository, PlanRepository $planRepository)
     {
         $this->teamRepository = $teamRepository;
+        $this->planRepository = $planRepository;
     }
 
     /**
@@ -38,6 +42,14 @@ class TeamEventSubscriber
     public function saveUserOwnedTeam($event) 
     {
         $this->teamRepository->saveUserOwnedTeam($event->request, $event->team);
+    }
+
+    /**
+     * Handle event.
+     */
+    public function addPlansToTeam($event) 
+    {
+        $this->planRepository->addPlansToTeam($event->request, $event->team);
     }
 
     /**
@@ -68,6 +80,11 @@ class TeamEventSubscriber
         $events->listen(
             NewTeamCreatedEvent::class,
             [TeamEventSubscriber::class, 'saveUserOwnedTeam']
+        );
+
+        $events->listen(
+            NewTeamCreatedEvent::class,
+            [TeamEventSubscriber::class, 'addPlansToTeam']
         );
 
         $events->listen(

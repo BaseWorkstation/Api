@@ -19,6 +19,7 @@ class Service extends Model
         'name',
         'category',
         'workstation_id',
+        'plan_id',
     ];
 
     /**
@@ -27,6 +28,14 @@ class Service extends Model
     public function workstation()
     {
         return $this->belongsTo(Workstation::class);
+    }
+
+    /**
+     * Get the plan that the service belongs to.
+     */
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
     }
 
     /**

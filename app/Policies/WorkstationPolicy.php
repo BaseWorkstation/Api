@@ -41,7 +41,7 @@ class WorkstationPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('admin');
+        return $user;
     }
 
     /**
@@ -53,8 +53,8 @@ class WorkstationPolicy
      */
     public function update(User $user, Workstation $workstation)
     {
-        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $workstation->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        // if authenticated user is one of the owners OR if authenticated user has role of base_admin
+        return (in_array($user->id, $workstation->owners->pluck('id')->all())) || $user->hasRole('base_admin');
     }
 
     /**
@@ -66,8 +66,8 @@ class WorkstationPolicy
      */
     public function delete(User $user, Workstation $workstation)
     {
-        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $workstation->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        // if authenticated user is one of the owners OR if authenticated user has role of base_admin
+        return (in_array($user->id, $workstation->owners->pluck('id')->all())) || $user->hasRole('base_admin');
     }
 
     /**
@@ -79,8 +79,8 @@ class WorkstationPolicy
      */
     public function restore(User $user, Workstation $workstation)
     {
-        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $workstation->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        // if authenticated user is one of the owners OR if authenticated user has role of base_admin
+        return (in_array($user->id, $workstation->owners->pluck('id')->all())) || $user->hasRole('base_admin');
     }
 
     /**
@@ -92,6 +92,6 @@ class WorkstationPolicy
      */
     public function forceDelete(User $user, Workstation $workstation)
     {
-        return $user->hasRole('medispark_admin');
+        return $user->hasRole('base_admin');
     }
 }

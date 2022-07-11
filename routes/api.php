@@ -19,26 +19,36 @@ use App\Http\Controllers\teamMember\TeamMemberController;
 |
 */
 
-$router->post('/register',[UserController::class, 'register']);
-$router->post('/login',[UserController::class, 'login']);
-$router->get('/user',[UserController::class, 'getUserByToken']);
-
 Route::group([
-        'middleware' => 'auth:api'
+        'middleware' => 'xssSanitizer',
     ], function () {
 
-        // routes prefixed with "teams" e.g. /teams/members
-        Route::prefix('teams')->group(function () {
-            Route::delete('/members',[TeamMemberController::class, 'remove']);
+        Route::post('/register',[UserController::class, 'register']);
+        Route::post('/login',[UserController::class, 'login']);
+        Route::get('/user',[UserController::class, 'getUserByToken']);
 
-            Route::apiResources([
-                'members' => TeamMemberController::class,
-            ]);
+        Route::group([
+                'middleware' => 'auth:api',
+            ], function () {
+
+                // routes prefixed with "teams" e.g. /teams/members
+                Route::prefix('teams')->group(function () {
+                    Route::delete('/members',[TeamMemberController::class, 'remove']);
+
+                    Route::apiResources([
+                        'members' => TeamMemberController::class,
+                    ]);
+                });
+
+                Route::apiResources([
+                    'users' => UserController::class,
+                    'workstations' => WorkstationController::class,
+                    'plans' => PlanController::class,
+                    'services' => ServiceController::class,
+                    'teams' => TeamController::class,
+                ]);
         });
 
-        Route::apiResources([
-            'workstations' => WorkstationController::class,
-            'services' => ServiceController::class,
-            'teams' => TeamController::class,
-        ]);
 });
+
+

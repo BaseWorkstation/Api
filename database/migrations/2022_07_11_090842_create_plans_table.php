@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->integer('workstation_id')->comment('references id on workstations table')->nullable();
-            $table->string('category')->nullable()->nullable();
             $table->string('name')->nullable();
-            $table->integer('plan_id')->nullable();
+            $table->integer('price_per_month')->nullable();
+            $table->string('currency_code')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('plans');
     }
 };

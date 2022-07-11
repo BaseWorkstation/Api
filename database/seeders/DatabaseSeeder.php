@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,6 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // call artisan command to install passport
+        Artisan::call('passport:install');
+
+        // run seeders
+        $this->call([
+            RoleAndPermissionSeeder::class,
+            UserSeeder::class,
+            PlanSeeder::class,
+            WorldSeeder::class,
+        ]);
     }
 }

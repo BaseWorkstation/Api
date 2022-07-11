@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('team_plan_pivot', function (Blueprint $table) {
             $table->id();
-            $table->integer('workstation_id')->comment('references id on workstations table')->nullable();
-            $table->string('category')->nullable()->nullable();
-            $table->string('name')->nullable();
-            $table->integer('plan_id')->nullable();
+            $table->integer('team_id');
+            $table->integer('plan_id');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('team_plan_pivot');
     }
 };

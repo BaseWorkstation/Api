@@ -6,7 +6,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Repositories\UserRepository;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class UserSeeder extends Seeder
@@ -60,6 +59,6 @@ class UserSeeder extends Seeder
         $user = User::find(json_decode($result->getContent())->user->id);
 
         // assign admin role to user
-        $user->assignRole('admin');
+        //$user->assignRole('admin');
     }
 }

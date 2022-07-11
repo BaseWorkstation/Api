@@ -148,6 +148,9 @@ class WorkstationRepository
                                     'updated_at' => Carbon::now(),
                                 ]);
 
+            // give user role of workstation_owner
+            Auth::user()->assignRole('workstation_owner');
+
             return $new_entry;
         }
 

@@ -2,22 +2,21 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\Service\ServiceResource;
-use App\Http\Resources\Service\ServiceCollection;
-use App\Events\Service\NewServiceCreatedEvent;
+use App\Http\Resources\Plan\PlanResource;
+use App\Http\Resources\Plan\PlanCollection;
 use Illuminate\Http\Request;
-use App\Models\Service;
-use App\Models\Workstation;
+use Illuminate\Support\Facades\DB;
 use App\Models\Plan;
+use App\Models\Team;
 use Carbon\Carbon;
 
-class ServiceRepository
+class PlanRepository
 {
     /**
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Resources\Service\ServiceCollection
+     * @return \Illuminate\Http\Resources\Plan\PlanCollection
      */
     public function index(Request $request)
     {
@@ -30,8 +29,8 @@ class ServiceRepository
             $to_date = $request->to_date."T23:59:59.000Z": 
             $to_date = Carbon::now();
 
-        // fetch Services from db using filters when they are available in the request
-        $services = Service::when($keywords, function ($query, $keywords) {
+        // fetch Plans from db using filters when they are available in the request
+        $plans = Plan::when($keywords, function ($query, $keywords) {
                                         return $query->where("name", "like", "%{$keywords}%");
                                     })
                                     ->when($from_date, function ($query, $from_date) {
@@ -44,41 +43,38 @@ class ServiceRepository
 
         // if user asks that the result be paginated
         if ($request->filled('paginate') && $request->paginate) {
-            return new ServiceCollection($services->paginate($request->paginate_per_page)->withPath('/'));
+            return new PlanCollection($plans->paginate($request->paginate_per_page)->withPath('/'));
         }
 
         // return collection
-        return new ServiceCollection($services->get());
+        return new PlanCollection($plans->get());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Resources\Service\ServiceResource
+     * @return \Illuminate\Http\Resources\Plan\PlanResource
      */
     public function store(Request $request)
     {
         // persist request details and store in a variable
-        $service = Service::create($request->all());
-
-        // call event that a new service has been created
-        event(new NewServiceCreatedEvent($request, $service));
+        $plan = Plan::firstOrCreate($request->all());
 
         // return resource
-        return new ServiceResource($service);
+        return new PlanResource($plan);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Resources\Service\ServiceResource
+     * @return \Illuminate\Http\Resources\Plan\PlanResource
      */
     public function show($id)
     {
         // return resource
-        return new ServiceResource(Service::findOrFail($id));
+        return new PlanResource(Plan::findOrFail($id));
     }
 
     /**
@@ -86,30 +82,30 @@ class ServiceRepository
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Resources\Service\ServiceResource
+     * @return \Illuminate\Http\Resources\Plan\PlanResource
      */
     public function update(Request $request, $id)
     {
         // find the instance
-        $service = $this->getServiceById($id);
+        $plan = $this->getPlanById($id);
 
         // remove or filter null values from the request data then update the instance
-        $service->update(array_filter($request->all()));
+        $plan->update(array_filter($request->all()));
 
         // return resource
-        return new ServiceResource($service);
+        return new PlanResource($plan);
     }
 
     /**
-     * find a specific Service using ID.
+     * find a specific Plan using ID.
      *
      * @param  int  $id
-     * @return \App\Models\Service
+     * @return \App\Models\Plan
      */
-    public function getServiceById($id)
+    public function getPlanById($id)
     {
         // find and return the instance
-        return Service::findOrFail($id);
+        return Plan::findOrFail($id);
     }
 
     /**
@@ -121,27 +117,39 @@ class ServiceRepository
     public function destroy($id)
     {
         // softdelete instance
-        $this->getServiceById($id)->delete();
+        $this->getPlanById($id)->delete();
     }
 
     /**
-     * Store a newly created resource in storage after a workstation is created
+     * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  App\Models\Workstation $workstation
-     * @return \Illuminate\Http\Resources\Service\ServiceResource
+     * @param  Request  $request
+     * @param  Team  $team
+     * @return void
      */
-    public function storeServiceWhenWorkstationIsCreated(Request $request, Workstation $workstation)
+    public function addPlansToTeam(Request $request, Team $team)
     {
-        // persist request details and store in a variable
-        $service = Service::create([
-            'name' => env('DEFAULT_SERVICE_NAME'),
-            'category' => env('DEFAULT_SERVICE_CATEGORY'),
-            'workstation_id' => $workstation->id,
-            'plan_id' => Plan::first()->id,
-        ]);
+        // fetch all plans
+        $plans = Plan::all();
 
-        // return resource
-        return new ServiceResource($service);
+        // check whether team already has plan attached, if not, add all plans to team
+        foreach ($plans as $plan) 
+        {
+            $check = DB::table('team_plan_pivot')
+                                ->where([
+                                    'team_id' => $team->id,
+                                    'plan_id' => $plan->id,
+                                ])->first();
+
+            if (!$check) {
+                $new_entry = DB::table('team_plan_pivot')
+                                    ->insert([
+                                        'team_id' => $team->id,
+                                        'plan_id' => $plan->id,
+                                        'created_at' => Carbon::now(),
+                                        'updated_at' => Carbon::now(),
+                                    ]);
+            }
+        }
     }
 }

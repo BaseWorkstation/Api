@@ -36,12 +36,23 @@ class RoleAndPermissionSeeder extends Seeder
         /**
         *   Create Roles then add Permissions
         */
+        // base_admin
+        $role = Role::create(['name' => 'base_admin']);
+        $role->givePermissionTo(Permission::all());
+
+        // team_owner
+        $role = Role::create(['name' => 'team_owner']);
+        $role->givePermissionTo(Permission::all());
+
+        // workstation_owner
+        $role = Role::create(['name' => 'workstation_owner']);
+        $role->givePermissionTo(Permission::all());
+
         // admin
         $role = Role::create(['name' => 'admin']);
         $role->givePermissionTo(Permission::all());
 
         // customer
         $role = Role::create(['name' => 'customer']);
-        //$role->givePermissionTo('see_customer_pin');
     }
 }

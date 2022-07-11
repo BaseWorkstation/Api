@@ -53,8 +53,8 @@ class TeamPolicy
      */
     public function update(User $user, Team $team)
     {
-        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        // if authenticated user is one of the owners OR if authenticated user has role of base_admin
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('base_admin');
     }
 
     /**
@@ -66,8 +66,8 @@ class TeamPolicy
      */
     public function delete(User $user, Team $team)
     {
-        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        // if authenticated user is one of the owners OR if authenticated user has role of base_admin
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('base_admin');
     }
 
     /**
@@ -79,8 +79,8 @@ class TeamPolicy
      */
     public function restore(User $user, Team $team)
     {
-        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        // if authenticated user is one of the owners OR if authenticated user has role of base_admin
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('base_admin');
     }
 
     /**
@@ -92,7 +92,7 @@ class TeamPolicy
      */
     public function forceDelete(User $user, Team $team)
     {
-        $user->hasRole('medispark_admin');
+        $user->hasRole('base_admin');
     }
 
     /**
@@ -104,8 +104,8 @@ class TeamPolicy
      */
     public function createMember(User $user, Team $team)
     {
-        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        // if authenticated user is one of the owners OR if authenticated user has role of base_admin
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('base_admin');
     }
 
     /**
@@ -117,7 +117,7 @@ class TeamPolicy
      */
     public function removeMember(User $user, Team $team)
     {
-        // if authenticated user is one of the owners OR if authenticated user has role of medispark_admin
-        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('medispark_admin');
+        // if authenticated user is one of the owners OR if authenticated user has role of base_admin
+        return (in_array($user->id, $team->owners->pluck('id')->all())) || $user->hasRole('base_admin');
     }
 }
