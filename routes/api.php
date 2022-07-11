@@ -6,6 +6,7 @@ use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\workstation\WorkstationController;
 use App\Http\Controllers\service\ServiceController;
 use App\Http\Controllers\team\TeamController;
+use App\Http\Controllers\plan\PlanController;
 use App\Http\Controllers\teamMember\TeamMemberController;
 
 /*
