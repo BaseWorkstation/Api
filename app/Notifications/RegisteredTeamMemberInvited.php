@@ -7,22 +7,26 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\User;
+use App\Models\Team;
 
-class UserPinCreated extends Notification implements ShouldQueue
+class RegisteredTeamMemberInvited extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public $user;
+    public $team;
 
     /**
      * Create a new notification instance.
      *
      * @param  User  $user
+     * @param  Team  $team
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, Team $team)
     {
         $this->user = $user;
+        $this->team = $team;
     }
 
     /**
@@ -45,11 +49,11 @@ class UserPinCreated extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Your Base Pin')
+                    ->subject('Invitation to join a new team on Base')
                     ->greeting('Hi '. ucfirst($this->user->first_name))
-                    ->line('You are welcome to Base.')
-                    ->line('Your pin is '. $this->user->unique_pin)
-                    ->line('It will be required everytime you check in or check out, please keep it safe.');
+                    ->line('You have been invited by '.$this->team->name.' to become a part of their team')
+                    ->action('Accept', url(env('APP_URL').'/'))
+                    ->line('you do not need to take a further action if the invite was not meant for you.');
     }
 
     /**

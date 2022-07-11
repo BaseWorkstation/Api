@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Http\Resources\TeamMember\TeamMemberResource;
 use App\Http\Resources\TeamMember\TeamMemberCollection;
 use Illuminate\Support\Facades\DB;
+use App\Events\TeamMember\NewRegisteredTeamMemberInvitedEvent;
+use App\Events\TeamMember\NewUnRegisteredTeamMemberInvitedEvent;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Team;
@@ -107,6 +109,9 @@ class TeamMemberRepository
                                     'updated_at' => Carbon::now(),
                                 ]);
 
+            // call event that a new team member who already has an account has been invited
+            event(new NewRegisteredTeamMemberInvitedEvent($team, $user));
+
             return $new_entry;
         }
 
@@ -135,6 +140,9 @@ class TeamMemberRepository
                                     'created_at' => Carbon::now(),
                                     'updated_at' => Carbon::now(),
                                 ]);
+
+            // call event that a new team member who does not have an account has been invited
+            event(new NewUnRegisteredTeamMemberInvitedEvent($team, $email));
 
             return $new_entry;
         }
