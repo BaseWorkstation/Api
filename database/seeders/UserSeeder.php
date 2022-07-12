@@ -40,6 +40,7 @@ class UserSeeder extends Seeder
                 "last_name" => "Oyeniyi",
                 "first_name" => "Gbenga",
                 "email" => "oyeniyiemmanuel@gmail.com",
+                "phone" => "08062680306",
                 "password" => "pass",
                 "password_confirmation" => "pass",
             ]);
@@ -49,6 +50,7 @@ class UserSeeder extends Seeder
             'last_name' => 'required|max:255',
             'first_name' => 'required|max:255',
             'email' => 'required|email|unique:users',
+            'phone' => 'required|unique:users',
             'password' => 'required|confirmed'
         ]);
 

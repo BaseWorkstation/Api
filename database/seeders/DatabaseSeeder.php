@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         // call artisan command to install passport
         Artisan::call('passport:install');
+        Artisan::call('passport:keys');
 
         // run seeders
         $this->call([

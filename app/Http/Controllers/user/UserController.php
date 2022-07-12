@@ -38,6 +38,7 @@ class UserController extends Controller
             'last_name' => 'required|max:255',
             'first_name' => 'required|max:255',
             'email' => 'required|email|unique:users',
+            'phone' => 'required|unique:users',
             'password' => 'required|confirmed'
         ]);
 
@@ -99,8 +100,9 @@ class UserController extends Controller
 
         // validation
         $request->validate([
-            'last_name' => 'required|max:255',
-            'first_name' => 'required|max:255',
+            'last_name' => 'sometimes|max:255',
+            'first_name' => 'sometimes|max:255',
+            'phone' => ['sometimes', Rule::unique('users')->ignore($id)
         ]);
 
         // run in the repository

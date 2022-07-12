@@ -19,6 +19,8 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'last_name' => $this->last_name,
             'first_name' => $this->first_name,
+            'email' => $this->email,
+            'phone' => $this->phone,
             'pending_team_invites' => $this->mergeTeamInvites(),
         ];
     }
