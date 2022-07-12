@@ -52,7 +52,7 @@ class UserRepository
     public function login($data)
     {
         if (!auth()->attempt($data)) {
-            return response(['error_message' => 'Incorrect Details. Please try again']);
+            return response(['error_message' => 'Incorrect Details. Please try again'], 401);
         }
 
         $token = auth()->user()->createToken('API Token')->accessToken;
