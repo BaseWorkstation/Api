@@ -14,6 +14,9 @@ class PriceResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'amount' => $this->amount,
+            'retainer_category' => $this->retainer->category,
+        ];
     }
 }

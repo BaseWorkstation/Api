@@ -48,6 +48,11 @@ class User extends Authenticatable implements Auditable
     ];
 
     /**
+     * tells what default gaurd to use
+     */
+    protected $guard_name = 'web';
+
+    /**
      * Get the plan that the user is subscribed to.
      */
     public function plan()
@@ -58,7 +63,7 @@ class User extends Authenticatable implements Auditable
     /**
      * The workstations owned by the user.
      */
-    public function owned_workstations()
+    public function ownedWorkstations()
     {
         return $this->belongsToMany(Workstation::class, 'workstation_owners_pivot', 'user_id', 'workstation_id');
     }
@@ -66,7 +71,7 @@ class User extends Authenticatable implements Auditable
     /**
      * The teams owned by the user.
      */
-    public function owned_teams()
+    public function ownedTeams()
     {
         return $this->belongsToMany(Team::class, 'team_owners_pivot', 'user_id', 'team_id');
     }
@@ -74,9 +79,25 @@ class User extends Authenticatable implements Auditable
     /**
      * The teams joined by the user.
      */
-    public function joined_teams()
+    public function joinedTeams()
     {
         return $this->belongsToMany(Team::class, 'team_members_pivot', 'user_id', 'team_id')
                     ->withPivot('verified_at', 'deleted_at');
+    }
+
+    /**
+     * Get all of the user's payments.
+     */
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'paymentable');
+    }
+
+    /**
+     * Get all of the user's payment methods.
+     */
+    public function paymentMethods()
+    {
+        return $this->morphMany(PaymentMethod::class, 'paymentMethodable');
     }
 }

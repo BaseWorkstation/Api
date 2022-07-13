@@ -4,6 +4,8 @@ namespace App\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\PaymentMethod\PaymentMethodCollection;
+use Auth;
 
 class UserResource extends JsonResource
 {
@@ -22,6 +24,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'pending_team_invites' => $this->mergeTeamInvites(),
+            'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
         ];
     }
 
@@ -32,7 +35,7 @@ class UserResource extends JsonResource
      */
     public function mergeTeamInvites()
     {
-        $team_invites_after_auth = $this->joined_teams()
+        $team_invites_after_auth = $this->joinedTeams()
                                         ->wherePivot('verified_at', null)
                                         ->wherePivot('user_id', $this->id)
                                         ->pluck('team_id')->all();

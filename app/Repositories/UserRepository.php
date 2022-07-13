@@ -7,8 +7,10 @@ use App\Http\Resources\User\UserCollection;
 use Illuminate\Http\Request;
 use App\Events\User\NewUserCreatedEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
+use Auth;
 
 class UserRepository
 {
@@ -51,13 +53,35 @@ class UserRepository
      */
     public function login($data)
     {
-        if (!auth()->attempt($data)) {
+        /*if (!auth()->attempt($data)) {
             return response(['error_message' => 'Incorrect Details. Please try again'], 401);
+        }*/
+
+        // fetch user via email
+        $user = User::where('email', $data['email'])->first();
+
+        // send response if email doesn't exist
+        if(!$user){
+
+            return response()->json(['error' => 'no user with the email address'], 401);
+
         }
 
-        $token = auth()->user()->createToken('API Token')->accessToken;
+        // send response if password is not correct
+        if (!Hash::check($data['password'], $user->password)) {
 
-        return response(['user' => auth()->user(), 'token' => $token]);
+            return response()->json(['error' => 'incorrect password'], 401);
+
+        } else {
+            // authenticated user
+            Auth::login($user);
+
+            // generate token
+            $token = auth()->user()->createToken('API Token')->accessToken;
+
+            // return response of authenticated user and token
+            return response(['user' => auth()->user(), 'token' => $token]);
+        }
     }
 
     /**

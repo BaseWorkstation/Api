@@ -64,7 +64,7 @@ class PriceRepository
 
         // persist request details and store in a variable
         $price = Price::create([
-            'amount' => $request->price,
+            'amount' => $request->price_per_minute,
             'service_id' => $service->id,
             'workstation_id' => $service->workstation_id,
             'retainer_id' => $workstation->first_fee_paying_retainer->id,

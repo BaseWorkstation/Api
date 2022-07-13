@@ -102,7 +102,7 @@ class UserController extends Controller
         $request->validate([
             'last_name' => 'sometimes|max:255',
             'first_name' => 'sometimes|max:255',
-            'phone' => ['sometimes', Rule::unique('users')->ignore($id)
+            'phone' => ['sometimes', Rule::unique('users')->ignore($id)]
         ]);
 
         // run in the repository

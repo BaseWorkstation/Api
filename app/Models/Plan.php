@@ -51,4 +51,12 @@ class Plan extends Model implements Auditable
     {
         return $this->hasMany(Service::class);
     }
+
+    /**
+     * Get the paymentMethods for the plan.
+     */
+    public function paymentMethods()
+    {
+        return $this->hasMany(PaymentMethod::class);
+    }
 }

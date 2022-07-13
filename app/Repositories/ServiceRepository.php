@@ -141,6 +141,9 @@ class ServiceRepository
             'plan_id' => Plan::first()->id,
         ]);
 
+        // call event that a new service has been created
+        event(new NewServiceCreatedEvent($request, $service));
+
         // return resource
         return new ServiceResource($service);
     }

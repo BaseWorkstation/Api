@@ -58,7 +58,7 @@ class ServiceController extends Controller
             'workstation_id' => 'required|integer',
             'plan_id' => 'required|integer',
             'name' => 'required|max:255',
-            'price' => 'required|integer',
+            'price_per_minute' => 'required|integer',
             'category' => ["required", Rule::in(config('enums.service_category'))],
         ]);
 

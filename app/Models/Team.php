@@ -48,7 +48,7 @@ class Team extends Model implements Auditable
     /**
      * The members that were invited to the team but do not have base account.
      */
-    public function unregistered_members()
+    public function unregisteredMembers()
     {
         return DB::table('unregistered_members_invites')
                             ->where([
@@ -63,5 +63,21 @@ class Team extends Model implements Auditable
     public function plans()
     {
         return $this->belongsToMany(Plan::class, 'team_plan_pivot', 'team_id', 'plan_id');
+    }
+
+    /**
+     * Get all of the team's payments.
+     */
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'paymentable');
+    }
+
+    /**
+     * Get all of the team's payment methods.
+     */
+    public function paymentMethods()
+    {
+        return $this->morphMany(PaymentMethod::class, 'paymentMethodable');
     }
 }

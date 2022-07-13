@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('phone')->unique()->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('currency_code')->nullable();
+            $table->time('open_time')->nullable();
+            $table->time('close_time')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

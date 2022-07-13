@@ -62,7 +62,9 @@ class WorkstationController extends Controller
             'country_iso' => 'required',
             'phone' => 'required|unique:workstations',
             'email' => 'required|unique:workstations',
-            'currency_code' => ["required", Rule::in(config('enums.currency_code'))],
+            'currency_code' => ['required', Rule::in(config('enums.currency_code'))],
+            'open_time' => ['required', 'date_format:H:i'],
+            'close_time' => ['required', 'date_format:H:i'],
         ]);
 
         // run in the repository

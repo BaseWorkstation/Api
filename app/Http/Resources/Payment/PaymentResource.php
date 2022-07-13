@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Plan;
+namespace App\Http\Resources\Payment;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PlanResource extends JsonResource
+class PaymentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,6 @@ class PlanResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'price_per_month' => $this->price_per_month,
-            'currency_code' => $this->currency_code,
-        ];
+        return parent::toArray($request);
     }
 }

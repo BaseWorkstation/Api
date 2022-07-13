@@ -19,11 +19,11 @@ class TeamMemberResource extends JsonResource
             'last_name' => $this->last_name,
             'first_name' => $this->first_name,
             'email' => $this->email,
-            'verified_at' => $this->joined_teams()
+            'verified_at' => $this->joinedTeams()
                                     ->wherePivot('team_id', $request->team_id)
                                     ->wherePivot('user_id', $this->id)
                                     ->get()->first()->pivot->verified_at,
-            'deleted_at' => $this->joined_teams()
+            'deleted_at' => $this->joinedTeams()
                                     ->wherePivot('team_id', $request->team_id)
                                     ->wherePivot('user_id', $this->id)
                                     ->get()->first()->pivot->deleted_at,

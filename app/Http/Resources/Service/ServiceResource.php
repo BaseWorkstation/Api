@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Service;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Price\PriceResource;
 
 class ServiceResource extends JsonResource
 {
@@ -18,6 +19,7 @@ class ServiceResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'category' => $this->category,
+            'price_per_minute' => new PriceResource($this->prices->first()),
         ];
     }
 }

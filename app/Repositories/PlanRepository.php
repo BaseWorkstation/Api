@@ -121,7 +121,7 @@ class PlanRepository
     }
 
     /**
-     * Remove the specified resource from storage.
+     * add plans to team.
      *
      * @param  Request  $request
      * @param  Team  $team

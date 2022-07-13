@@ -7,6 +7,7 @@ use App\Http\Controllers\workstation\WorkstationController;
 use App\Http\Controllers\service\ServiceController;
 use App\Http\Controllers\team\TeamController;
 use App\Http\Controllers\plan\PlanController;
+use App\Http\Controllers\payment\PaymentController;
 use App\Http\Controllers\teamMember\TeamMemberController;
 
 /*
@@ -24,10 +25,12 @@ Route::group([
         'middleware' => 'xssSanitizer',
     ], function () {
 
+        // routes that do not require authentication
         Route::post('/register',[UserController::class, 'register']);
         Route::post('/login',[UserController::class, 'login']);
         Route::get('/user',[UserController::class, 'getUserByToken']);
 
+        // routes that require authentication
         Route::group([
                 'middleware' => 'auth:api',
             ], function () {
@@ -41,6 +44,12 @@ Route::group([
                     ]);
                 });
 
+                // other payment routes
+                Route::get('/payments/methods',[PaymentController::class, 'getPaymentMethods']);
+                Route::post('/payments/methods',[PaymentController::class, 'addPaymentMethod']);
+                Route::delete('/payments/methods/{id}',[PaymentController::class, 'deletePaymentMethod']);
+
+                // standard apiResource routes
                 Route::apiResources([
                     'users' => UserController::class,
                     'workstations' => WorkstationController::class,
