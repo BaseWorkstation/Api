@@ -16,7 +16,7 @@ class Workstation extends Model implements Auditable
      *
      * @var array<int, string>
      */
-    protected $guarded = ['price'];
+    protected $guarded = ['price_per_minute'];
 
     /**
      * The relationships that should always be loaded.
