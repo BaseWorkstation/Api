@@ -6,6 +6,7 @@ use App\Http\Resources\User\UserResource;
 use App\Http\Resources\User\UserCollection;
 use Illuminate\Http\Request;
 use App\Events\User\NewUserCreatedEvent;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
