@@ -29,6 +29,8 @@ Route::group([
         Route::post('/register',[UserController::class, 'register']);
         Route::post('/login',[UserController::class, 'login']);
         Route::get('/user',[UserController::class, 'getUserByToken']);
+        Route::post('/forgot-password',[UserController::class, 'sendPasswordResetLink'])->name('password.email');
+        Route::post('/reset-password',[UserController::class, 'resetPassword'])->name('password.reset');
 
         // routes that require authentication
         Route::group([

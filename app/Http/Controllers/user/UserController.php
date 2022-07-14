@@ -136,4 +136,26 @@ class UserController extends Controller
     {
         return $this->userRepository->getUserByToken($request);
     }
+
+    /**
+     * send password-reset link
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Repositories\UserRepository
+     */
+    public function sendPasswordResetLink(Request $request)
+    {
+        return $this->userRepository->sendPasswordResetLink($request);
+    }
+
+    /**
+     * reset password
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Repositories\UserRepository
+     */
+    public function resetPassword(Request $request)
+    {
+        return $this->userRepository->resetPassword($request);
+    }
 }
