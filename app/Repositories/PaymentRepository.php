@@ -137,7 +137,8 @@ class PaymentRepository
                     "method_type" => $request->method_type,
                     "card_number" => $request->card_number,
                     "card_name" => $request->card_name,
-                    "card_expiry" => $request->card_expiry,
+                    "card_expiry_month" => Carbon::parse($request->card_expiry_month)->month,
+                    "card_expiry_year" => Carbon::parse($request->card_expiry_year)->year,
                     "card_cvc" => $request->card_cvc,
                 ]);
             }

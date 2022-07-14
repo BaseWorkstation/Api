@@ -22,7 +22,8 @@ class PaymentMethod extends Model implements Auditable
         'plan_id', 
         'card_number',
         'card_name',
-        'card_expiry',
+        'card_expiry_month',
+        'card_expiry_year',
         'card_cvc',
     ];
 

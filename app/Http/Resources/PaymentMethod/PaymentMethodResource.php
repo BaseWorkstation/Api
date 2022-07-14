@@ -20,7 +20,8 @@ class PaymentMethodResource extends JsonResource
             'method' => $this->method_type,
             'card_name' => $this->when($this->method_type === 'PAYG_card', $this->card_name),
             'card_number' => $this->when($this->method_type === 'PAYG_card', $this->card_number),
-            'card_expiry' => $this->when($this->method_type === 'PAYG_card', $this->card_expiry),
+            'card_expiry_month' => $this->when($this->method_type === 'PAYG_card', $this->card_expiry_month),
+            'card_expiry_year' => $this->when($this->method_type === 'PAYG_card', $this->card_expiry_year),
             'plan' => $this->when($this->method_type === 'plan', new PlanResource($this->plan)),
         ];
     }

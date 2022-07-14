@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer('plan_id')->nullable();
             $table->string('card_number')->nullable();
             $table->string('card_name')->nullable();
-            $table->dateTime('card_expiry')->nullable();
+            $table->string('card_expiry_month')->nullable();
+            $table->string('card_expiry_year')->nullable();
             $table->string('card_cvc')->nullable();
             $table->timestamps();
             $table->softDeletes();

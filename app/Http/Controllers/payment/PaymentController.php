@@ -98,7 +98,8 @@ class PaymentController extends Controller
             'plan_id' => 'required_if:method_type,plan|integer',
             'card_number' => 'required_if:method_type,PAYG_card|integer',
             'card_name' => 'required_if:method_type,PAYG_card|string',
-            'card_expiry' => 'required_if:method_type,PAYG_card|date_format:Y-m-d',
+            'card_expiry_month' => 'required_if:method_type,PAYG_card|between:1,12',
+            'card_expiry_year' => 'required_if:method_type,PAYG_card|date_format:Y-m-d',
             'card_cvc' => 'required_if:method_type,PAYG_card|integer',
         ]);
 
