@@ -56,4 +56,12 @@ class Workstation extends Model implements Auditable
     {
         return $this->belongsToMany(User::class, 'workstation_owners_pivot', 'workstation_id', 'user_id');
     }
+
+    /**
+     * Get the check-in visits made to a user.
+     */
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
 }

@@ -16,6 +16,10 @@ return [
         'User'  =>  'User',
         'Team'  =>  'Team',
     ],
+    'paidByable_type'   =>  [
+        'User'  =>  'User',
+        'Team'  =>  'Team',
+    ],
     'payment_mode'   =>  [
         'wallet'  =>  'wallet',
         'card'  =>  'card',

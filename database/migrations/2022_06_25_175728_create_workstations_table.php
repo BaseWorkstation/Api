@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('country_name')->nullable();
             $table->string('country_iso')->nullable();
-            $table->string('phone')->unique()->nullable();
+            $table->string('phone')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('currency_code')->nullable();
             $table->time('open_time')->nullable();

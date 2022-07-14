@@ -6,6 +6,7 @@ use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\workstation\WorkstationController;
 use App\Http\Controllers\service\ServiceController;
 use App\Http\Controllers\team\TeamController;
+use App\Http\Controllers\visit\VisitController;
 use App\Http\Controllers\plan\PlanController;
 use App\Http\Controllers\payment\PaymentController;
 use App\Http\Controllers\teamMember\TeamMemberController;
@@ -51,11 +52,16 @@ Route::group([
                 Route::post('/payments/methods',[PaymentController::class, 'addPaymentMethod']);
                 Route::delete('/payments/methods/{id}',[PaymentController::class, 'deletePaymentMethod']);
 
+                // other visit routes
+                Route::post('/visits/check-in',[VisitController::class, 'checkIn']);
+                Route::patch('/visits/{id}/check-out',[VisitController::class, 'checkOut']);
+
                 // standard apiResource routes
                 Route::apiResources([
                     'users' => UserController::class,
                     'workstations' => WorkstationController::class,
                     'plans' => PlanController::class,
+                    'visits' => VisitController::class,
                     'services' => ServiceController::class,
                     'teams' => TeamController::class,
                 ]);

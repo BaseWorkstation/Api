@@ -100,4 +100,20 @@ class User extends Authenticatable implements Auditable
     {
         return $this->morphMany(PaymentMethod::class, 'paymentMethodable');
     }
+
+    /**
+     * Get all of the visits paid for by the user.
+     */
+    public function visitsPaidFor()
+    {
+        return $this->morphMany(Visit::class, 'paidByable');
+    }
+
+    /**
+     * Get the check-in visits made by a user.
+     */
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
 }

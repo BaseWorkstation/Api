@@ -80,4 +80,12 @@ class Team extends Model implements Auditable
     {
         return $this->morphMany(PaymentMethod::class, 'paymentMethodable');
     }
+
+    /**
+     * Get all of the visits paid for by the team.
+     */
+    public function visitsPaidFor()
+    {
+        return $this->morphMany(Visit::class, 'paidByable');
+    }
 }
