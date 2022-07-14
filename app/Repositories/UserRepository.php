@@ -113,7 +113,7 @@ class UserRepository
         );
      
         return $status === Password::RESET_LINK_SENT
-                    ? response()->json(['message' => 'password reset link sent, check your email'], 200);
+                    ? response()->json(['message' => 'password reset link sent, check your email'], 200)
                     : response()->json(['error' => 'unable to send reset link'], 401);
     }
 
