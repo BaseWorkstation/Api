@@ -14,6 +14,17 @@ class VisitResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'user' => [
+                        'id' => $this->user_id,
+                        'last_name' => $this->user->last_name,
+                        'first_name' => $this->user->first_name,
+                    ],
+            'workstation' => [
+                                'id' => $this->workstation_id,
+                                'name' => $this->workstation->name,
+                            ],
+        ];
     }
 }

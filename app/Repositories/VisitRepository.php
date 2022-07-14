@@ -65,9 +65,11 @@ class VisitRepository
     {
         // fetch user
         $user = User::findOrFail($request->user_id);
+        // fetch workstation
+        $workstation = Workstation::findOrFail($request->workstation_id);
 
         // check if user unique_pin matches
-        if ($user && $user->unique_pin === $request->unique_pin) {
+        if ($user && $workstation && $user->unique_pin === $request->unique_pin) {
             // persist request details and store in a variable
             $visit = Visit::firstOrCreate([
                 "user_id" => $request->user_id,
