@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Visit;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Workstation;
 use Carbon\Carbon;
 
 class VisitRepository
