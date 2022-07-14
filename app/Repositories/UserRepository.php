@@ -113,8 +113,8 @@ class UserRepository
         );
      
         return $status === Password::RESET_LINK_SENT
-                    ? back()->with(['status' => __($status)])
-                    : back()->withErrors(['email' => __($status)]);
+                    ? response()->json(['message' => 'password reset link sent, check your email'], 200);
+                    : response()->json(['error' => 'unable to send reset link'], 401);
     }
 
     /**
@@ -145,8 +145,8 @@ class UserRepository
         );
      
         return $status === Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withErrors(['email' => [__($status)]]);
+                    ? response()->json(['message' => 'password password has been changed'])
+                    : response()->json(['error' => 'unable to reset password'], 401);
     }
 
     /**
