@@ -95,7 +95,13 @@ class UserRepository
      */
     public function getUserByToken(Request $request)
     {
-        return auth('api')->user();
+        $user = auth('api')->user();
+
+        if ($user) {
+            return $user;
+        }
+
+        return response(['error' => 'incorrect token'], 401);
     }
 
     /**
