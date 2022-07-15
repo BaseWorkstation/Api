@@ -9,6 +9,7 @@
         "fruitcake/laravel-cors": "^2.0.5",
         "guzzlehttp/guzzle": "^7.2",
         "itsgoingd/clockwork": "^5.1",
+        "jrm2k6/cloudder": "^0.7.0",
         "laravel/framework": "^9.0",
         "laravel/passport": "^10.4",
         "laravel/sanctum": "^2.15",

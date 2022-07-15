@@ -26,6 +26,14 @@ class Workstation extends Model implements Auditable
     protected $with = ['retainers'];
 
     /**
+     * Get the workstation's logo.
+     */
+    public function logo()
+    {
+        return $this->morphOne(File::class, 'fileable');
+    }
+
+    /**
      * Get the services for the workstation.
      */
     public function services()

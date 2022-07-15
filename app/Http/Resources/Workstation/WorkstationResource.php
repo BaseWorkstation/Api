@@ -5,6 +5,7 @@ namespace App\Http\Resources\Workstation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Retainer\RetainerResource;
 use App\Http\Resources\Service\ServiceResource;
+use App\Http\Resources\File\FileResource;
 
 class WorkstationResource extends JsonResource
 {
@@ -28,6 +29,7 @@ class WorkstationResource extends JsonResource
             'currency_code' => $this->currency_code,
             //'retainers' => RetainerResource::collection($this->retainers),
             'default_service' => new ServiceResource($this->services->first()),
+            'logo' => new FileResource($this->logo),
         ];
     }
 }

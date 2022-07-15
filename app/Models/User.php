@@ -53,6 +53,14 @@ class User extends Authenticatable implements Auditable
     protected $guard_name = 'web';
 
     /**
+     * Get the user's avatar.
+     */
+    public function avatar()
+    {
+        return $this->morphOne(File::class, 'fileable');
+    }
+
+    /**
      * Get the plan that the user is subscribed to.
      */
     public function plan()

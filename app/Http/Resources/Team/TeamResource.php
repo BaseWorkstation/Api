@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Team;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\File\FileResource;
 
 class TeamResource extends JsonResource
 {
@@ -14,6 +15,16 @@ class TeamResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'city' => $this->city,
+            'state' => $this->state,
+            'country_iso' => $this->country_iso,
+            'country_name' => $this->country_name,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'logo' => new FileResource($this->logo),
+        ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Resources\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\PaymentMethod\PaymentMethodCollection;
+use App\Http\Resources\File\FileResource;
 use Auth;
 
 class UserResource extends JsonResource
@@ -25,6 +26,7 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'pending_team_invites' => $this->mergeTeamInvites(),
             'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
+            'avatar' => new FileResource($this->avatar),
         ];
     }
 

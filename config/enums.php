@@ -37,4 +37,9 @@ return [
         'PAYG_cash'  =>  'PAYG_cash',
         'plan'  =>  'plan',
     ],
+    'upload_category'   =>  [
+        'user_avatar'  =>  'user_avatar',
+        'workstation_logo'  =>  'workstation_logo',
+        'team_logo'  =>  'team_logo',
+    ],
 ];

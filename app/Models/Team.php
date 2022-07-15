@@ -29,6 +29,14 @@ class Team extends Model implements Auditable
     protected $with = [];
 
     /**
+     * Get the team's logo.
+     */
+    public function logo()
+    {
+        return $this->morphOne(File::class, 'fileable');
+    }
+
+    /**
      * The owners of the team.
      */
     public function owners()

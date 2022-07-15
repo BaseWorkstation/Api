@@ -8,6 +8,7 @@ use App\Http\Controllers\service\ServiceController;
 use App\Http\Controllers\team\TeamController;
 use App\Http\Controllers\visit\VisitController;
 use App\Http\Controllers\plan\PlanController;
+use App\Http\Controllers\file\FileController;
 use App\Http\Controllers\payment\PaymentController;
 use App\Http\Controllers\teamMember\TeamMemberController;
 
@@ -61,6 +62,7 @@ Route::group([
                     'users' => UserController::class,
                     'workstations' => WorkstationController::class,
                     'plans' => PlanController::class,
+                    'files' => FileController::class,
                     'visits' => VisitController::class,
                     'services' => ServiceController::class,
                     'teams' => TeamController::class,
