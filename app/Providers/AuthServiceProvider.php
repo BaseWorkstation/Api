@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
 
         ResetPassword::createUrlUsing(function ($user, string $token) {
-            return 'https://basestation.netlify.app/reset-password?token='.$token;
+            return 'https://basestation.netlify.app/reset-password?token='.$token.'&email='.$user->email;
         });
     }
 }

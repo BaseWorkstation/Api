@@ -145,6 +145,8 @@ class UserController extends Controller
      */
     public function sendPasswordResetLink(Request $request)
     {
+        $request->validate(['email' => 'required|email']);
+        
         return $this->userRepository->sendPasswordResetLink($request);
     }
 
@@ -156,6 +158,12 @@ class UserController extends Controller
      */
     public function resetPassword(Request $request)
     {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
         return $this->userRepository->resetPassword($request);
     }
 }

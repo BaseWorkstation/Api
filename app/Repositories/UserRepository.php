@@ -112,8 +112,6 @@ class UserRepository
      */
     public function sendPasswordResetLink(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
- 
         $status = Password::sendResetLink(
             $request->only('email')
         );
@@ -131,12 +129,6 @@ class UserRepository
      */
     public function resetPassword(Request $request)
     {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-        ]);
-     
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
