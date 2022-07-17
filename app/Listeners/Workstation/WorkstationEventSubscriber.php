@@ -59,6 +59,14 @@ class WorkstationEventSubscriber
     {
         $this->workstationRepository->saveUserOwnedWorkstation($event->request, $event->workstation);
     }
+
+    /**
+     * Handle event.
+     */
+    public function createQrCodeForWorkstation($event) 
+    {
+        $this->workstationRepository->createQrCodeForWorkstation($event->request, $event->workstation);
+    }
  
     /**
      * Register the listeners for the subscriber.
@@ -81,6 +89,11 @@ class WorkstationEventSubscriber
         $events->listen(
             NewWorkstationCreatedEvent::class,
             [WorkstationEventSubscriber::class, 'saveUserOwnedWorkstation']
+        );
+
+        $events->listen(
+            NewWorkstationCreatedEvent::class,
+            [WorkstationEventSubscriber::class, 'createQrCodeForWorkstation']
         );
     }
 }

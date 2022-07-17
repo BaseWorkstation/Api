@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Http\Resources\Workstation\WorkstationResource;
 use App\Http\Resources\Workstation\WorkstationCollection;
 use App\Events\Workstation\NewWorkstationCreatedEvent;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Workstation;
@@ -154,5 +156,35 @@ class WorkstationRepository
             return $new_entry;
         }
 
+    }
+
+     /**
+     * create a Qr code for the workstation
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Workstation  $workstation
+     * @return array
+     */
+    public function createQrCodeForWorkstation(Request $request, $workstation)
+    {
+        // create meta data for qr code in a variable
+        $metadata_for_qr_code = env('APP_URL_FRONT_END').'/check-in/?workstation_id='.$workstation->id.'&workstation_name='.$workstation->name;
+
+        // generate new code
+        $qr_code = QrCode::size(500)
+                            ->format('svg')
+                            ->style('round')
+                            ->color(99, 3, 48)
+                            ->eyeColor(0, 169, 92, 104, 25, 25, 112)
+                            ->eyeColor(1, 128, 0, 32, 191, 64, 191)
+                            ->eyeColor(2, 170, 51, 106, 72, 50, 72)
+                            ->generate($metadata_for_qr_code);
+
+        // save file in storage
+        Storage::put('public/qr_codes/'.$workstation->id.'.svg', $qr_code);
+
+        //  update workstation instance to include qr_code_path
+        $workstation->qr_code_path = Storage::path('public\qr_codes\\'.$workstation->id.'.svg');
+        $workstation->save();
     }
 }

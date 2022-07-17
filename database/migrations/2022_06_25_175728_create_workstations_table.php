@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('currency_code')->nullable();
             $table->time('open_time')->nullable();
             $table->time('close_time')->nullable();
+            $table->string('qr_code_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
