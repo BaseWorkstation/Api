@@ -184,7 +184,7 @@ class WorkstationRepository
         Storage::put('public/qr_codes/'.$workstation->id.'.svg', $qr_code);
 
         //  update workstation instance to include qr_code_path
-        $workstation->qr_code_path = Storage::path('public\qr_codes\\'.$workstation->id.'.svg');
+        $workstation->qr_code_path = Storage::path(env('APP_URL_FRONT_END').'/public/qr_codes/'.$workstation->id.'.svg');
         $workstation->save();
     }
 }
