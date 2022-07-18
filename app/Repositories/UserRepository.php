@@ -98,7 +98,7 @@ class UserRepository
         $user = auth('api')->user();
 
         if ($user) {
-            return $user;
+            return new UserResource($user);
         }
 
         return response(['error' => 'incorrect token'], 401);
