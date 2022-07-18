@@ -7,6 +7,7 @@ use App\Http\Resources\Workstation\WorkstationCollection;
 use App\Events\Workstation\NewWorkstationCreatedEvent;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Workstation;
@@ -163,7 +164,7 @@ class WorkstationRepository
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Workstation  $workstation
-     * @return array
+     * @return void
      */
     public function createQrCodeForWorkstation(Request $request, $workstation)
     {
@@ -180,11 +181,60 @@ class WorkstationRepository
                             ->eyeColor(2, 170, 51, 106, 72, 50, 72)
                             ->generate($metadata_for_qr_code);
 
+        if (env('APP_INSTALLATION_LOCATION') === 'local') {
+            $this->localQrCodeUpload($qr_code, $workstation);
+        }
+
+        if (env('APP_INSTALLATION_LOCATION') === 'cloud') {
+            $this->cloudQrCodeUpload($qr_code, $workstation);
+        }
+    }
+
+    /**
+     * upload qr_code using the local file storage
+     *
+     * @param  QrCode  $qr_code
+     * @param  Workstation  $workstation
+     * @return void
+     */
+    public function localQrCodeUpload($qr_code, Workstation $workstation)
+    {
         // save file in storage
         Storage::put('public/qr_codes/'.$workstation->id.'.svg', $qr_code);
 
         //  update workstation instance to include qr_code_path
         $workstation->qr_code_path = env('APP_URL_SERVER_END').'/storage/qr_codes/'.$workstation->id.'.svg';
+        $workstation->save();
+    }
+
+    /**
+     * upload qr_code using the cloud file storage
+     *
+     * @param  QrCode  $qr_code
+     * @param  Workstation  $workstation
+     * @return void
+     */
+    public function cloudQrCodeUpload($qr_code, Workstation $workstation)
+    {
+        $fileName = 'qr_code_workstation_'.$workstation->id;
+        $fileNameWithExtension = '.svg';
+        $file = $qr_code;
+        $path = $qr_code;
+        $options = array("public_id" => $fileName);
+        $tags = array( env('APP_NAME'), 'qr_codes', 'workstation');
+
+        // save file first within the app so as to get a file path
+        Storage::put('public/qr_codes/'.$workstation->id.'.svg', $qr_code);
+
+        //$qr_code_path = env('APP_URL_SERVER_END').'/storage/qr_codes/'.$workstation->id.'.svg';
+        $qr_code_path = public_path('/storage/qr_codes/'.$workstation->id.'.svg');
+
+        // upload new image on cloud
+        $cloudder = Cloudder::upload($qr_code_path, $fileName, $options, $tags);
+        $image_result = Cloudder::getResult();
+
+        //  update workstation instance to include qr_code_path
+        $workstation->qr_code_path = $image_result['url'];
         $workstation->save();
     }
 }
