@@ -174,7 +174,7 @@ class WorkstationRepository
         // generate new code
         $qr_code = QrCode::size(500)
                             ->format('svg')
-                            ->style('round')
+                            //->style('round')
                             //->color(25, 25, 112)
                             ->eyeColor(0, 169, 92, 104, 99, 3, 48)
                             ->eyeColor(1, 128, 0, 32, 191, 64, 191)
