@@ -176,10 +176,10 @@ class WorkstationRepository
                             ->format('svg')
                             //->style('round')
                             //->color(25, 25, 112)
-                            ->eyeColor(0, 169, 92, 104, 99, 3, 48)
-                            ->eyeColor(1, 128, 0, 32, 191, 64, 191)
-                            ->eyeColor(2, 170, 51, 106, 72, 50, 72)
-                            ->backgroundColor(229, 228, 226)
+                            //->eyeColor(0, 169, 92, 104, 99, 3, 48)
+                            //->eyeColor(1, 128, 0, 32, 191, 64, 191)
+                            //->eyeColor(2, 170, 51, 106, 72, 50, 72)
+                            //->backgroundColor(229, 228, 226)
                             ->generate($metadata_for_qr_code);
 
         if (env('APP_INSTALLATION_LOCATION') === 'local') {
