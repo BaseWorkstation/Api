@@ -3,6 +3,7 @@
 namespace App\Http\Resources\TeamMember;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\Team;
 
 class TeamMemberCollection extends ResourceCollection
 {
@@ -14,6 +15,9 @@ class TeamMemberCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'data' => $this->collection,
+            'unregistered_members' => Team::find($request->team_id)->unregisteredMembers()->all(),
+        ];
     }
 }
