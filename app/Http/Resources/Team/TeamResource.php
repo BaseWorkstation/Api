@@ -4,6 +4,7 @@ namespace App\Http\Resources\Team;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\File\FileResource;
+use App\Http\Resources\PaymentMethod\PaymentMethodCollection;
 
 class TeamResource extends JsonResource
 {
@@ -25,6 +26,7 @@ class TeamResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'logo' => new FileResource($this->logo),
+            'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
         ];
     }
 }
