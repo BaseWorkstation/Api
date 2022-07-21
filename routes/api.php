@@ -34,6 +34,11 @@ Route::group([
         Route::post('/forgot-password',[UserController::class, 'sendPasswordResetLink'])->name('password.email');
         Route::post('/reset-password',[UserController::class, 'resetPassword'])->name('password.reset');
 
+        // standard apiResource routes
+        Route::apiResources([
+            'workstations' => WorkstationController::class,
+        ]);
+
         // routes that require authentication
         Route::group([
                 'middleware' => 'auth:api',
@@ -60,7 +65,6 @@ Route::group([
                 // standard apiResource routes
                 Route::apiResources([
                     'users' => UserController::class,
-                    'workstations' => WorkstationController::class,
                     'plans' => PlanController::class,
                     'files' => FileController::class,
                     'visits' => VisitController::class,
