@@ -31,6 +31,8 @@ class WorkstationResource extends JsonResource
             'default_service' => new ServiceResource($this->services->first()),
             'logo' => new FileResource($this->logo),
             'qr_code_path' => $this->qr_code_path,
+            'open_time' => $this->open_time,
+            'close_time' => $this->close_time,
         ];
     }
 }
