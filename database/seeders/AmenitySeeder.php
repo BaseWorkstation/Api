@@ -19,7 +19,6 @@ class AmenitySeeder extends Seeder
         $data = [
             ['name'=>'internet'],
             ['name'=>'electricity'],
-            ['name'=>'lounge'],
         ];
 
         foreach ($data as $item) {
