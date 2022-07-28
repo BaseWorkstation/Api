@@ -19,6 +19,13 @@ class Team extends Model implements Auditable
      */
     protected $fillable = [
         'name',
+        'street',
+        'city',
+        'state',
+        'country_iso',
+        'country_name',
+        'phone',
+        'email',
     ];
 
     /**
