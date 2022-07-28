@@ -140,6 +140,17 @@ class UserController extends Controller
     }
 
     /**
+     * get user using unique pin
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Repositories\UserRepository
+     */
+    public function getUserByUniquePin(Request $request)
+    {
+        return $this->userRepository->getUserByUniquePin($request);
+    }
+
+    /**
      * send password-reset link
      * 
      * @param  \Illuminate\Http\Request  $request

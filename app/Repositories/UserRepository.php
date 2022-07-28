@@ -105,6 +105,24 @@ class UserRepository
     }
 
     /**
+     * Get User using unique pin
+     *
+     * @param  Request $request
+     * @return App\Models\User
+     */
+    public function getUserByUniquePin(Request $request)
+    {
+        // fetch user
+        $user = User::where('unique_pin', $request->unique_pin)->get()->first();
+
+        if ($user) {
+            return new UserResource($user);
+        }
+
+        return response(['error' => 'user does not exist'], 401);
+    }
+
+    /**
      * send user password-reset link
      *
      * @param  Request $request
