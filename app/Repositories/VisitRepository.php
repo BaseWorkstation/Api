@@ -69,6 +69,12 @@ class VisitRepository
         // fetch workstation
         $workstation = Workstation::findOrFail($request->workstation_id);
 
+        // if user has previously checked-in but didn't check out, return 401
+        $visit = Visit::where('user_id', $user->id)->whereNull('check_out_time')->latest()->get()->first();
+        if ($visit) {
+            return response(['error' => 'you still have a visit that is not checked out yet'], 401);
+        }
+
         // check if user and workstation exists
         if ($user && $workstation) {
             // persist request details and store in a variable

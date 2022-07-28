@@ -25,6 +25,7 @@ class VisitResource extends JsonResource
                                 'id' => $this->workstation_id,
                                 'name' => $this->workstation->name,
                             ],
+            'check_in_time' => $this->check_in_time
         ];
     }
 }

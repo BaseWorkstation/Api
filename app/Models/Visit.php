@@ -19,6 +19,7 @@ class Visit extends Model implements Auditable
     protected $fillable = [
         'user_id', 
         'workstation_id',
+        'check_in_time',
     ];
 
     /**
