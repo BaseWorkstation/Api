@@ -23,6 +23,7 @@ class ServiceRepository
     {
         // save request details in variables
         $keywords = $request->keywords;
+        $workstation_id = $request->workstation_id;
         $request->from_date? 
             $from_date = $request->from_date."T00:00:00.000Z": 
             $from_date = Carbon::createFromFormat('Y-m-d H:i:s', '2020-01-01 00:00:00');
@@ -39,6 +40,9 @@ class ServiceRepository
                                     })
                                     ->when($to_date, function ($query, $to_date) {
                                         return $query->whereDate('created_at', '<=', $to_date );
+                                    })
+                                    ->when($workstation_id, function ($query, $workstation_id) {
+                                        return $query->where('workstation_id', $workstation_id);
                                     })
                                     ->latest();
 
