@@ -37,6 +37,10 @@ Route::group([
         // some apiResource routes for workstation
         Route::apiResource('workstations', WorkstationController::class)->except(['store', 'update', 'destroy']);
 
+        // other visit routes
+        Route::post('/visits/check-in',[VisitController::class, 'checkIn']);
+        Route::patch('/visits/{id}/check-out',[VisitController::class, 'checkOut']);
+
         // routes that require authentication
         Route::group([
                 'middleware' => 'auth:api',
@@ -58,10 +62,6 @@ Route::group([
                 Route::get('/payments/methods',[PaymentController::class, 'getPaymentMethods']);
                 Route::post('/payments/methods',[PaymentController::class, 'addPaymentMethod']);
                 Route::delete('/payments/methods/{id}',[PaymentController::class, 'deletePaymentMethod']);
-
-                // other visit routes
-                Route::post('/visits/check-in',[VisitController::class, 'checkIn']);
-                Route::patch('/visits/{id}/check-out',[VisitController::class, 'checkOut']);
 
                 // standard apiResource routes
                 Route::apiResources([

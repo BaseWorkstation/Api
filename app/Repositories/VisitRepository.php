@@ -65,15 +65,15 @@ class VisitRepository
     public function checkIn(Request $request)
     {
         // fetch user
-        $user = User::findOrFail($request->user_id);
+        $user = User::where('unique_pin', $request->unique_pin)->get()->first();
         // fetch workstation
         $workstation = Workstation::findOrFail($request->workstation_id);
 
-        // check if user unique_pin matches
-        if ($user && $workstation && $user->unique_pin === $request->unique_pin) {
+        // check if user and workstation exists
+        if ($user && $workstation) {
             // persist request details and store in a variable
             $visit = Visit::firstOrCreate([
-                "user_id" => $request->user_id,
+                "user_id" => $user->id,
                 "workstation_id" => $request->workstation_id,
                 "check_in_time" => Carbon::now(),
             ]);

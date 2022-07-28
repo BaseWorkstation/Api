@@ -51,13 +51,12 @@ class VisitController extends Controller
     public function checkIn(Request $request)
     {
         // authorization
-        $this->authorize('checkIn', Visit::class);
+        //$this->authorize('checkIn', Visit::class);
 
         // validation
         $request->validate([
-            'user_id' => 'required|integer',
             'workstation_id' => 'required|integer',
-            'unique_pin' => 'required',
+            'unique_pin' => 'required|exists:users,unique_pin',
         ]);
 
         // run in the repository
@@ -76,7 +75,7 @@ class VisitController extends Controller
     public function checkOut(Request $request, $id)
     {
         // authorization
-        $this->authorize('checkOut', Visit::findOrFail($id));
+        //$this->authorize('checkOut', Visit::findOrFail($id));
 
         // validation
         $request->validate([
