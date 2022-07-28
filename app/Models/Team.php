@@ -57,7 +57,8 @@ class Team extends Model implements Auditable
     public function members()
     {
         return $this->belongsToMany(User::class, 'team_members_pivot', 'team_id', 'user_id')
-                    ->withPivot('verified_at', 'deleted_at');
+                    ->withPivot('verified_at', 'deleted_at')
+                    ->wherePivotNull('deleted_at');
     }
 
     /**
