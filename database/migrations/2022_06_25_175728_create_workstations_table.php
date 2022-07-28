@@ -27,6 +27,9 @@ return new class extends Migration
             $table->time('open_time')->nullable();
             $table->time('close_time')->nullable();
             $table->string('qr_code_path')->nullable();
+            $table->text('about')->nullable();
+            $table->text('other_policies')->nullable();
+            $table->string('coordinates')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

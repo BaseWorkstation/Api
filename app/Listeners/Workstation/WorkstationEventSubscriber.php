@@ -67,6 +67,14 @@ class WorkstationEventSubscriber
     {
         $this->workstationRepository->createQrCodeForWorkstation($event->request, $event->workstation);
     }
+
+    /**
+     * Handle event.
+     */
+    public function storeAmenities($event) 
+    {
+        $this->workstationRepository->storeAmenities($event->request, $event->workstation);
+    }
  
     /**
      * Register the listeners for the subscriber.
@@ -94,6 +102,11 @@ class WorkstationEventSubscriber
         $events->listen(
             NewWorkstationCreatedEvent::class,
             [WorkstationEventSubscriber::class, 'createQrCodeForWorkstation']
+        );
+
+        $events->listen(
+            NewWorkstationCreatedEvent::class,
+            [WorkstationEventSubscriber::class, 'storeAmenities']
         );
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,6 +25,18 @@ class Workstation extends Model implements Auditable
      * @var array
      */
     protected $with = ['retainers'];
+
+    /**
+     * Interact with the workstation's coordinates.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function coordinates(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => str_replace( array('(',')') , ''  , $value ),
+        );
+    }
 
     /**
      * Get the workstation's logo.
@@ -71,5 +84,13 @@ class Workstation extends Model implements Auditable
     public function visits()
     {
         return $this->hasMany(Visit::class);
+    }
+
+    /**
+     * The amenities offered by a workstation.
+     */
+    public function amenities()
+    {
+        return $this->belongsToMany(Amenity::class, 'amenity_workstation_pivot', 'workstation_id', 'amenity_id');
     }
 }

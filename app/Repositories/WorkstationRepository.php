@@ -11,6 +11,7 @@ use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Workstation;
+use App\Models\Amenity;
 use Carbon\Carbon;
 use Auth;
 
@@ -189,6 +190,24 @@ class WorkstationRepository
         if (env('APP_INSTALLATION_LOCATION') === 'cloud') {
             $this->cloudQrCodeUpload($qr_code, $workstation);
         }
+    }
+
+     /**
+     * store amenities that are used by the workstation
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Workstation  $workstation
+     * @return void
+     */
+    public function storeAmenities(Request $request, $workstation)
+    {
+        if ($request->filled('amenities')) {
+               foreach ($request->amenities as $amenity_id) {
+                   $amenity = Amenity::findOrFail($amenity_id);
+
+                   $workstation->amenities()->syncWithoutDetaching($amenity->id);
+               }
+           }   
     }
 
     /**

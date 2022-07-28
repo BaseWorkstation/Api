@@ -65,6 +65,9 @@ class WorkstationController extends Controller
             'currency_code' => ['required', Rule::in(config('enums.currency_code'))],
             'open_time' => ['required', 'date_format:H:i'],
             'close_time' => ['required', 'date_format:H:i'],
+            'about' => 'required',
+            'coordinates' => 'required',
+            'amenities' => 'required|array',
         ]);
 
         // run in the repository
@@ -105,6 +108,8 @@ class WorkstationController extends Controller
             'state' => 'sometimes',
             'country_iso' => 'sometimes',
             'currency_code' => ["sometimes", Rule::in(config('enums.currency_code'))],
+            'phone' => ['sometimes', Rule::unique('workstations')->ignore($id)],
+            'email' => ['sometimes', Rule::unique('workstations')->ignore($id)]
         ]);
 
         // run in the repository
