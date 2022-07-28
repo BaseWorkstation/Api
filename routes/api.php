@@ -34,10 +34,8 @@ Route::group([
         Route::post('/forgot-password',[UserController::class, 'sendPasswordResetLink'])->name('password.email');
         Route::post('/reset-password',[UserController::class, 'resetPassword'])->name('password.reset');
 
-        // standard apiResource routes
-        Route::apiResources([
-            'workstations' => WorkstationController::class,
-        ]);
+        // some apiResource routes for workstation
+        Route::apiResource('workstations', WorkstationController::class)->except(['store', 'update', 'destroy']);
 
         // routes that require authentication
         Route::group([
@@ -71,6 +69,9 @@ Route::group([
                     'services' => ServiceController::class,
                     'teams' => TeamController::class,
                 ]);
+
+                // some apiResource routes for workstation
+                Route::apiResource('workstations', WorkstationController::class)->only(['store', 'update', 'destroy']);
         });
 
 });
