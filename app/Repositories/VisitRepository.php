@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Visit;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Service;
 use App\Models\Workstation;
 use Carbon\Carbon;
 
@@ -66,8 +67,10 @@ class VisitRepository
     {
         // fetch user
         $user = User::where('unique_pin', $request->unique_pin)->get()->first();
+        // fetch service
+        $service = Service::findOrFail($request->service_id);
         // fetch workstation
-        $workstation = Workstation::findOrFail($request->workstation_id);
+        $workstation = $service->workstation;
 
         // if user has previously checked-in but didn't check out, return 401
         $visit = Visit::where('user_id', $user->id)->whereNull('check_out_time')->latest()->get()->first();
@@ -80,9 +83,12 @@ class VisitRepository
             // persist request details and store in a variable
             $visit = Visit::firstOrCreate([
                 "user_id" => $user->id,
-                "workstation_id" => $request->workstation_id,
+                "workstation_id" => $workstation->id,
                 "check_in_time" => Carbon::now(),
             ]);
+
+            // add service to visit
+            $visit->services()->syncWithoutDetaching($service->id);
 
             // return resource
             return new VisitResource($visit);

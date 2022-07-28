@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Visit;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Service\ServiceCollection;
 
 class VisitResource extends JsonResource
 {
@@ -25,7 +26,8 @@ class VisitResource extends JsonResource
                                 'id' => $this->workstation_id,
                                 'name' => $this->workstation->name,
                             ],
-            'check_in_time' => $this->check_in_time
+            'check_in_time' => $this->check_in_time,
+            'services' => new ServiceCollection($this->services),
         ];
     }
 }

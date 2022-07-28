@@ -45,4 +45,13 @@ class Service extends Model
     {
         return $this->hasMany(Price::class);
     }
+
+    /**
+     * The visits that a service has been used.
+     */
+    public function visits()
+    {
+        return $this->belongsToMany(Visit::class, 'service_visit_pivot', 'service_id', 'visit_id')
+                    ->wherePivotNull('deleted_at');
+    }
 }

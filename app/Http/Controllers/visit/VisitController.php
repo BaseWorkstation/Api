@@ -55,8 +55,10 @@ class VisitController extends Controller
 
         // validation
         $request->validate([
-            'workstation_id' => 'required|integer',
+            'service_id' => 'required|integer',
             'unique_pin' => 'required|exists:users,unique_pin',
+        ],[
+            'unique_pin.exists' => 'no user with the unique_pin'
         ]);
 
         // run in the repository

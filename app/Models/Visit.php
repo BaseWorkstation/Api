@@ -52,4 +52,13 @@ class Visit extends Model implements Auditable
     {
         return $this->belongsTo(Workstation::class);
     }
+
+    /**
+     * The services that were attached to a visit.
+     */
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'service_visit_pivot', 'visit_id', 'service_id')
+                    ->wherePivotNull('deleted_at');
+    }
 }

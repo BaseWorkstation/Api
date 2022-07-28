@@ -81,7 +81,8 @@ class User extends Authenticatable implements Auditable
      */
     public function ownedTeams()
     {
-        return $this->belongsToMany(Team::class, 'team_owners_pivot', 'user_id', 'team_id');
+        return $this->belongsToMany(Team::class, 'team_owners_pivot', 'user_id', 'team_id')
+                    ->wherePivotNull('deleted_at');
     }
 
     /**
