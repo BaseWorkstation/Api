@@ -7,6 +7,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use Auth;
 
 class UserController extends Controller
 {
@@ -166,5 +167,24 @@ class UserController extends Controller
         ]);
 
         return $this->userRepository->resetPassword($request);
+    }
+
+    /**
+     * change password
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Repositories\UserRepository
+     */
+    public function changePassword(Request $request)
+    {
+        // authorization
+        $this->authorize('changePassword', User::find(Auth::id()));
+
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        return $this->userRepository->changePassword($request);
     }
 }

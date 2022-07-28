@@ -143,8 +143,33 @@ class UserRepository
         );
      
         return $status === Password::PASSWORD_RESET
-                    ? response()->json(['message' => 'password password has been changed'])
+                    ? response()->json(['message' => 'password has been changed'])
                     : response()->json(['error' => 'unable to reset password'], 401);
+    }
+
+    /**
+     * change password
+     *
+     * @param  Request $request
+     * @return void
+     */
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        // send response if password is not correct
+        if (!Hash::check($request->old_password, $user->password)) {
+
+            return response()->json(['error' => 'incorrect old password'], 401);
+
+        } else {
+            // reset password
+            User::find(auth()->user()->id)->update(['password'=> Hash::make($request->password)]);
+
+            event(new PasswordReset($user));
+         
+            return response()->json(['message' => 'password has been changed']);
+        }
     }
 
     /**

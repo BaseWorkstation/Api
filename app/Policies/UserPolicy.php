@@ -82,4 +82,17 @@ class UserPolicy
     {
         //
     }
+
+    /**
+     * Determine whether the user can change Password.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function changePassword(User $user, User $model)
+    {
+        // if authenticated user is attempting to change thier password or if authenticated user has role of base_admin
+        return ($user->id === $model->id || $user->hasRole('base_admin'));
+    }
 }

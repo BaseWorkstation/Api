@@ -42,6 +42,9 @@ Route::group([
                 'middleware' => 'auth:api',
             ], function () {
 
+                // change password in user profile
+                Route::post('/change-password',[UserController::class, 'changePassword']);
+
                 // routes prefixed with "teams" e.g. /teams/members
                 Route::prefix('teams')->group(function () {
                     Route::delete('/members',[TeamMemberController::class, 'remove']);
