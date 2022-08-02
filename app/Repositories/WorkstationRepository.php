@@ -100,6 +100,9 @@ class WorkstationRepository
         // remove or filter null values from the request data then update the instance
         $workstation->update(array_filter($request->all()));
 
+        // update workstation schedule
+        $this->storeSchedule($request, $workstation);
+
         // return resource
         return new WorkstationResource($workstation);
     }
@@ -207,6 +210,37 @@ class WorkstationRepository
 
                    $workstation->amenities()->syncWithoutDetaching($amenity->id);
                }
+           }   
+    }
+
+     /**
+     * store schedule that are used by the workstation
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Workstation  $workstation
+     * @return void
+     */
+    public function storeSchedule(Request $request, $workstation)
+    {
+        $schedule = $request->schedule;
+
+        if ($request->filled('schedule')) {
+               // check if user attempts to save schedule weekdays open_time before persisting
+                if (isset($schedule['weekdays']) && isset($schedule['weekdays']['open_time'])) {
+                    $workstation->settings()->set('schedule.weekdays.open_time', $schedule['weekdays']['open_time']);
+                }
+               // check if user attempts to save schedule weekdays close_time before persisting
+                if (isset($schedule['weekdays']) && isset($schedule['weekdays']['close_time'])) {
+                    $workstation->settings()->set('schedule.weekdays.close_time', $schedule['weekdays']['close_time']);
+                }
+               // check if user attempts to save schedule weekends open_time before persisting
+                if (isset($schedule['weekends']) && isset($schedule['weekends']['open_time'])) {
+                    $workstation->settings()->set('schedule.weekends.open_time', $schedule['weekends']['open_time']);
+                }
+               // check if user attempts to save schedule weekends close_time before persisting
+                if (isset($schedule['weekends']) && isset($schedule['weekends']['close_time'])) {
+                    $workstation->settings()->set('schedule.weekends.close_time', $schedule['weekends']['close_time']);
+                }
            }   
     }
 

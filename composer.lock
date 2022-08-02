@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "209a50b2cf23bb99d5d1c1c8a7769394",
+    "content-hash": "b41376ea42faf4f11b496effbe62a049",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -991,6 +991,76 @@
                 }
             ],
             "time": "2022-02-20T15:07:15+00:00"
+        },
+        {
+            "name": "glorand/laravel-model-settings",
+            "version": "5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/glorand/laravel-model-settings.git",
+                "reference": "8b3b1b4252f07495df52169313a36a4864e72549"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/glorand/laravel-model-settings/zipball/8b3b1b4252f07495df52169313a36a4864e72549",
+                "reference": "8b3b1b4252f07495df52169313a36a4864e72549",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/cache": "^9.0",
+                "illuminate/config": "^9.0",
+                "illuminate/console": "^9.0",
+                "illuminate/database": "^9.0",
+                "illuminate/filesystem": "^9.0",
+                "illuminate/support": "^9.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.6",
+                "josiasmontag/laravel-redis-mock": "^1.2",
+                "orchestra/testbench": "^7.0",
+                "phpunit/phpunit": "^8.0|^9.0"
+            },
+            "suggest": {
+                "predis/predis": "Required to use settings with Redis"
+            },
+            "type": "laravel-package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Glorand\\Model\\Settings\\ModelSettingsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Glorand\\Model\\Settings\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lorand Gombos",
+                    "email": "gombos.lorand@gmail.com"
+                }
+            ],
+            "description": "Model Settings for your Laravel app",
+            "keywords": [
+                "Settings",
+                "glorand",
+                "laravel",
+                "laravel-model-settings",
+                "laravel-settings"
+            ],
+            "support": {
+                "issues": "https://github.com/glorand/laravel-model-settings/issues",
+                "source": "https://github.com/glorand/laravel-model-settings/tree/5.0.0"
+            },
+            "time": "2022-02-10T07:33:30+00:00"
         },
         {
             "name": "graham-campbell/result-type",

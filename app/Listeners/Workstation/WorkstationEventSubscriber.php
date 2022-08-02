@@ -75,6 +75,14 @@ class WorkstationEventSubscriber
     {
         $this->workstationRepository->storeAmenities($event->request, $event->workstation);
     }
+
+    /**
+     * Handle event.
+     */
+    public function storeSchedule($event) 
+    {
+        $this->workstationRepository->storeSchedule($event->request, $event->workstation);
+    }
  
     /**
      * Register the listeners for the subscriber.
@@ -107,6 +115,11 @@ class WorkstationEventSubscriber
         $events->listen(
             NewWorkstationCreatedEvent::class,
             [WorkstationEventSubscriber::class, 'storeAmenities']
+        );
+
+        $events->listen(
+            NewWorkstationCreatedEvent::class,
+            [WorkstationEventSubscriber::class, 'storeSchedule']
         );
     }
 }

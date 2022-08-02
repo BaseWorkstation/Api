@@ -38,6 +38,7 @@ class WorkstationResource extends JsonResource
             'other_policies' => $this->other_policies,
             'coordinates' => $this->coordinates,
             'amenities' => new AmenityCollection($this->amenities),
+            'schedule' => $this->settings()->get()['schedule'],
         ];
     }
 }

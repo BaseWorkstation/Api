@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Digikraaft\ReviewRating\Traits\HasReviewRating;
+use Glorand\Model\Settings\Traits\HasSettingsTable;
 
 class Workstation extends Model implements Auditable
 {
-    use HasFactory, \OwenIt\Auditing\Auditable, SoftDeletes, HasReviewRating;
+    use HasFactory, \OwenIt\Auditing\Auditable, SoftDeletes, HasReviewRating, HasSettingsTable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -94,4 +95,22 @@ class Workstation extends Model implements Auditable
     {
         return $this->belongsToMany(Amenity::class, 'amenity_workstation_pivot', 'workstation_id', 'amenity_id');
     }
+
+    /**
+     * Default settings that each of this model instance should have.
+     *
+     * @var array
+     */
+    public $defaultSettings = [
+        'schedule' => [
+            'weekdays' => [
+                'open_time' => null,
+                'close_time' => null,
+            ],
+            'weekends' => [
+                'open_time' => null,
+                'close_time' => null,
+            ],
+        ],
+    ];
 }
