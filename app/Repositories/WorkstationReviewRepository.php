@@ -23,11 +23,22 @@ class WorkstationReviewRepository
         // fetch workstation
         $workstation = Workstation::findOrFail($id);
 
+        $reviews = collect($workstation->reviews);
+
+        // map through each review to attach their corresponding user details
+        $reviews->map(function ($review, $key){
+            // fetch user with their avatar details
+            $user = User::with('avatar:id,storage_environment,file_path')
+                        ->findOrFail($review->author_id, ['id','last_name', 'first_name']);
+            // attach user with the key "author" to the review
+            return $review->author = $user;
+        });
+
         // fetch reviews data
         $data['total_no_of_reviews'] = $workstation->numberOfReviews();
         $data['total_no_of_ratings'] = $workstation->numberOfRatings();
         $data['average_rating'] = $workstation->averageRating(1);
-        $data['reviews'] = $workstation->reviews;
+        $data['reviews'] = $reviews;
 
         // return reviews data
         return $data;
