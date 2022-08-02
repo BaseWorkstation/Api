@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Retainer\RetainerResource;
 use App\Http\Resources\Service\ServiceResource;
 use App\Http\Resources\File\FileResource;
+use App\Http\Resources\File\FileCollection;
 use App\Http\Resources\Amenity\AmenityCollection;
 
 class WorkstationResource extends JsonResource
@@ -31,6 +32,7 @@ class WorkstationResource extends JsonResource
             //'retainers' => RetainerResource::collection($this->retainers),
             'default_service' => new ServiceResource($this->services->first()),
             'logo' => new FileResource($this->logo),
+            'images' => new FileCollection($this->images),
             'qr_code_path' => $this->qr_code_path,
             'open_time' => $this->open_time,
             'close_time' => $this->close_time,

@@ -255,6 +255,13 @@ class FileRepository
             return $file;
         };
 
+        if ($request->upload_category == "workstation_image") {
+            $workstation = Workstation::findOrFail($request->workstation_id);
+            $workstation->images()->save($file);
+
+            return $file;
+        };
+
         if ($request->upload_category == "user_avatar") {
             $user = User::findOrFail($request->user_id);
             $user->avatar()->save($file);

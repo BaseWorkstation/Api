@@ -40,6 +40,7 @@ return [
     'upload_category'   =>  [
         'user_avatar'  =>  'user_avatar',
         'workstation_logo'  =>  'workstation_logo',
+        'workstation_image'  =>  'workstation_image',
         'team_logo'  =>  'team_logo',
     ],
 ];

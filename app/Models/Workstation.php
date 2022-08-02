@@ -49,6 +49,14 @@ class Workstation extends Model implements Auditable
     }
 
     /**
+     * Get the workstation's images.
+     */
+    public function images()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
+
+    /**
      * Get the services for the workstation.
      */
     public function services()
