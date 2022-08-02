@@ -36,8 +36,11 @@ Route::group([
         Route::post('/forgot-password',[UserController::class, 'sendPasswordResetLink'])->name('password.email');
         Route::post('/reset-password',[UserController::class, 'resetPassword'])->name('password.reset');
 
-        // some apiResource routes for workstation
-        Route::apiResource('workstations', WorkstationController::class)->except(['store', 'update', 'destroy']);
+        // some apiResource routes for workstation that do not require authentication
+        Route::apiResource('workstations', WorkstationController::class)->only(['index', 'show']);
+
+        // some apiResource routes for service that do not require authentication
+        Route::apiResource('services', ServiceController::class)->only(['index']);
 
         // other visit routes
         Route::post('/visits/check-in',[VisitController::class, 'checkIn']);
@@ -79,12 +82,14 @@ Route::group([
                     'plans' => PlanController::class,
                     'files' => FileController::class,
                     'visits' => VisitController::class,
-                    'services' => ServiceController::class,
                     'teams' => TeamController::class,
                 ]);
 
-                // some apiResource routes for workstation
+                // some apiResource routes for workstation that require authentication
                 Route::apiResource('workstations', WorkstationController::class)->only(['store', 'update', 'destroy']);
+
+                // some apiResource routes for service that require authentication
+                Route::apiResource('services', ServiceController::class)->only(['store', 'show', 'update', 'destroy']);
         });
 
 });
