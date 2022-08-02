@@ -20,6 +20,10 @@ class ServiceResource extends JsonResource
             'name' => $this->name,
             'category' => $this->category,
             'price_per_minute' => new PriceResource($this->prices->first()),
+            'price_per_hour' => [
+                                    'amount' => $this->prices->first()->amount * 60,
+                                    'retainer_category' => $this->prices->first()->retainer->category,
+                                ],
         ];
     }
 }
