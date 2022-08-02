@@ -28,7 +28,7 @@ class WorkstationReviewRepository
         // map through each review to attach their corresponding user details
         $reviews->map(function ($review, $key){
             // fetch user with their avatar details
-            $user = User::with('avatar:id,storage_environment,file_path')
+            $user = User::with('avatar')
                         ->findOrFail($review->author_id, ['id','last_name', 'first_name']);
             // attach user with the key "author" to the review
             return $review->author = $user;
@@ -59,8 +59,18 @@ class WorkstationReviewRepository
         // save the review and rating
         $workstation->review($request->review, Auth::user(), $request->rating);
 
+        // get the latest review
+        $review = $workstation->latestReview();
+
+        // fetch user with their avatar details
+        $user = User::with('avatar')
+                        ->findOrFail($review->author_id, ['id','last_name', 'first_name']);
+
+        //attach author details to the review
+        $review->author = $user;
+
         //return the last review
-        return $workstation->latestReview();
+        return $review;
     }
 
     /**
