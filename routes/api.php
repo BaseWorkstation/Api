@@ -39,6 +39,11 @@ Route::group([
         // some apiResource routes for workstation that do not require authentication
         Route::apiResource('workstations', WorkstationController::class)->only(['index', 'show']);
 
+        // routes prefixed with "workstations/{id}" e.g. /workstations/1/reviews
+        Route::prefix('workstations/{workstation_id}')->group(function () {
+            Route::apiResource('reviews', WorkstationReviewController::class)->only(['index']);
+        });
+
         // some apiResource routes for service that do not require authentication
         Route::apiResource('services', ServiceController::class)->only(['index']);
 
@@ -68,7 +73,7 @@ Route::group([
                 Route::prefix('workstations/{workstation_id}')->group(function () {
                     Route::delete('/reviews/{review_id}',[WorkstationReviewController::class, 'remove']);
 
-                    Route::apiResource('reviews', WorkstationReviewController::class)->only(['store', 'index']);
+                    Route::apiResource('reviews', WorkstationReviewController::class)->only(['store']);
                 });
 
                 // other payment routes
