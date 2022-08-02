@@ -11,6 +11,7 @@ use App\Http\Controllers\plan\PlanController;
 use App\Http\Controllers\file\FileController;
 use App\Http\Controllers\payment\PaymentController;
 use App\Http\Controllers\teamMember\TeamMemberController;
+use App\Http\Controllers\workstationReview\WorkstationReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,13 @@ Route::group([
                     Route::apiResources([
                         'members' => TeamMemberController::class,
                     ]);
+                });
+
+                // routes prefixed with "workstations/{id}" e.g. /workstations/1/reviews
+                Route::prefix('workstations/{workstation_id}')->group(function () {
+                    Route::delete('/reviews/{review_id}',[WorkstationReviewController::class, 'remove']);
+
+                    Route::apiResource('reviews', WorkstationReviewController::class)->only(['store', 'index']);
                 });
 
                 // other payment routes

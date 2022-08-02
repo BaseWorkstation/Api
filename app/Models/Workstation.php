@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Digikraaft\ReviewRating\Traits\HasReviewRating;
 
 class Workstation extends Model implements Auditable
 {
-    use HasFactory, \OwenIt\Auditing\Auditable, SoftDeletes;
+    use HasFactory, \OwenIt\Auditing\Auditable, SoftDeletes, HasReviewRating;
 
     /**
      * The attributes that aren't mass assignable.
