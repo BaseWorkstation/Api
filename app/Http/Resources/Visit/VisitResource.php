@@ -4,6 +4,7 @@ namespace App\Http\Resources\Visit;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Service\ServiceCollection;
+use App\Models\User;
 
 class VisitResource extends JsonResource
 {
@@ -15,6 +16,9 @@ class VisitResource extends JsonResource
      */
     public function toArray($request)
     {
+        // create token for user that owns the visit
+        $token = User::findOrFail($this->user_id)->createToken('API Token')->accessToken;
+
         return [
             'id' => $this->id,
             'user' => [
@@ -22,6 +26,7 @@ class VisitResource extends JsonResource
                         'last_name' => $this->user->last_name,
                         'first_name' => $this->user->first_name,
                     ],
+            'token' => $this->when($request->getRequestUri() === '/api/visits/check-in', $token), // return only when user is checking in
             'workstation' => [
                                 'id' => $this->workstation_id,
                                 'name' => $this->workstation->name,

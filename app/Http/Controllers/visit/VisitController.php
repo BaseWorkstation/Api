@@ -58,7 +58,7 @@ class VisitController extends Controller
             'service_id' => 'required|integer',
             'unique_pin' => 'required|exists:users,unique_pin',
         ],[
-            'unique_pin.exists' => 'no user with the unique_pin'
+            'unique_pin.exists' => 'wrong unique pin'
         ]);
 
         // run in the repository
