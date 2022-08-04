@@ -69,19 +69,19 @@ class VisitController extends Controller
      * check-out a new visit.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \App\Http\Repositories\VisitRepository
      * 
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function checkOut(Request $request, $id)
+    public function checkOut(Request $request)
     {
         // authorization
         //$this->authorize('checkOut', Visit::findOrFail($id));
 
         // validation
         $request->validate([
-            'visit_id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'unique_pin' => 'required|integer',
         ]);
 
         // run in the repository

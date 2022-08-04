@@ -98,6 +98,79 @@ class VisitRepository
     }
 
     /**
+     * check-out a visit.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Resources\Visit\VisitResource
+     */
+    public function checkOut(Request $request)
+    {
+        // fetch user
+        $user = User::findOrFail($request->user_id);
+        // check if user's pin matches
+        if ($user->unique_pin !== $request->unique_pin) {
+            return response(['error' => 'wrong pin'], 401);
+        }
+
+        // if user does not have previously checked-in visit, return 401
+        $visit = Visit::where('user_id', $user->id)->whereNull('check_out_time')->latest()->get()->first();
+        if (!$visit) {
+            return response(['error' => 'you do not have a checked-in visit'], 401);
+        }
+
+        // check if user and visit exists
+        if ($user && $visit) {
+            // update visit check out time
+            $visit->check_out_time = Carbon::now();
+            $visit->save();
+            $visit->refresh();
+
+            // find duration in minutes
+            $start_time = Carbon::parse($visit->check_in_time);
+            $end_time = Carbon::parse($visit->check_out_time);
+            $duration_in_minutes = $end_time->diffInMinutes($start_time);
+
+            // get other variables needed to update visit details
+            $currency_code = $visit->workstation->currency_code;
+            $space = $visit->services()->where('category', 'space')->get()->first();
+            $space_price_per_minute = $this->calculateServicePriceInMinutesForVisit($space, 1, $visit);
+            $space_price_for_duration_in_minutes = $this->calculateServicePriceInMinutesForVisit($space, $duration_in_minutes, $visit);
+
+            // update other visit details
+            $visit->check_out_time = Carbon::now();
+            $visit->space_price_per_minute_at_the_time = $space_price_per_minute;
+            $visit->currency_code = $visit->workstation->currency_code;
+            $visit->total_minutes_spent = $duration_in_minutes;
+            $visit->total_value_of_minutes_spent_in_naira = $space_price_for_duration_in_minutes;
+            $visit->naira_rate_to_currency_at_the_time = DB::table('currency_value')->where('currency_code', $currency_code)->get()->first()->naira_value;
+            $visit->save();
+
+            // return resource
+            return new VisitResource($visit);
+        }
+
+        return response(['error' => 'can not either find visit or user'], 401);
+    }
+
+    /**
+     * calculate the price of a service per minute in a visit.
+     *
+     * @param  Service  $service
+     * @param  int  $minutes
+     * @param  Visit  $visit
+     * @return int
+     */
+    public function calculateServicePriceInMinutesForVisit(Service $service, int $minutes, Visit $visit)
+    {
+        $service_price_per_minute = $service->prices->first()->amount;
+        $currency_code = $visit->workstation->currency_code;
+        $naira_rate = DB::table('currency_value')->where('currency_code', $currency_code)->get()->first()->naira_value;
+        // price = naira rate of the currency * service price per minute * number of minutes
+        $price = $naira_rate * $service_price_per_minute * $minutes;
+        return $price;
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

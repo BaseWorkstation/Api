@@ -50,7 +50,6 @@ Route::group([
         // other visit routes
         Route::post('/visits/check-in',[VisitController::class, 'checkIn']);
         Route::post('/visits/check-out',[VisitController::class, 'checkOut']);
-        Route::patch('/visits/{id}/check-out',[VisitController::class, 'checkOut']);
 
         // routes that require authentication
         Route::group([

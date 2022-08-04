@@ -32,6 +32,7 @@ class VisitResource extends JsonResource
                                 'name' => $this->workstation->name,
                             ],
             'check_in_time' => $this->check_in_time,
+            'check_out_time' => $this->check_out_time,
             'services' => new ServiceCollection($this->services),
         ];
     }
