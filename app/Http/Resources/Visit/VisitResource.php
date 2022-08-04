@@ -33,6 +33,11 @@ class VisitResource extends JsonResource
                             ],
             'check_in_time' => $this->check_in_time,
             'check_out_time' => $this->check_out_time,
+            'currency_code' => $this->currency_code,
+            'naira_rate_to_currency_at_the_time' => (int) $this->naira_rate_to_currency_at_the_time,
+            'space_price_per_minute_at_the_time' => (int) $this->space_price_per_minute_at_the_time,
+            'total_minutes_spent' => (int) $this->total_minutes_spent,
+            'total_value_of_minutes_spent_in_naira' => (int) $this->total_value_of_minutes_spent_in_naira,
             'services' => new ServiceCollection($this->services),
         ];
     }
