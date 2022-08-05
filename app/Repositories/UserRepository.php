@@ -83,7 +83,7 @@ class UserRepository
             $token = auth()->user()->createToken('API Token')->accessToken;
 
             // return response of authenticated user and token
-            return response(['user' => auth()->user(), 'token' => $token]);
+            return response(['user' => new UserResource(auth()->user()), 'token' => $token]);
         }
     }
 
