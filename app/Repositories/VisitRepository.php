@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\Visit\VisitResource;
 use App\Http\Resources\Visit\VisitCollection;
+use App\Events\Visit\VisitCheckedOutEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Visit;
@@ -113,12 +114,32 @@ class VisitRepository
         }
 
         // if user does not have previously checked-in visit, return 401
-        $visit = Visit::where('user_id', $user->id)->whereNull('check_out_time')->latest()->get()->first();
+        $visit = Visit::where('user_id', $user->id)
+                        //->whereNull('check_out_time')
+                        ->latest()->get()->first();
         if (!$visit) {
             return response(['error' => 'you do not have a checked-in visit'], 401);
         }
 
-        // check if user and visit exists
+        // if user wants to pay using team plan, check if the team has an active plan
+        if ($request->payer === 'Team') {
+            $team = Team::findOrFail($request->team_id);
+            $team_plan = $team->paymentMethods()->where('method_type', 'plan')->get()->first();
+            if (!$team_plan) {
+                return response(['error' => 'the team selected does not have an active team plan'], 401);
+            }
+        }
+
+        // if user wants to pay using their own plan, check if the they really have an active plan
+        if ($request->payer === 'User') {
+            $user = User::findOrFail($request->user_id);
+            $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
+            if (!$user_plan) {
+                return response(['error' => 'you do not have an active plan'], 401);
+            }
+        }
+
+        // check if user and visit exists before proceeding
         if ($user && $visit) {
             // update visit check out time
             $visit->check_out_time = Carbon::now();
@@ -144,6 +165,9 @@ class VisitRepository
             $visit->total_value_of_minutes_spent_in_naira = $space_price_for_duration_in_minutes;
             $visit->naira_rate_to_currency_at_the_time = DB::table('currency_value')->where('currency_code', $currency_code)->get()->first()->naira_value;
             $visit->save();
+
+            // call event that a visit has been checked out
+            event(new VisitCheckedOutEvent($request, $visit));
 
             // return resource
             return new VisitResource($visit);
@@ -196,6 +220,52 @@ class VisitRepository
 
         // remove or filter null values from the request data then update the instance
         $visit->update(array_filter($request->all()));
+
+        // return resource
+        return new VisitResource($visit);
+    }
+
+    /**
+     * make payment for a visit.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Visit  $visit
+     * @return \Illuminate\Http\Resources\Visit\VisitResource
+     */
+    public function makePaymentForVisit(Request $request, Visit $visit)
+    {
+        // set who the payer is
+        if ($request->payer === 'User') {
+            $user = User::findOrFail($request->user_id);
+            // update visit details
+            $user->visitsPaidFor()->save($visit);
+
+            // if user wants to pay via plan
+            if ($request->payment_method_type === 'plan') {
+                // confirm user really has a plan before proceeding
+                $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
+                if ($user_plan) {
+                    $visit->payment_method_type = 'plan';
+                    $visit->payment_method_id = $user_plan->id;
+                    $visit->save();
+                }
+            }
+        }
+        if ($request->payer === 'Team') {
+            $team = Team::findOrFail($request->team_id);
+            // update visit details
+            $team->visitsPaidFor()->save($visit);
+
+            // if team plans exist, then set the payment_method
+            $team_plan = $team->paymentMethods()->where('method_type', 'plan')->get()->first();
+            if ($team_plan) {
+                $visit->payment_method_type = 'plan';
+                $visit->payment_method_id = $team_plan->id;
+                $visit->save();
+            }
+        }
+
+        
 
         // return resource
         return new VisitResource($visit);

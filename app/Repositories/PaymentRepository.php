@@ -152,6 +152,12 @@ class PaymentRepository
 
             // save plan details
             if ($request->method_type == 'plan') {
+                // delete and detach model's previous plan paymentMethod before saving a new one
+                $old_paymentMethods = $model->paymentMethods()->where('method_type', 'plan')->get()->first();
+                if ($old_paymentMethods) {
+                    $old_paymentMethods->delete();
+                }
+
                 $payment_method = PaymentMethod::create([
                     "method_type" => $request->method_type,
                     "plan_id" => $request->plan_id,

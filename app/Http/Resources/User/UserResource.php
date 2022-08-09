@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'first_name' => $this->first_name,
             'email' => $this->email,
             'phone' => $this->phone,
+            'owned_workstations' => $this->ownedWorkstations()->get()->pluck('id'),
             'pending_team_invites' => $this->mergeTeamInvites(),
             'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
             'avatar' => new FileResource($this->avatar),

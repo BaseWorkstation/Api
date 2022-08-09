@@ -11,6 +11,7 @@ use App\Listeners\User\UserEventSubscriber;
 use App\Listeners\Workstation\WorkstationEventSubscriber;
 use App\Listeners\Team\TeamEventSubscriber;
 use App\Listeners\File\FileEventSubscriber;
+use App\Listeners\Visit\VisitEventSubscriber;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -46,5 +47,6 @@ class EventServiceProvider extends ServiceProvider
         WorkstationEventSubscriber::class,
         TeamEventSubscriber::class,
         FileEventSubscriber::class,
+        VisitEventSubscriber::class,
     ];
 }

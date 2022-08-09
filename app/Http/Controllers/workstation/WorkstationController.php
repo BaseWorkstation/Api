@@ -67,7 +67,7 @@ class WorkstationController extends Controller
             'close_time' => ['required', 'date_format:H:i'],
             'about' => 'required',
             'coordinates' => 'required',
-            'amenities' => 'required|array',
+            'amenities' => 'sometimes|array',
         ]);
 
         // run in the repository

@@ -82,10 +82,11 @@ class TeamEventSubscriber
             [TeamEventSubscriber::class, 'saveUserOwnedTeam']
         );
 
-        $events->listen(
+        /*$events->listen(
             NewTeamCreatedEvent::class,
             [TeamEventSubscriber::class, 'addPlansToTeam']
         );
+        */
 
         $events->listen(
             NewRegisteredTeamMemberInvitedEvent::class,

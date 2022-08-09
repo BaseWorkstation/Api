@@ -81,7 +81,11 @@ class VisitController extends Controller
         // validation
         $request->validate([
             'user_id' => 'required|integer',
-            'unique_pin' => 'required|integer',
+            'unique_pin' => 'required',
+            'payer' => ["required", Rule::in(config('enums.paidByable_type'))],
+            'payment_method_type' => ["required_if:payer,User|integer", Rule::in(config('enums.payment_method_type'))],
+            'payment_method_id' => 'required_if:paymentable_method_type,plan|integer',
+            'team_id' => 'required_if:payer,Team|integer',
         ]);
 
         // run in the repository

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('check_out_time')->nullable();
             $table->string('paidByable_type')->nullable();
             $table->integer('paidByable_id')->nullable();
+            $table->string('payment_method_type')->nullable();
             $table->integer('payment_method_id')->nullable();
             $table->string('total_minutes_spent')->nullable();
             $table->string('space_price_per_minute_at_the_time')->nullable();
