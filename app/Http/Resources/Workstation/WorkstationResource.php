@@ -22,6 +22,7 @@ class WorkstationResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'street' => $this->street,
             'city' => $this->city,
             'state' => $this->state,
             'country_iso' => $this->country_iso,
