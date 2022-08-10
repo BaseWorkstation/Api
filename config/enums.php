@@ -41,6 +41,7 @@ return [
         'user_avatar'  =>  'user_avatar',
         'workstation_logo'  =>  'workstation_logo',
         'workstation_image'  =>  'workstation_image',
+        'service_image'  =>  'service_image',
         'team_logo'  =>  'team_logo',
     ],
 ];

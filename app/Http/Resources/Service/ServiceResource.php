@@ -4,6 +4,7 @@ namespace App\Http\Resources\Service;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Price\PriceResource;
+use App\Http\Resources\File\FileCollection;
 
 class ServiceResource extends JsonResource
 {
@@ -24,6 +25,7 @@ class ServiceResource extends JsonResource
                                     'amount' => $this->prices->first()->amount * 60,
                                     'retainer_category' => $this->prices->first()->retainer->category,
                                 ],
+            'images' => new FileCollection($this->images),
         ];
     }
 }

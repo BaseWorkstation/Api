@@ -54,4 +54,12 @@ class Service extends Model
         return $this->belongsToMany(Visit::class, 'service_visit_pivot', 'service_id', 'visit_id')
                     ->wherePivotNull('deleted_at');
     }
+
+    /**
+     * Get the workstation's images.
+     */
+    public function images()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

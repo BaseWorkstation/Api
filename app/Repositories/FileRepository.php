@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\File;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Service;
 use App\Models\Workstation;
 use Carbon\Carbon;
 
@@ -258,6 +259,13 @@ class FileRepository
         if ($request->upload_category == "workstation_image") {
             $workstation = Workstation::findOrFail($request->workstation_id);
             $workstation->images()->save($file);
+
+            return $file;
+        };
+
+        if ($request->upload_category == "service_image") {
+            $service = Service::findOrFail($request->service_id);
+            $service->images()->save($file);
 
             return $file;
         };

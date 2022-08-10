@@ -64,6 +64,10 @@ class FileController extends Controller
                             "required_if:upload_category,workstation_logo", 
                             "integer"
                         ],
+            "service_id" => [
+                            "required_if:upload_category,service_logo", 
+                            "integer"
+                        ],
             "workstation_id" => [
                             "required_if:upload_category,workstation_image", 
                             "integer"
