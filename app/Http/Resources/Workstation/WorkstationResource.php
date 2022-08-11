@@ -30,6 +30,7 @@ class WorkstationResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'currency_code' => $this->currency_code,
+            'bank_details' => $this->bank_details,
             //'retainers' => RetainerResource::collection($this->retainers),
             'default_service' => new ServiceResource($this->services->first()),
             'logo' => new FileResource($this->logo),

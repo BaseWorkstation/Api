@@ -288,7 +288,7 @@ class WorkstationRepository
         $image_result = Cloudder::getResult();
 
         //  update workstation instance to include qr_code_path
-        $workstation->qr_code_path = $image_result['url'];
+        $workstation->qr_code_path = str_replace('http://', 'https://', $image_result['url']);
         $workstation->save();
     }
 }
