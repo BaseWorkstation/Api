@@ -130,12 +130,16 @@ class VisitRepository
             }
         }
 
-        // if user wants to pay using their own plan, check if the they really have an active plan
+        // if user wants to pay
         if ($request->payer === 'User') {
             $user = User::findOrFail($request->user_id);
-            $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
-            if (!$user_plan) {
-                return response(['error' => 'you do not have an active plan'], 401);
+
+            // via plan, check if the they really have an active plan
+            if ($request->payment_method_type === 'plan') {
+                $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
+                if (!$user_plan) {
+                    return response(['error' => 'you do not have an active plan'], 401);
+                }
             }
         }
 
