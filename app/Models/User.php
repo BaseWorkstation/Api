@@ -125,4 +125,19 @@ class User extends Authenticatable implements Auditable
     {
         return $this->hasMany(Visit::class);
     }
+
+    /**
+     * the user's visit checked-in status.
+     *
+     */
+    public function checkInStatus()
+    {
+        $last_visit = $this->visits()->latest()->get()->first();
+
+        if ($last_visit && $last_visit->check_out_time === null) {
+            return true;
+        }
+
+        return false;
+    }
 }

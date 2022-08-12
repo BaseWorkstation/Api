@@ -28,6 +28,7 @@ class UserResource extends JsonResource
             'pending_team_invites' => $this->mergeTeamInvites(),
             'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
             'avatar' => new FileResource($this->avatar),
+            'check_in_status' => $this->checkInStatus(),
         ];
     }
 
