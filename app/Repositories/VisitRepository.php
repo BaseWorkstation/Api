@@ -115,7 +115,7 @@ class VisitRepository
 
         // if user does not have previously checked-in visit, return 401
         $visit = Visit::where('user_id', $user->id)
-                        //->whereNull('check_out_time')
+                        ->whereNull('check_out_time')
                         ->latest()->get()->first();
         if (!$visit) {
             return response(['error' => 'you do not have a checked-in visit'], 401);
@@ -130,12 +130,16 @@ class VisitRepository
             }
         }
 
-        // if user wants to pay using their own plan, check if the they really have an active plan
+        // if user wants to pay
         if ($request->payer === 'User') {
             $user = User::findOrFail($request->user_id);
-            $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
-            if (!$user_plan) {
-                return response(['error' => 'you do not have an active plan'], 401);
+
+            // via plan, check if the they really have an active plan
+            if ($request->payment_method_type === 'plan') {
+                $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
+                if (!$user_plan) {
+                    return response(['error' => 'you do not have an active plan'], 401);
+                }
             }
         }
 
