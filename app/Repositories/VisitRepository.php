@@ -115,7 +115,7 @@ class VisitRepository
 
         // if user does not have previously checked-in visit, return 401
         $visit = Visit::where('user_id', $user->id)
-                        ->whereNull('check_out_time')
+                        //->whereNull('check_out_time')
                         ->latest()->get()->first();
         if (!$visit) {
             return response(['error' => 'you do not have a checked-in visit'], 401);
