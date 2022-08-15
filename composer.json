@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.0",
         "digikraaft/laravel-review-rating": "^2.3",
+        "doctrine/dbal": "^3.4",
         "fruitcake/laravel-cors": "^2.0.5",
         "glorand/laravel-model-settings": "^5.0",
         "guzzlehttp/guzzle": "^7.2",
