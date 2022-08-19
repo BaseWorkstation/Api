@@ -28,11 +28,12 @@ class VisitEventSubscriber
 
     /**
      * Handle event.
-     */
+     
     public function makePaymentForVisit($event) 
     {
         $this->visitRepository->makePaymentForVisit($event->request, $event->visit);
     }
+    */
  
     /**
      * Register the listeners for the subscriber.
@@ -42,9 +43,9 @@ class VisitEventSubscriber
      */
     public function subscribe($events)
     {
-        $events->listen(
+        /*$events->listen(
             VisitCheckedOutEvent::class,
             [VisitEventSubscriber::class, 'makePaymentForVisit']
-        );
+        );*/
     }
 }

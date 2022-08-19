@@ -121,28 +121,6 @@ class VisitRepository
             return response(['error' => 'you do not have a checked-in visit'], 401);
         }
 
-        // if user wants to pay using team plan, check if the team has an active plan
-        if ($request->payer === 'Team') {
-            $team = Team::findOrFail($request->team_id);
-            $team_plan = $team->paymentMethods()->where('method_type', 'plan')->get()->first();
-            if (!$team_plan) {
-                return response(['error' => 'the team selected does not have an active team plan'], 401);
-            }
-        }
-
-        // if user wants to pay
-        if ($request->payer === 'User') {
-            $user = User::findOrFail($request->user_id);
-
-            // via plan, check if the they really have an active plan
-            if ($request->payment_method_type === 'plan') {
-                $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
-                if (!$user_plan) {
-                    return response(['error' => 'you do not have an active plan'], 401);
-                }
-            }
-        }
-
         // check if user and visit exists before proceeding
         if ($user && $visit) {
             // update visit check out time
@@ -230,6 +208,31 @@ class VisitRepository
     }
 
     /**
+     * pay for visit.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Resources\Visit\VisitResource
+     */
+    public function payment(Request $request)
+    {
+        $visit = Visit::findOrFail($request->visit_id);
+
+        // if user wants to pay
+        $user = User::findOrFail($visit->user_id);
+
+        // via plan, check if the they really have an active plan
+        if ($request->payment_method_type === 'plan') {
+            $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
+            if (!$user_plan) {
+                return response(['error' => 'you do not have an active plan'], 401);
+            }
+
+            // make payment using plan
+            $this->makePaymentForVisit($request, $visit);
+        }
+    }
+
+    /**
      * make payment for a visit.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -238,38 +241,20 @@ class VisitRepository
      */
     public function makePaymentForVisit(Request $request, Visit $visit)
     {
-        // set who the payer is
-        if ($request->payer === 'User') {
-            $user = User::findOrFail($request->user_id);
-            // update visit details
-            $user->visitsPaidFor()->save($visit);
+        $user = User::findOrFail($visit->user_id);
+        // update visit details
+        $user->visitsPaidFor()->save($visit);
 
-            // if user wants to pay via plan
-            if ($request->payment_method_type === 'plan') {
-                // confirm user really has a plan before proceeding
-                $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
-                if ($user_plan) {
-                    $visit->payment_method_type = 'plan';
-                    $visit->payment_method_id = $user_plan->id;
-                    $visit->save();
-                }
-            }
-        }
-        if ($request->payer === 'Team') {
-            $team = Team::findOrFail($request->team_id);
-            // update visit details
-            $team->visitsPaidFor()->save($visit);
-
-            // if team plans exist, then set the payment_method
-            $team_plan = $team->paymentMethods()->where('method_type', 'plan')->get()->first();
-            if ($team_plan) {
+        // if user wants to pay via plan
+        if ($request->payment_method_type === 'plan') {
+            // confirm user really has a plan before proceeding
+            $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
+            if ($user_plan) {
                 $visit->payment_method_type = 'plan';
-                $visit->payment_method_id = $team_plan->id;
+                $visit->payment_method_id = $user_plan->id;
                 $visit->save();
             }
         }
-
-        
 
         // return resource
         return new VisitResource($visit);

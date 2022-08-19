@@ -48,7 +48,7 @@ Route::group([
         // some apiResource routes for service that do not require authentication
         Route::apiResource('services', ServiceController::class)->only(['index']);
 
-        // other visit routes
+        // visit routes that do not require authentication
         Route::post('/visits/check-in',[VisitController::class, 'checkIn']);
         Route::post('/visits/check-out',[VisitController::class, 'checkOut']);
 
@@ -59,6 +59,9 @@ Route::group([
 
                 // change password in user profile
                 Route::post('/change-password',[UserController::class, 'changePassword']);
+
+                // visit routes that require authentication
+                Route::post('/visits/payment',[VisitController::class, 'payment']);
 
                 // routes prefixed with "teams" e.g. /teams/members
                 Route::prefix('teams')->group(function () {
