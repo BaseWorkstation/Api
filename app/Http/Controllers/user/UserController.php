@@ -164,6 +164,23 @@ class UserController extends Controller
     }
 
     /**
+     * send password-pin
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Repositories\UserRepository
+     */
+    public function sendPin(Request $request)
+    {
+        $request->validate([
+                        'email' => 'required|email|exists:users,email'
+                    ],[
+                        'email.exists' => 'please check email again, it does not exist'
+                    ]);
+        
+        return $this->userRepository->sendPin($request);
+    }
+
+    /**
      * reset password
      * 
      * @param  \Illuminate\Http\Request  $request

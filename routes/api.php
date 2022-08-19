@@ -34,6 +34,7 @@ Route::group([
         Route::get('/user',[UserController::class, 'getUserByToken']);
         Route::get('/user/get-by-unique-pin',[UserController::class, 'getUserByUniquePin']);
         Route::post('/forgot-password',[UserController::class, 'sendPasswordResetLink'])->name('password.email');
+        Route::post('/forgot-pin',[UserController::class, 'sendPin']);
         Route::post('/reset-password',[UserController::class, 'resetPassword'])->name('password.reset');
 
         // some apiResource routes for workstation that do not require authentication
