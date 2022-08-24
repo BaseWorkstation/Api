@@ -34,6 +34,9 @@ class UserRepository
         $request->first_name? $data['first_name'] = strtolower($data['first_name']): null ;
         $request->last_name? $data['last_name'] = strtolower($data['last_name']): null ;
 
+        // add +234 to phone number
+        $request->phone? $data['phone'] = '+234' . substr($data['phone'], 1): null ;
+
         // persist new user into db
         $user = User::create($data);
         $user->unique_pin = $this->generateUniquePin('users', 'unique_pin');

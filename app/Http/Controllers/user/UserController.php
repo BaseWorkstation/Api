@@ -40,7 +40,7 @@ class UserController extends Controller
             'last_name' => 'required|max:255',
             'first_name' => 'required|max:255',
             'email' => 'required|email|unique:users',
-            'phone' => 'required|unique:users',
+            'phone' => 'required|unique:users|min:11',
             'password' => 'required|confirmed'
         ]);
 

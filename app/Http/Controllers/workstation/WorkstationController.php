@@ -60,7 +60,7 @@ class WorkstationController extends Controller
             'city' => 'required',
             'state' => 'required',
             'country_iso' => 'required',
-            'phone' => 'required|unique:workstations',
+            'phone' => 'required|unique:workstations|min:11',
             'email' => 'required|unique:workstations',
             'currency_code' => ['required', Rule::in(config('enums.currency_code'))],
             'open_time' => ['required', 'date_format:H:i'],

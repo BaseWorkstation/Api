@@ -89,6 +89,29 @@ class VisitController extends Controller
     }
 
     /**
+     * verify OTP.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Http\Repositories\VisitRepository
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function verifyOTP(Request $request)
+    {
+        // authorization
+        //$this->authorize('verifyOTP', Visit::findOrFail($id));
+
+        // validation
+        $request->validate([
+            'visit_id' => 'required|integer',
+            'otp' => 'required',
+        ]);
+
+        // run in the repository
+        return $this->visitRepository->verifyOTP($request);
+    }
+
+    /**
      * pay for a visit.
      *
      * @param  \Illuminate\Http\Request  $request

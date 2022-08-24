@@ -38,6 +38,7 @@ class VisitResource extends JsonResource
             'space_price_per_minute_at_the_time' => (int) $this->space_price_per_minute_at_the_time,
             'total_minutes_spent' => (int) $this->total_minutes_spent,
             'total_value_of_minutes_spent_in_naira' => $this->total_value_of_minutes_spent_in_naira,
+            'otp_verified_at' => $this->otp_verified_at,
             'services' => new ServiceCollection($this->services),
         ];
     }

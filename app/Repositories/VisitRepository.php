@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Resources\Visit\VisitResource;
 use App\Http\Resources\Visit\VisitCollection;
 use App\Events\Visit\VisitCheckedOutEvent;
+use App\Events\Visit\VisitCheckedInEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Visit;
@@ -91,6 +92,9 @@ class VisitRepository
             // add service to visit
             $visit->services()->syncWithoutDetaching($service->id);
 
+            // call event that a visit has been checked in
+            event(new VisitCheckedInEvent($request, $visit));
+
             // return resource
             return new VisitResource($visit);
         }
@@ -146,6 +150,7 @@ class VisitRepository
             $visit->total_minutes_spent = $duration_in_minutes;
             $visit->total_value_of_minutes_spent_in_naira = $space_price_for_duration_in_minutes;
             $visit->naira_rate_to_currency_at_the_time = DB::table('currency_value')->where('currency_code', $currency_code)->get()->first()->naira_value;
+            $visit->otp = $this->generateOTP('visits', 'otp');
             $visit->save();
 
             // call event that a visit has been checked out
@@ -156,6 +161,29 @@ class VisitRepository
         }
 
         return response(['error' => 'can not either find visit or user'], 401);
+    }
+
+    /**
+     * verify OTP.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Resources\Visit\VisitResource
+     */
+    public function verifyOTP(Request $request)
+    {
+        // fetch visit
+        $visit = Visit::findOrFail($request->visit_id);
+
+        // check if visit's otp matches
+        if ($visit->otp !== $request->otp) {
+            return response(['error' => 'wrong otp'], 401);
+        }
+
+        $visit->otp_verified_at = Carbon::now();
+        $visit->save();
+
+        // return resource
+        return new VisitResource($visit);
     }
 
     /**
@@ -282,5 +310,27 @@ class VisitRepository
     {
         // softdelete instance
         $this->getVisitById($id)->delete();
+    }
+
+    /**
+     * generate OTP for a particular table column
+     * @param  string  $table_name
+     * @param  string  $column_name
+     * @param  int  $number_of_string
+     * @return array
+     */
+    public function generateOTP($table_name, $column_name, int $number_of_string = 4)
+    {
+        while (true) {
+            $pool = '0123456789';
+            $random_string = strtolower(substr(str_shuffle(str_repeat($pool, 5)), 0, $number_of_string));
+            $check_if_code_exist = DB::table($table_name)
+            ->where($column_name, $random_string)
+            ->count();
+
+            if (!$check_if_code_exist) {
+                return $random_string;
+            }
+        }
     }
 }

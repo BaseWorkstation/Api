@@ -51,6 +51,7 @@ Route::group([
         // visit routes that do not require authentication
         Route::post('/visits/check-in',[VisitController::class, 'checkIn']);
         Route::post('/visits/check-out',[VisitController::class, 'checkOut']);
+        Route::post('/visits/verify-otp',[VisitController::class, 'verifyOTP']);
 
         // routes that require authentication
         Route::group([
