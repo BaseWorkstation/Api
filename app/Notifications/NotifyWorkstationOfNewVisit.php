@@ -36,7 +36,7 @@ class NotifyWorkstationOfNewVisit extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'vonage'];
+        return ['mail'];
     }
 
     /**
@@ -64,7 +64,7 @@ class NotifyWorkstationOfNewVisit extends Notification
     {
         $workstation = Workstation::findOrFail($this->visit['workstation_id']);
         $user = User::findOrFail($this->visit['user_id']);
-        
+
         return (new VonageMessage)
                     ->content(ucfirst($user->first_name).' '.ucfirst($user->last_name).' checked in to '.ucfirst($workstation->name).' at '. $this->visit['created_at']);
     }

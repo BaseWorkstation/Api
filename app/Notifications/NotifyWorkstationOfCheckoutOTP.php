@@ -36,7 +36,7 @@ class NotifyWorkstationOfCheckoutOTP extends Notification
      */
     public function via($notifiable)
     {
-        return ['vonage'];
+        return ['mail'];
     }
 
     /**
@@ -49,7 +49,7 @@ class NotifyWorkstationOfCheckoutOTP extends Notification
     {
         $workstation = Workstation::findOrFail($this->visit['workstation_id']);
         $user = User::findOrFail($this->visit['user_id']);
-        
+
         return (new MailMessage)
                     ->line(ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($workstation->name).'. Use OTP code '. $this->visit['otp'].' to approve. ');
     }
