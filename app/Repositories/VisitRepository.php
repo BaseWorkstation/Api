@@ -248,6 +248,11 @@ class VisitRepository
         // if user wants to pay
         $user = User::findOrFail($visit->user_id);
 
+        // if visit has been paid, return error
+        if ($visit->paid_status == true) {
+            return response(['error' => 'this visit has been paid for'], 401);
+        }
+
         // via plan, check if the they really have an active plan
         if ($request->payment_method_type === 'plan') {
             $user_plan = $user->paymentMethods()->where('method_type', 'plan')->get()->first();
@@ -258,6 +263,21 @@ class VisitRepository
             // make payment using plan
             $this->makePaymentForVisit($request, $visit);
         }
+
+        // via PAYG_cash
+        if ($request->payment_method_type === 'PAYG_cash') {
+            // make payment using PAYG_cash
+            $this->makePaymentForVisit($request, $visit);
+        }
+
+        // via PAYG_card
+        if ($request->payment_method_type === 'PAYG_card') {
+            // make payment using PAYG_card
+            $this->makePaymentForVisit($request, $visit);
+        }
+
+        // return resource
+        return new VisitResource($visit);
     }
 
     /**
@@ -280,8 +300,26 @@ class VisitRepository
             if ($user_plan) {
                 $visit->payment_method_type = 'plan';
                 $visit->payment_method_id = $user_plan->id;
+                $visit->paid_status = true;
                 $visit->save();
             }
+        }
+
+        // if user wants to pay via PAYG_cash
+        if ($request->payment_method_type === 'PAYG_cash') {
+            // confirm user really has a plan before proceeding
+            $visit->payment_method_type = 'PAYG_cash';
+            $visit->paid_status = true;
+            $visit->save();
+        }
+
+        // if user wants to pay via PAYG_card
+        if ($request->payment_method_type === 'PAYG_card') {
+            // confirm user really has a plan before proceeding
+            $visit->payment_method_type = 'PAYG_card';
+            $visit->payment_reference = $request->payment_reference;
+            $visit->paid_status = true;
+            $visit->save();
         }
 
         // return resource
