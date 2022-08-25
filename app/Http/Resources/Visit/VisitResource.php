@@ -30,6 +30,9 @@ class VisitResource extends JsonResource
             'workstation' => [
                                 'id' => $this->workstation_id,
                                 'name' => $this->workstation->name,
+                                'street' => $this->workstation->street,
+                                'city' => $this->workstation->city,
+                                'state' => $this->workstation->state,
                             ],
             'check_in_time' => $this->check_in_time,
             'check_out_time' => $this->check_out_time,
