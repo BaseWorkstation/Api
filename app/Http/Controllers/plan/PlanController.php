@@ -67,13 +67,13 @@ class PlanController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $plan_code
      * @return \App\Http\Repositories\PlanRepository
      */
-    public function show($id)
+    public function show($plan_code)
     {
         // run in the repository
-        return $this->planRepository->show($id);
+        return $this->planRepository->show($plan_code);
     }
 
     /**

@@ -20,136 +20,83 @@ class PlanRepository
      */
     public function index(Request $request)
     {
-        // save request details in variables
-        $keywords = $request->keywords;
-        $request->from_date? 
-            $from_date = $request->from_date."T00:00:00.000Z": 
-            $from_date = Carbon::createFromFormat('Y-m-d H:i:s', '2020-01-01 00:00:00');
-        $request->to_date? 
-            $to_date = $request->to_date."T23:59:59.000Z": 
-            $to_date = Carbon::now();
+        $curl = curl_init();
 
-        // fetch Plans from db using filters when they are available in the request
-        $plans = Plan::when($keywords, function ($query, $keywords) {
-                                        return $query->where("name", "like", "%{$keywords}%");
-                                    })
-                                    ->when($from_date, function ($query, $from_date) {
-                                        return $query->whereDate('created_at', '>=', $from_date );
-                                    })
-                                    ->when($to_date, function ($query, $to_date) {
-                                        return $query->whereDate('created_at', '<=', $to_date );
-                                    })
-                                    ->latest();
+        curl_setopt_array($curl, array(
+                                    CURLOPT_URL => "https://api.paystack.co/plan?status=active",
+                                    CURLOPT_RETURNTRANSFER => true,
+                                    CURLOPT_ENCODING => "",
+                                    CURLOPT_MAXREDIRS => 10,
+                                    CURLOPT_TIMEOUT => 30,
+                                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                                    CURLOPT_CUSTOMREQUEST => "GET",
+                                    CURLOPT_HTTPHEADER => array(
+                                          "Authorization: Bearer sk_live_dc4085b3a907d7e2df602a2c2a894411922212a6",
+                                          "Cache-Control: no-cache",
+                                        ),
+                                    )
+                        );
 
-        // if user asks that the result be paginated
-        if ($request->filled('paginate') && $request->paginate) {
-            return new PlanCollection($plans->paginate($request->paginate_per_page)->withPath('/'));
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            return json_decode("cURL Error #:" . $err);
+        } else {
+            return new PlanCollection(json_decode($response)->data);
         }
-
-        // return collection
-        return new PlanCollection($plans->get());
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Resources\Plan\PlanResource
-     */
-    public function store(Request $request)
-    {
-        // persist request details and store in a variable
-        $plan = Plan::firstOrCreate($request->all());
-
-        // return resource
-        return new PlanResource($plan);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $plan_code
      * @return \Illuminate\Http\Resources\Plan\PlanResource
      */
-    public function show($id)
+    public function show($plan_code)
     {
-        // return resource
-        return new PlanResource(Plan::findOrFail($id));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Resources\Plan\PlanResource
-     */
-    public function update(Request $request, $id)
-    {
-        // find the instance
-        $plan = $this->getPlanById($id);
-
-        // remove or filter null values from the request data then update the instance
-        $plan->update(array_filter($request->all()));
+        $plan = json_decode($this->paystackPlanDetails($plan_code))->data;
 
         // return resource
         return new PlanResource($plan);
     }
 
     /**
-     * find a specific Plan using ID.
+     * get plan details from paystack.
      *
-     * @param  int  $id
-     * @return \App\Models\Plan
+     * @param  string  $plan_code
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function getPlanById($id)
+    public function paystackPlanDetails($plan_code)
     {
-        // find and return the instance
-        return Plan::findOrFail($id);
-    }
+        $curl = curl_init();
+  
+        curl_setopt_array($curl, array(
+                                    CURLOPT_URL => "https://api.paystack.co/plan/". $plan_code,
+                                    CURLOPT_RETURNTRANSFER => true,
+                                    CURLOPT_ENCODING => "",
+                                    CURLOPT_MAXREDIRS => 10,
+                                    CURLOPT_TIMEOUT => 30,
+                                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                                    CURLOPT_CUSTOMREQUEST => "GET",
+                                    CURLOPT_HTTPHEADER => array(
+                                          "Authorization: Bearer sk_live_dc4085b3a907d7e2df602a2c2a894411922212a6",
+                                          "Cache-Control: no-cache",
+                                        ),
+                                    )
+                        );
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return void
-     */
-    public function destroy($id)
-    {
-        // softdelete instance
-        $this->getPlanById($id)->delete();
-    }
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
 
-    /**
-     * add plans to team.
-     *
-     * @param  Request  $request
-     * @param  Team  $team
-     * @return void
-     */
-    public function addPlansToTeam(Request $request, Team $team)
-    {
-        // fetch all plans
-        $plans = Plan::all();
+        curl_close($curl);
 
-        // check whether team already has plan attached, if not, add all plans to team
-        foreach ($plans as $plan) 
-        {
-            $check = DB::table('team_plan_pivot')
-                                ->where([
-                                    'team_id' => $team->id,
-                                    'plan_id' => $plan->id,
-                                ])->first();
-
-            if (!$check) {
-                $new_entry = DB::table('team_plan_pivot')
-                                    ->insert([
-                                        'team_id' => $team->id,
-                                        'plan_id' => $plan->id,
-                                        'created_at' => Carbon::now(),
-                                        'updated_at' => Carbon::now(),
-                                    ]);
-            }
+        if ($err) {
+            return "cURL Error #:" . $err;
+        } else {
+            return $response;
         }
     }
 }

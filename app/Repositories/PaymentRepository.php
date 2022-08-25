@@ -125,14 +125,15 @@ class PaymentRepository
         if ($request->paymentable_model === "User") {
             $model = User::findOrFail($request->paymentable_id);
         }
-        if ($request->paymentable_model === "Team") {
+        
+        /*if ($request->paymentable_model === "Team") {
             $model = Team::findOrFail($request->paymentable_id);
-        }
+        }*/
 
         // if model exists then proceed to save payment methods
         if ($model) {
             // save PAYG_card details
-            if ($request->method_type == 'PAYG_card') {
+            /*if ($request->method_type == 'PAYG_card') {
                 $payment_method = PaymentMethod::create([
                     "method_type" => $request->method_type,
                     "card_number" => $request->card_number,
@@ -141,7 +142,7 @@ class PaymentRepository
                     "card_expiry_year" => Carbon::parse($request->card_expiry_year)->year,
                     "card_cvc" => $request->card_cvc,
                 ]);
-            }
+            }*/
 
             // save PAYG_cash details
             if ($request->method_type == 'PAYG_cash') {
@@ -160,7 +161,8 @@ class PaymentRepository
 
                 $payment_method = PaymentMethod::create([
                     "method_type" => $request->method_type,
-                    "plan_id" => $request->plan_id,
+                    "plan_code" => $request->plan_code,
+                    "payment_reference" => $request->payment_reference,
                 ]);
             }
 

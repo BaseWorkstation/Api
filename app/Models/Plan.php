@@ -38,11 +38,12 @@ class Plan extends Model implements Auditable
 
     /**
      * The teams that have subscribed to a Plan.
-     */
+     
     public function teamSubscribers()
     {
         return $this->belongsToMany(Team::class, 'team_plan_pivot', 'plan_id', 'team_id');
     }
+    */
 
     /**
      * Get the services for the plan.

@@ -38,24 +38,13 @@ class PlanSeeder extends Seeder
     {
         // create new requests
         $gold = new Request([
-                "name" => "Gold",
-                "price_per_month" => 10000,
+                "name" => "gold",
+                "price_per_month" => 100,
                 "currency_code" => "NGN",
+                "plan_code" => "PLN_fipi8nml99x9fe9",
             ]);
 
-        $silver = new Request([
-                "name" => "Silver",
-                "price_per_month" => 18000,
-                "currency_code" => "NGN",
-            ]);
-
-        $platinum = new Request([
-                "name" => "Platinum",
-                "price_per_month" => 35000,
-                "currency_code" => "NGN",
-            ]);
-
-        $array = [$gold, $silver, $platinum];
+        $array = [$gold];
 
         foreach ($array as $request) {
             // call method to register plan 

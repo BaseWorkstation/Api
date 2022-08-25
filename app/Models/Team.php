@@ -75,11 +75,12 @@ class Team extends Model implements Auditable
 
     /**
      * Get the plans that the team is subscribed to.
-     */
+     
     public function plans()
     {
         return $this->belongsToMany(Plan::class, 'team_plan_pivot', 'team_id', 'plan_id');
     }
+    */
 
     /**
      * Get all of the team's payments.
@@ -91,11 +92,12 @@ class Team extends Model implements Auditable
 
     /**
      * Get all of the team's payment methods.
-     */
+     
     public function paymentMethods()
     {
         return $this->morphMany(PaymentMethod::class, 'paymentMethodable');
     }
+    */
 
     /**
      * Get all of the visits paid for by the team.
