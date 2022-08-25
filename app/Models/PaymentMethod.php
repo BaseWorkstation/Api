@@ -32,7 +32,7 @@ class PaymentMethod extends Model implements Auditable
     protected $with = [];
 
     /**
-     * Get the parent paymentmethodable model (e.g user or team).
+     * Get the parent paymentmethodable model (e.g user).
      */
     public function paymentMethodable()
     {
@@ -40,10 +40,18 @@ class PaymentMethod extends Model implements Auditable
     }
 
     /**
-     * Get the plan that the PaymentMethod belongs to.
+     * Get whoever paid for the payment method (e.g user or Team).
      */
+    public function paidByable()
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * Get the plan that the PaymentMethod belongs to.
+     
     public function plan()
     {
         return $this->belongsTo(Plan::class);
-    }
+    }*/
 }
