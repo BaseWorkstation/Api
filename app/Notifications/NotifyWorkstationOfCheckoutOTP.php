@@ -11,7 +11,7 @@ use App\Models\Visit;
 use App\Models\Workstation;
 use App\Models\User;
 
-class NotifyWorkstationOfCheckoutOTP extends Notification
+class NotifyWorkstationOfCheckoutOTP extends Notification implements ShouldQueue
 {
     use Queueable;
 
