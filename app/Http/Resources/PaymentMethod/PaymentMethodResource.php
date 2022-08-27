@@ -23,7 +23,7 @@ class PaymentMethodResource extends JsonResource
             'id' => $this->id,
             'method' => $this->method_type,
             'payment_reference' => $this->payment_reference,
-            'plan' => $this->when($this->method_type === 'plan', $this->internalPlanResource($plan)),
+            'plan' => $this->when(($this->method_type === 'plan') && ($this->plan_code !== null), $this->internalPlanResource($plan)),
         ];
     }
 
@@ -35,12 +35,11 @@ class PaymentMethodResource extends JsonResource
      */
     public function internalPlanResource($plan)
     {
-        return $plan;
         return [
-            'id' => $plan['id'],
-            'name' => $plan['name'],
-            'plan_code' => $plan['plan_code'],
-            'price_per_month' => $plan['amount']/100,
+            'id' => $plan->id,
+            'name' => $plan->name,
+            'plan_code' => $plan->plan_code,
+            'price_per_month' => $plan->amount/100,
             'currency_code' => 'NGN',
         ];
     }
