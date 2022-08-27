@@ -159,4 +159,19 @@ class User extends Authenticatable implements Auditable
 
         return false;
     }
+
+    /**
+     * the user's current visit.
+     *
+     */
+    public function currentVisit()
+    {
+        $last_visit = $this->visits()->latest()->get()->first();
+
+        if ($last_visit && $last_visit->check_out_time === null) {
+            return $last_visit;
+        }
+
+        return null;
+    }
 }

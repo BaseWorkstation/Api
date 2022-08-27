@@ -31,6 +31,7 @@ class UserResource extends JsonResource
             'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
             'avatar' => new FileResource($this->avatar),
             'check_in_status' => $this->checkInStatus(),
+            'current_visit' => $this->currentVisit(),
         ];
     }
 
