@@ -23,7 +23,7 @@ class PaymentMethodResource extends JsonResource
             'id' => $this->id,
             'method' => $this->method_type,
             'payment_reference' => $this->payment_reference,
-            'plan' => $this->when(($this->method_type === 'plan') && ($this->plan_code !== null), $this->internalPlanResource($plan)),
+            'plan' => $this->when($this->plan_code !== null, $this->internalPlanResource($plan)), // only show plan when there is method type of plan and the plan_code is not null
         ];
     }
 
