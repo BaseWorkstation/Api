@@ -10,6 +10,7 @@ use App\Http\Controllers\visit\VisitController;
 use App\Http\Controllers\plan\PlanController;
 use App\Http\Controllers\file\FileController;
 use App\Http\Controllers\payment\PaymentController;
+use App\Http\Controllers\stat\StatController;
 use App\Http\Controllers\teamMember\TeamMemberController;
 use App\Http\Controllers\workstationReview\WorkstationReviewController;
 
@@ -71,6 +72,11 @@ Route::group([
                     Route::apiResources([
                         'members' => TeamMemberController::class,
                     ]);
+                });
+
+                // routes prefixed with "stat" e.g. /stat/general
+                Route::prefix('stat')->group(function () {
+                    Route::get('/general',[StatController::class, 'general']);
                 });
 
                 // routes prefixed with "workstations/{id}" e.g. /workstations/1/reviews
