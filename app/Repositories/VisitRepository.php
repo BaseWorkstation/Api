@@ -140,8 +140,11 @@ class VisitRepository
             // get other variables needed to update visit details
             $currency_code = $visit->workstation->currency_code;
             $space = $visit->services()->where('category', 'space')->get()->first();
-            $space_price_per_minute = $this->calculateServicePriceInMinutesForVisit($space, 1, $visit);
-            $space_price_for_duration_in_minutes = $this->calculateServicePriceInMinutesForVisit($space, $duration_in_minutes, $visit);
+            $space_price_per_minute = $this->calculateServicePriceInMinutesForVisit($space, 1, $visit)['total_price'];
+            $space_data_for_duration = $this->calculateServicePriceInMinutesForVisit($space, $duration_in_minutes, $visit);
+            $space_price_for_duration_in_minutes = $space_data_for_duration['total_price'];
+            $workspace_share_for_duration = $space_data_for_duration['workspace_share_for_duration'];
+            $base_share_for_duration = $space_data_for_duration['base_share_for_duration'];
 
             // update other visit details
             $visit->check_out_time = Carbon::now();
@@ -149,6 +152,10 @@ class VisitRepository
             $visit->currency_code = $visit->workstation->currency_code;
             $visit->total_minutes_spent = $duration_in_minutes;
             $visit->total_value_of_minutes_spent_in_naira = $space_price_for_duration_in_minutes;
+            $visit->workspace_share_for_duration = $workspace_share_for_duration;
+            $visit->base_share_for_duration = $base_share_for_duration;
+            $visit->base_commission = $visit->workstation->base_commission;
+            $visit->base_markup = $visit->workstation->base_markup;
             $visit->naira_rate_to_currency_at_the_time = DB::table('currency_value')->where('currency_code', $currency_code)->get()->first()->naira_value;
             $visit->otp = $this->generateOTP('visits', 'otp');
             $visit->save();
@@ -199,9 +206,20 @@ class VisitRepository
         $service_price_per_minute = $service->prices->first()->amount;
         $currency_code = $visit->workstation->currency_code;
         $naira_rate = DB::table('currency_value')->where('currency_code', $currency_code)->get()->first()->naira_value;
-        // price = naira rate of the currency * service price per minute * number of minutes
-        $price = $naira_rate * $service_price_per_minute * $minutes;
-        return $price;
+        /**
+         * calculation of workspace_share_for_duration = naira rate of the currency * service price per minute * number of minutes
+         */
+        $base_commission_percentage = ($visit->workstation->base_commission * $service_price_per_minute)/100;
+        $workspace_share_for_duration = ($service_price_per_minute - $base_commission_percentage) * $minutes;
+        $base_share_per_minute = $base_commission_percentage + $visit->workstation->base_markup;
+        $base_share_for_duration = $base_share_per_minute * $minutes;
+        $total_price = $workspace_share_for_duration + $base_share_for_duration;
+
+        $data['workspace_share_for_duration'] = $workspace_share_for_duration;
+        $data['base_share_for_duration'] = $base_share_for_duration;
+        $data['total_price'] = $total_price;
+
+        return $data;
     }
 
     /**

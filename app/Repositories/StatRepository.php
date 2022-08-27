@@ -92,8 +92,12 @@ class StatRepository
             $data['data']['teams']['all'] = $teams->count();
         }
 
-        // add revenue details to returned data
-        $data['data']['revenue']['all'] = DB::table('visits')
+        /**
+         * add revenue details to returned data
+         */
+
+        // total revenue generated
+        $data['data']['revenue']['generated']['total'] = DB::table('visits')
                         ->when($from_date, function ($query, $from_date) {
                             return $query->whereDate('created_at', '>=', $from_date );
                         })
@@ -108,6 +112,94 @@ class StatRepository
                         })
                         ->whereNotNull('check_out_time')
                         ->sum('total_value_of_minutes_spent_in_naira');
+
+        // workstation share of revenue generated
+        $data['data']['revenue']['generated']['workstation_share'] = DB::table('visits')
+                        ->when($from_date, function ($query, $from_date) {
+                            return $query->whereDate('created_at', '>=', $from_date );
+                        })
+                        ->when($to_date, function ($query, $to_date) {
+                            return $query->whereDate('created_at', '<=', $to_date );
+                        })
+                        ->when($user_id, function ($query, $user_id) {
+                            return $query->where('user_id', $user_id);
+                        })
+                        ->when($workstation_id, function ($query, $workstation_id) {
+                            return $query->where('workstation_id', $workstation_id);
+                        })
+                        ->whereNotNull('check_out_time')
+                        ->sum('workspace_share_for_duration');
+
+        // base share of revenue generated
+        $data['data']['revenue']['generated']['base_share'] = DB::table('visits')
+                        ->when($from_date, function ($query, $from_date) {
+                            return $query->whereDate('created_at', '>=', $from_date );
+                        })
+                        ->when($to_date, function ($query, $to_date) {
+                            return $query->whereDate('created_at', '<=', $to_date );
+                        })
+                        ->when($user_id, function ($query, $user_id) {
+                            return $query->where('user_id', $user_id);
+                        })
+                        ->when($workstation_id, function ($query, $workstation_id) {
+                            return $query->where('workstation_id', $workstation_id);
+                        })
+                        ->whereNotNull('check_out_time')
+                        ->sum('base_share_for_duration');
+
+        // total revenue paid
+        $data['data']['revenue']['paid']['total'] = DB::table('visits')
+                        ->when($from_date, function ($query, $from_date) {
+                            return $query->whereDate('created_at', '>=', $from_date );
+                        })
+                        ->when($to_date, function ($query, $to_date) {
+                            return $query->whereDate('created_at', '<=', $to_date );
+                        })
+                        ->when($user_id, function ($query, $user_id) {
+                            return $query->where('user_id', $user_id);
+                        })
+                        ->when($workstation_id, function ($query, $workstation_id) {
+                            return $query->where('workstation_id', $workstation_id);
+                        })
+                        ->whereNotNull('check_out_time')
+                        ->where('paid_status', true)
+                        ->sum('total_value_of_minutes_spent_in_naira');
+
+        // workstation share of revenue paid
+        $data['data']['revenue']['paid']['workstation_share'] = DB::table('visits')
+                        ->when($from_date, function ($query, $from_date) {
+                            return $query->whereDate('created_at', '>=', $from_date );
+                        })
+                        ->when($to_date, function ($query, $to_date) {
+                            return $query->whereDate('created_at', '<=', $to_date );
+                        })
+                        ->when($user_id, function ($query, $user_id) {
+                            return $query->where('user_id', $user_id);
+                        })
+                        ->when($workstation_id, function ($query, $workstation_id) {
+                            return $query->where('workstation_id', $workstation_id);
+                        })
+                        ->whereNotNull('check_out_time')
+                        ->where('paid_status', true)
+                        ->sum('workspace_share_for_duration');
+
+        // base share of revenue paid
+        $data['data']['revenue']['paid']['base_share'] = DB::table('visits')
+                        ->when($from_date, function ($query, $from_date) {
+                            return $query->whereDate('created_at', '>=', $from_date );
+                        })
+                        ->when($to_date, function ($query, $to_date) {
+                            return $query->whereDate('created_at', '<=', $to_date );
+                        })
+                        ->when($user_id, function ($query, $user_id) {
+                            return $query->where('user_id', $user_id);
+                        })
+                        ->when($workstation_id, function ($query, $workstation_id) {
+                            return $query->where('workstation_id', $workstation_id);
+                        })
+                        ->whereNotNull('check_out_time')
+                        ->where('paid_status', true)
+                        ->sum('base_share_for_duration');
 
         return response()->json($data);
     }
