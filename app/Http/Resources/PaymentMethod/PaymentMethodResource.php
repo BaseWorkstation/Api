@@ -23,7 +23,7 @@ class PaymentMethodResource extends JsonResource
             'id' => $this->id,
             'method' => $this->method_type,
             'payment_reference' => $this->payment_reference,
-            'plan' => $this->whenNotNull($this->plan_code, $this->internalPlanResource($plan)), // only show plan when plan_code is not null
+            'plan' => $this->whenNotNull($this->plan_code, 'secret_value'), // only show plan when plan_code is not null
         ];
     }
 
