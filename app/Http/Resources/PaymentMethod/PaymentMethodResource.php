@@ -35,6 +35,7 @@ class PaymentMethodResource extends JsonResource
      */
     public function internalPlanResource($plan)
     {
+        return $plan;
         return [
             'id' => $plan['id'],
             'name' => $plan['name'],
