@@ -13,6 +13,7 @@ use App\Http\Controllers\payment\PaymentController;
 use App\Http\Controllers\stat\StatController;
 use App\Http\Controllers\teamMember\TeamMemberController;
 use App\Http\Controllers\workstationReview\WorkstationReviewController;
+use App\Http\Controllers\utility\UtilityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::group([
         Route::post('/forgot-password',[UserController::class, 'sendPasswordResetLink'])->name('password.email');
         Route::post('/forgot-pin',[UserController::class, 'sendPin']);
         Route::post('/reset-password',[UserController::class, 'resetPassword'])->name('password.reset');
+        Route::get('/utility/get-enums',[UtilityController::class, 'getEnums']);
 
         // some apiResource routes for workstation that do not require authentication
         Route::apiResource('workstations', WorkstationController::class)->only(['index', 'show']);
