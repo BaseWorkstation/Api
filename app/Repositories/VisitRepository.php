@@ -28,6 +28,7 @@ class VisitRepository
         // save request details in variables
         $user_id = $request->user_id;
         $workstation_id = $request->workstation_id;
+        $team_id = $request->team_id;
         $request->from_date? 
             $from_date = $request->from_date."T00:00:00.000Z": 
             $from_date = Carbon::createFromFormat('Y-m-d H:i:s', '2020-01-01 00:00:00');
@@ -47,6 +48,9 @@ class VisitRepository
                         })
                         ->when($workstation_id, function ($query, $workstation_id) {
                             return $query->where('workstation_id', $workstation_id);
+                        })
+                        ->when($team_id, function ($query, $team_id) {
+                            return $query->where('team_id', $team_id);
                         })
                         ->latest();
 
@@ -267,9 +271,9 @@ class VisitRepository
         $user = User::findOrFail($visit->user_id);
 
         // if visit has been paid, return error
-        if ($visit->paid_status == true) {
+        /*if ($visit->paid_status == true) {
             return response(['error' => 'this visit has been paid for'], 401);
-        }
+        }*/
 
         // via plan, check if the they really have an active plan
         if ($request->payment_method_type === 'plan') {
@@ -319,6 +323,11 @@ class VisitRepository
                 $visit->payment_method_type = 'plan';
                 $visit->payment_method_id = $user_plan->id;
                 $visit->paid_status = true;
+
+                // if the user_plan is paid for by a team, then update team_id
+                if ($user_plan->paidByable_type === 'App\Models\Team') {
+                    $visit->team_id = $user_plan->paidByable_id;
+                }
                 $visit->save();
             }
         }

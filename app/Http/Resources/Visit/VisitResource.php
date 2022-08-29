@@ -4,6 +4,7 @@ namespace App\Http\Resources\Visit;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Service\ServiceCollection;
+use App\Http\Resources\Team\TeamResource;
 use App\Models\User;
 
 class VisitResource extends JsonResource
@@ -26,6 +27,7 @@ class VisitResource extends JsonResource
                         'last_name' => $this->user->last_name,
                         'first_name' => $this->user->first_name,
                     ],
+            'team' => $this->when($this->team_id, new TeamResource($this->team)), // return only when team_id is not null
             'token' => $this->when($request->getRequestUri() === '/api/visits/check-in', $token), // return only when user is checking in
             'workstation' => [
                                 'id' => $this->workstation_id,

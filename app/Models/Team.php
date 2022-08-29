@@ -104,7 +104,7 @@ class Team extends Model implements Auditable
      */
     public function visitsPaidFor()
     {
-        return $this->morphMany(Visit::class, 'paidByable');
+        return $this->hasMany(Visit::class);
     }
 
     /**
