@@ -37,7 +37,7 @@ class NotifyWorkstationOfCheckoutOTP extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'termii'];
     }
 
     /**
