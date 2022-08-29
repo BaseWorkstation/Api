@@ -271,9 +271,9 @@ class VisitRepository
         $user = User::findOrFail($visit->user_id);
 
         // if visit has been paid, return error
-        /*if ($visit->paid_status == true) {
+        if ($visit->paid_status == true) {
             return response(['error' => 'this visit has been paid for'], 401);
-        }*/
+        }
 
         // via plan, check if the they really have an active plan
         if ($request->payment_method_type === 'plan') {
