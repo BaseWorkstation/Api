@@ -52,7 +52,7 @@ class RegisteredTeamMemberInvited extends Notification implements ShouldQueue
                     ->subject('Invitation to join a new team on Base')
                     ->greeting('Hi '. ucfirst($this->user->first_name))
                     ->line('You have been invited by '.$this->team->name.' to become a part of their team')
-                    ->action('Accept', url(env('APP_URL').'/'))
+                    ->action('Accept', url(env('APP_URL_FRONT_END').'/'))
                     ->line('you do not need to take a further action if the invite was not meant for you.');
     }
 

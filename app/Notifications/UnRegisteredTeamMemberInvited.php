@@ -52,7 +52,7 @@ class UnRegisteredTeamMemberInvited extends Notification implements ShouldQueue
                     ->greeting('Hi there ')
                     ->line('You have been invited by '.$this->team->name.' to become a part of their team.')
                     ->line('But we noticed you do not have an acccount yet. Click the button below to begin. Be sure to use the same email that this invite was sent to.')
-                    ->action('Register', url(env('APP_URL').'/register'))
+                    ->action('Register', url(env('APP_URL_FRONT_END').'/register'))
                     ->line('you do not need to take a further action if the invite was not meant for you.');
     }
 
