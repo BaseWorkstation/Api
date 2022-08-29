@@ -69,6 +69,12 @@ class WorkstationRepository
         // persist request details and store in a variable
         $workstation = Workstation::create($request->all());
 
+        // add base markup details
+        $workstation->base_commission = config('enums.base_share_details.base_commission');
+        $workstation->base_markup = config('enums.base_share_details.base_markup');
+        $workstation->base_cheaper_compared_to_workstation = config('enums.base_share_details.base_cheaper_compared_to_workstation');
+        $workstation->save();
+
         // call event that a new workstation has been created
         event(new NewWorkstationCreatedEvent($request, $workstation));
 

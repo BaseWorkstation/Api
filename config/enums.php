@@ -44,4 +44,9 @@ return [
         'service_image'  =>  'service_image',
         'team_logo'  =>  'team_logo',
     ],
+    'base_share_details'   =>  [
+        'base_commission'  =>  20,
+        'base_markup'  =>  2,
+        'base_cheaper_compared_to_workstation'  =>  15,
+    ],
 ];
