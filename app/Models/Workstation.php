@@ -53,6 +53,17 @@ class Workstation extends Model implements Auditable
     }
 
     /**
+     * Route notifications for the Termii channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForTermii()
+    {
+        return $this->phone;
+    }
+
+    /**
      * Get the workstation's logo.
      */
     public function logo()

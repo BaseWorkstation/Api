@@ -20,6 +20,7 @@
         "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.7",
         "laravel/vonage-notification-channel": "^3.0",
+        "mane-olawale/laravel-termii": "^1.0",
         "nnjeim/world": "^1.1",
         "owen-it/laravel-auditing": "13.0",
         "simplesoftwareio/simple-qrcode": "~4",
