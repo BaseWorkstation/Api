@@ -52,7 +52,7 @@ class NotifyWorkstationOfCheckoutOTP extends Notification implements ShouldQueue
         $user = User::findOrFail($this->visit['user_id']);
 
         return (new MailMessage)
-                    ->line(ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($workstation->name).'. Use OTP code '. $this->visit['otp'].' to approve. ');
+                    ->line(ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($workstation->name).'. Use OTP '. $this->visit['otp'].' to approve. ');
     }
 
     /**
@@ -67,7 +67,7 @@ class NotifyWorkstationOfCheckoutOTP extends Notification implements ShouldQueue
         $user = User::findOrFail($this->visit['user_id']);
 
         return (new VonageMessage)
-                    ->content(ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($workstation->name).'. Use OTP code '. $this->visit['otp'].' to approve. ');
+                    ->content(ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($workstation->name).'. Use OTP '. $this->visit['otp'].' to approve. ');
     }
 
     /**
@@ -82,7 +82,7 @@ class NotifyWorkstationOfCheckoutOTP extends Notification implements ShouldQueue
         $user = User::findOrFail($this->visit['user_id']);
         
         return (new TermiiMessage)
-                    ->line(ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($workstation->name).'. Use OTP code '. $this->visit['otp'].' to approve. ');
+                    ->line(ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($workstation->name).'. Use OTP '. $this->visit['otp'].' to approve. ');
     }
 
     /**
