@@ -185,7 +185,7 @@ class WorkstationRepository
         $metadata_for_qr_code = env('APP_URL_FRONT_END').'/check-in/?workstation_id='.$workstation->id.'&workstation_name='.$workstation->name;
 
         // generate new code
-        $qr_code = QrCode::size(500)
+        $qr_code = QrCode::size(600)
                             ->format('svg')
                             //->style('round')
                             //->color(25, 25, 112)
@@ -193,6 +193,7 @@ class WorkstationRepository
                             //->eyeColor(1, 128, 0, 32, 191, 64, 191)
                             //->eyeColor(2, 170, 51, 106, 72, 50, 72)
                             ->backgroundColor(246,248,250)
+                            ->margin(5)
                             ->generate($metadata_for_qr_code);
 
         if (env('APP_INSTALLATION_LOCATION') === 'local') {
