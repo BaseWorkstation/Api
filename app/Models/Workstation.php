@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Digikraaft\ReviewRating\Traits\HasReviewRating;
 use Glorand\Model\Settings\Traits\HasSettingsTable;
 
 class Workstation extends Model implements Auditable
 {
-    use HasFactory, \OwenIt\Auditing\Auditable, SoftDeletes, HasReviewRating, HasSettingsTable;
+    use HasFactory, \OwenIt\Auditing\Auditable, Notifiable, SoftDeletes, HasReviewRating, HasSettingsTable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -38,6 +39,28 @@ class Workstation extends Model implements Auditable
         return Attribute::make(
             set: fn ($value) => str_replace( array('(',')') , ''  , $value ),
         );
+    }
+
+    /**
+     * Route notifications for the Vonage channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForVonage($notification)
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Route notifications for the Termii channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForTermii()
+    {
+        return $this->phone;
     }
 
     /**

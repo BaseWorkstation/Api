@@ -3,8 +3,12 @@
 namespace App\Listeners\Visit;
  
 use App\Repositories\VisitRepository;
+use App\Events\Visit\VisitCheckedInEvent;
 use App\Events\Visit\VisitCheckedOutEvent;
 use App\Listeners\Visit\VisitEventSubscriber;
+use App\Notifications\NotifyWorkstationOfNewVisit;
+use App\Notifications\NotifyWorkstationOfCheckoutOTP;
+use App\Models\Workstation;
  
 class VisitEventSubscriber
 {
@@ -29,9 +33,25 @@ class VisitEventSubscriber
     /**
      * Handle event.
      */
-    public function makePaymentForVisit($event) 
+    public function sendOTPNotificationToWorkstation($event) 
     {
-        $this->visitRepository->makePaymentForVisit($event->request, $event->visit);
+        // get workstation
+        $workstation = Workstation::findOrFail($event->visit->workstation_id);
+
+        // send notification to workstation
+        $workstation->notify(new NotifyWorkstationOfCheckoutOTP($event->visit));
+    }
+
+    /**
+     * Handle event.
+     */
+    public function sendCheckedInNotificationToWorkstation($event) 
+    {
+        // get workstation
+        $workstation = Workstation::findOrFail($event->visit->workstation_id);
+
+        // send notification to workstation
+        $workstation->notify(new NotifyWorkstationOfNewVisit($event->visit));
     }
  
     /**
@@ -44,7 +64,12 @@ class VisitEventSubscriber
     {
         $events->listen(
             VisitCheckedOutEvent::class,
-            [VisitEventSubscriber::class, 'makePaymentForVisit']
+            [VisitEventSubscriber::class, 'sendOTPNotificationToWorkstation']
+        );
+
+        $events->listen(
+            VisitCheckedInEvent::class,
+            [VisitEventSubscriber::class, 'sendCheckedInNotificationToWorkstation']
         );
     }
 }

@@ -42,7 +42,15 @@ class Visit extends Model implements Auditable
      */
     public function user()
     {
-        return $this->belongsTo(user::class);
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the team that a user checked-in on behalf.
+     */
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
     }
 
     /**

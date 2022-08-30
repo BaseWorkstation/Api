@@ -102,11 +102,11 @@ class PaymentRepository
     public function getPaymentMethods(Request $request)
     {
         // get model instance (e.g. whether User or Team)
-        if ($request->paymentable_model === "User") {
-            $model = User::findOrFail($request->paymentable_id);
+        if ($request->paid_for_model === "User") {
+            $model = User::findOrFail($request->paid_for_id);
         }
-        if ($request->paymentable_model === "Team") {
-            $model = Team::findOrFail($request->paymentable_id);
+        if ($request->paid_for_model === "Team") {
+            $model = Team::findOrFail($request->paid_for_id);
         }
 
         // return payment method resource
@@ -121,28 +121,25 @@ class PaymentRepository
      */
     public function addPaymentMethod(Request $request)
     {
-        // get model instance (e.g. whether User or Team)
-        if ($request->paymentable_model === "User") {
-            $model = User::findOrFail($request->paymentable_id);
-        }
-        if ($request->paymentable_model === "Team") {
-            $model = Team::findOrFail($request->paymentable_id);
+        // declare null variables
+        $model_paid_for = null;
+        $model_paid_by = null;
+
+        // get model instance of who payment is made for
+        if ($request->paid_for_model === "User") {
+            $model_paid_for = User::findOrFail($request->paid_for_id);
         }
 
-        // if model exists then proceed to save payment methods
-        if ($model) {
-            // save PAYG_card details
-            if ($request->method_type == 'PAYG_card') {
-                $payment_method = PaymentMethod::create([
-                    "method_type" => $request->method_type,
-                    "card_number" => $request->card_number,
-                    "card_name" => $request->card_name,
-                    "card_expiry_month" => Carbon::parse($request->card_expiry_month)->month,
-                    "card_expiry_year" => Carbon::parse($request->card_expiry_year)->year,
-                    "card_cvc" => $request->card_cvc,
-                ]);
-            }
+        // get model instance that is making the payment
+        if ($request->paid_by_model === "User") {
+            $model_paid_by = User::findOrFail($request->paid_by_id);
+        }
+        if ($request->paid_by_model === "Team") {
+            $model_paid_by = Team::findOrFail($request->paid_by_id);
+        }
 
+        // if both models exists then proceed to save payment methods
+        if ($model_paid_for && $model_paid_by) {
             // save PAYG_cash details
             if ($request->method_type == 'PAYG_cash') {
                 $payment_method = PaymentMethod::create([
@@ -153,23 +150,30 @@ class PaymentRepository
             // save plan details
             if ($request->method_type == 'plan') {
                 // delete and detach model's previous plan paymentMethod before saving a new one
-                $old_paymentMethods = $model->paymentMethods()->where('method_type', 'plan')->get()->first();
+                $old_paymentMethods = $model_paid_for->paymentMethods()->where('method_type', 'plan')->get()->first();
                 if ($old_paymentMethods) {
                     $old_paymentMethods->delete();
                 }
 
                 $payment_method = PaymentMethod::create([
                     "method_type" => $request->method_type,
-                    "plan_id" => $request->plan_id,
+                    "plan_code" => $request->plan_code,
+                    "payment_reference" => $request->payment_reference,
                 ]);
             }
 
-            // attach payment methods relationship to the User or Team
-            $model->paymentMethods()->save($payment_method);
+            // attach the User that the payment is meant for
+            $model_paid_for->paymentMethods()->save($payment_method);
+
+            // attach the model (e.g. User or Team) that made the payment
+            $model_paid_by->paymentMethodsPaidFor()->save($payment_method);
 
             // return payment method resource
-            return new PaymentMethodCollection($model->paymentMethods);
+            return new PaymentMethodCollection($model_paid_for->paymentMethods);
         }
+
+        // return error
+        return response()->json(['error' => 'could not either find instance of who is paying or who is being paid for'], 401);
     }
 
     /**

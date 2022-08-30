@@ -92,10 +92,12 @@ class PaymentController extends Controller
 
         // validation
         $request->validate([
-            'paymentable_model' => ["required", Rule::in(config('enums.paymentable_model'))],
-            'paymentable_id' => 'required|integer',
+            'paid_by_model' => ["required", Rule::in(config('enums.paidByable_type'))],
+            'paid_by_id' => 'required|integer',
+            'paid_for_model' => ["required", Rule::in(config('enums.paymentable_model'))],
+            'paid_for_id' => 'required|integer',
             'method_type' => ["required", Rule::in(config('enums.payment_method_type'))],
-            'plan_id' => 'required_if:method_type,plan|integer',
+            'plan_code' => 'required_if:method_type,plan',
             'card_number' => 'required_if:method_type,PAYG_card|integer',
             'card_name' => 'required_if:method_type,PAYG_card|string',
             'card_expiry_month' => 'required_if:method_type,PAYG_card|between:1,12',
@@ -122,8 +124,8 @@ class PaymentController extends Controller
 
         // validation
         $request->validate([
-            'paymentable_model' => ["required", Rule::in(config('enums.paymentable_model'))],
-            'paymentable_id' => 'required|integer',
+            'paid_for_model' => ["required", Rule::in(config('enums.paymentable_model'))],
+            'paid_for_id' => 'required|integer',
         ]);
 
         // run in the repository

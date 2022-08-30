@@ -10,8 +10,10 @@ use App\Http\Controllers\visit\VisitController;
 use App\Http\Controllers\plan\PlanController;
 use App\Http\Controllers\file\FileController;
 use App\Http\Controllers\payment\PaymentController;
+use App\Http\Controllers\stat\StatController;
 use App\Http\Controllers\teamMember\TeamMemberController;
 use App\Http\Controllers\workstationReview\WorkstationReviewController;
+use App\Http\Controllers\utility\UtilityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +36,9 @@ Route::group([
         Route::get('/user',[UserController::class, 'getUserByToken']);
         Route::get('/user/get-by-unique-pin',[UserController::class, 'getUserByUniquePin']);
         Route::post('/forgot-password',[UserController::class, 'sendPasswordResetLink'])->name('password.email');
+        Route::post('/forgot-pin',[UserController::class, 'sendPin']);
         Route::post('/reset-password',[UserController::class, 'resetPassword'])->name('password.reset');
+        Route::get('/utility/get-enums',[UtilityController::class, 'getEnums']);
 
         // some apiResource routes for workstation that do not require authentication
         Route::apiResource('workstations', WorkstationController::class)->only(['index', 'show']);
@@ -47,9 +51,10 @@ Route::group([
         // some apiResource routes for service that do not require authentication
         Route::apiResource('services', ServiceController::class)->only(['index']);
 
-        // other visit routes
+        // visit routes that do not require authentication
         Route::post('/visits/check-in',[VisitController::class, 'checkIn']);
         Route::post('/visits/check-out',[VisitController::class, 'checkOut']);
+        Route::post('/visits/verify-otp',[VisitController::class, 'verifyOTP']);
 
         // routes that require authentication
         Route::group([
@@ -59,6 +64,9 @@ Route::group([
                 // change password in user profile
                 Route::post('/change-password',[UserController::class, 'changePassword']);
 
+                // visit routes that require authentication
+                Route::post('/visits/payment',[VisitController::class, 'payment']);
+
                 // routes prefixed with "teams" e.g. /teams/members
                 Route::prefix('teams')->group(function () {
                     Route::delete('/members',[TeamMemberController::class, 'remove']);
@@ -66,6 +74,11 @@ Route::group([
                     Route::apiResources([
                         'members' => TeamMemberController::class,
                     ]);
+                });
+
+                // routes prefixed with "stat" e.g. /stat/general
+                Route::prefix('stat')->group(function () {
+                    Route::get('/general',[StatController::class, 'general']);
                 });
 
                 // routes prefixed with "workstations/{id}" e.g. /workstations/1/reviews

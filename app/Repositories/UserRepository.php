@@ -6,6 +6,7 @@ use App\Http\Resources\User\UserResource;
 use App\Http\Resources\User\UserCollection;
 use Illuminate\Http\Request;
 use App\Events\User\NewUserCreatedEvent;
+use App\Notifications\UserPinForgotten;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -32,6 +33,9 @@ class UserRepository
         // strip some variables to lowercase
         $request->first_name? $data['first_name'] = strtolower($data['first_name']): null ;
         $request->last_name? $data['last_name'] = strtolower($data['last_name']): null ;
+
+        // add +234 to phone number
+        $request->phone? $data['phone'] = '+234' . substr($data['phone'], 1): null ;
 
         // persist new user into db
         $user = User::create($data);
@@ -137,6 +141,21 @@ class UserRepository
         return $status === Password::RESET_LINK_SENT
                     ? response()->json(['message' => 'password reset link sent, check your email'], 200)
                     : response()->json(['error' => 'unable to send reset link'], 401);
+    }
+
+    /**
+     * send pin to user
+     *
+     * @param  Request $request
+     * @return void
+     */
+    public function sendPin(Request $request)
+    {
+        $user = User::where('email', $request->email)->get()->first();
+
+        if ($user) {
+            $user->notify(new UserPinForgotten($user));
+        }
     }
 
     /**

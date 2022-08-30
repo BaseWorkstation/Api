@@ -40,7 +40,7 @@ class UserController extends Controller
             'last_name' => 'required|max:255',
             'first_name' => 'required|max:255',
             'email' => 'required|email|unique:users',
-            'phone' => 'required|unique:users',
+            'phone' => 'required|unique:users|min:11',
             'password' => 'required|confirmed'
         ]);
 
@@ -161,6 +161,23 @@ class UserController extends Controller
         $request->validate(['email' => 'required|email']);
         
         return $this->userRepository->sendPasswordResetLink($request);
+    }
+
+    /**
+     * send password-pin
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Repositories\UserRepository
+     */
+    public function sendPin(Request $request)
+    {
+        $request->validate([
+                        'email' => 'required|email|exists:users,email'
+                    ],[
+                        'email.exists' => 'please check email again, it does not exist'
+                    ]);
+        
+        return $this->userRepository->sendPin($request);
     }
 
     /**

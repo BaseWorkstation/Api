@@ -53,6 +53,28 @@ class User extends Authenticatable implements Auditable
     protected $guard_name = 'web';
 
     /**
+     * Route notifications for the Vonage channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForVonage($notification)
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Route notifications for the Termii channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForTermii()
+    {
+        return $this->phone;
+    }
+
+    /**
      * Get the user's avatar.
      */
     public function avatar()
@@ -111,6 +133,14 @@ class User extends Authenticatable implements Auditable
     }
 
     /**
+     * Get all of the payment methods paid by a user.
+     */
+    public function paymentMethodsPaidFor()
+    {
+        return $this->morphMany(PaymentMethod::class, 'paidByable');
+    }
+
+    /**
      * Get all of the visits paid for by the user.
      */
     public function visitsPaidFor()
@@ -139,5 +169,20 @@ class User extends Authenticatable implements Auditable
         }
 
         return false;
+    }
+
+    /**
+     * the user's current visit.
+     *
+     */
+    public function currentVisit()
+    {
+        $last_visit = $this->visits()->latest()->get()->first();
+
+        if ($last_visit && $last_visit->check_out_time === null) {
+            return $last_visit;
+        }
+
+        return null;
     }
 }

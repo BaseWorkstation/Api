@@ -3,6 +3,7 @@
 namespace App\Http\Resources\TeamMember;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\PaymentMethod\PaymentMethodCollection;
 
 class TeamMemberResource extends JsonResource
 {
@@ -27,7 +28,8 @@ class TeamMemberResource extends JsonResource
                                     ->wherePivot('team_id', $request->team_id)
                                     ->wherePivot('user_id', $this->id)
                                     ->get()->first()->pivot->deleted_at,
-            'last_active' => '2 minutes ago',
+            'last_active' => null,
+            'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
         ];
     }
 }

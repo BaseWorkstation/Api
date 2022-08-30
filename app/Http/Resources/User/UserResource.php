@@ -25,10 +25,13 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'owned_workstations' => $this->ownedWorkstations()->get()->pluck('id'),
+            'owned_teams' => $this->ownedTeams()->get()->pluck('id'),
+            'joined_teams' => $this->joinedTeams()->get()->pluck('id'),
             'pending_team_invites' => $this->mergeTeamInvites(),
             'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
             'avatar' => new FileResource($this->avatar),
             'check_in_status' => $this->checkInStatus(),
+            'current_visit' => $this->currentVisit(),
         ];
     }
 

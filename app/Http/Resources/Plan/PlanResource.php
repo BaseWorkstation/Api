@@ -6,6 +6,19 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlanResource extends JsonResource
 {
+    public $plan;
+
+    /**
+     * Create a new notification instance.
+     *
+     * @param  json  $plan
+     * @return void
+     */
+    public function __construct($plan)
+    {
+        $this->plan = $plan;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -15,10 +28,11 @@ class PlanResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'price_per_month' => $this->price_per_month,
-            'currency_code' => $this->currency_code,
+            'id' => $this->plan->id,
+            'name' => $this->plan->name,
+            'plan_code' => $this->plan->plan_code,
+            'price_per_month' => $this->plan->amount/100,
+            'currency_code' => 'NGN',
         ];
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "825589a17cc25a131ba8c3b4bd6c43ec",
+    "content-hash": "37d942152c0512f9c8cd4b76ca496059",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -61,6 +61,63 @@
                 "source": "https://github.com/asm89/stack-cors/tree/v2.1.1"
             },
             "time": "2022-01-18T09:12:03+00:00"
+        },
+        {
+            "name": "aws/aws-sdk-php",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aws/aws-sdk-php.git",
+                "reference": "6170c1bb9f7510a75870c80ecaae4a11a0420b7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6170c1bb9f7510a75870c80ecaae4a11a0420b7b",
+                "reference": "6170c1bb9f7510a75870c80ecaae4a11a0420b7b",
+                "shasum": ""
+            },
+            "require": {
+                "guzzle/guzzle": "~3.1.2",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "doctrine/common": "2.3.*",
+                "ext-apc": "*",
+                "monolog/monolog": "1.2.*",
+                "phpunit/phpunit": "3.7.*",
+                "symfony/class-loader": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Aws": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Amazon Web Services",
+                    "homepage": "http://aws.amazon.com"
+                }
+            ],
+            "description": "AWS SDK for PHP",
+            "homepage": "http://aws.amazon.com/sdkforphp2",
+            "keywords": [
+                "amazon",
+                "aws",
+                "dynamodb",
+                "ec2",
+                "s3",
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/aws/aws-sdk-php/issues",
+                "source": "https://github.com/aws/aws-sdk-php/tree/2.1.0"
+            },
+            "time": "2013-01-29T05:41:56+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -233,6 +290,79 @@
                 "source": "https://github.com/cloudinary/cloudinary_php/tree/1.20.1"
             },
             "time": "2022-02-01T08:35:49+00:00"
+        },
+        {
+            "name": "composer/package-versions-deprecated",
+            "version": "1.11.99.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/package-versions-deprecated.git",
+                "reference": "b4f54f74ef3453349c24a845d22392cd31e65f1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/b4f54f74ef3453349c24a845d22392cd31e65f1d",
+                "reference": "b4f54f74ef3453349c24a845d22392cd31e65f1d",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1.0 || ^2.0",
+                "php": "^7 || ^8"
+            },
+            "replace": {
+                "ocramius/package-versions": "1.11.99"
+            },
+            "require-dev": {
+                "composer/composer": "^1.9.3 || ^2.0@dev",
+                "ext-zip": "^1.13",
+                "phpunit/phpunit": "^6.5 || ^7"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PackageVersions\\Installer",
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PackageVersions\\": "src/PackageVersions"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com"
+                },
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be"
+                }
+            ],
+            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+            "support": {
+                "issues": "https://github.com/composer/package-versions-deprecated/issues",
+                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.5"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-01-17T14:14:24+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -1463,6 +1593,103 @@
             "time": "2021-11-21T21:41:47+00:00"
         },
         {
+            "name": "guzzle/guzzle",
+            "version": "v3.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "7901ea7d27373d0cc85eac6f6694e4c2ced90a26"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/7901ea7d27373d0cc85eac6f6694e4c2ced90a26",
+                "reference": "7901ea7d27373d0cc85eac6f6694e4c2ced90a26",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.2",
+                "symfony/event-dispatcher": ">=2.1"
+            },
+            "replace": {
+                "guzzle/batch": "self.version",
+                "guzzle/cache": "self.version",
+                "guzzle/common": "self.version",
+                "guzzle/http": "self.version",
+                "guzzle/inflection": "self.version",
+                "guzzle/iterator": "self.version",
+                "guzzle/log": "self.version",
+                "guzzle/parser": "self.version",
+                "guzzle/plugin": "self.version",
+                "guzzle/plugin-async": "self.version",
+                "guzzle/plugin-backoff": "self.version",
+                "guzzle/plugin-cache": "self.version",
+                "guzzle/plugin-cookie": "self.version",
+                "guzzle/plugin-curlauth": "self.version",
+                "guzzle/plugin-history": "self.version",
+                "guzzle/plugin-log": "self.version",
+                "guzzle/plugin-md5": "self.version",
+                "guzzle/plugin-mock": "self.version",
+                "guzzle/plugin-oauth": "self.version",
+                "guzzle/service": "self.version",
+                "guzzle/stream": "self.version"
+            },
+            "require-dev": {
+                "doctrine/common": "*",
+                "monolog/monolog": "1.*",
+                "phpunit/phpunit": "3.7.*",
+                "symfony/class-loader": "*",
+                "zend/zend-cache1": "1.12",
+                "zend/zend-log1": "1.12",
+                "zendframework/zend-cache": "2.0.*",
+                "zendframework/zend-log": "2.0.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Guzzle\\Tests": "tests/",
+                    "Guzzle": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Guzzle Community",
+                    "homepage": "https://github.com/guzzle/guzzle/contributors"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "support": {
+                "issues": "https://github.com/guzzle/guzzle/issues",
+                "source": "https://github.com/guzzle/guzzle/tree/v3.1.2"
+            },
+            "abandoned": "guzzlehttp/guzzle",
+            "time": "2013-01-28T00:07:40+00:00"
+        },
+        {
             "name": "guzzlehttp/guzzle",
             "version": "7.4.4",
             "source": {
@@ -1920,6 +2147,105 @@
             "time": "2021-02-04T04:53:27+00:00"
         },
         {
+            "name": "laminas/laminas-diactoros",
+            "version": "2.14.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-diactoros.git",
+                "reference": "6cb35f61913f06b2c91075db00f67cfd78869e28"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-diactoros/zipball/6cb35f61913f06b2c91075db00f67cfd78869e28",
+                "reference": "6cb35f61913f06b2c91075db00f67cfd78869e28",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3 || ~8.0.0 || ~8.1.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0"
+            },
+            "conflict": {
+                "phpspec/prophecy": "<1.9.0",
+                "zendframework/zend-diactoros": "*"
+            },
+            "provide": {
+                "psr/http-factory-implementation": "1.0",
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "ext-dom": "*",
+                "ext-gd": "*",
+                "ext-libxml": "*",
+                "http-interop/http-factory-tests": "^0.9.0",
+                "laminas/laminas-coding-standard": "~2.3.0",
+                "php-http/psr7-integration-tests": "^1.1.1",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "psalm/plugin-phpunit": "^0.17.0",
+                "vimeo/psalm": "^4.24.0"
+            },
+            "type": "library",
+            "extra": {
+                "laminas": {
+                    "config-provider": "Laminas\\Diactoros\\ConfigProvider",
+                    "module": "Laminas\\Diactoros"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions/create_uploaded_file.php",
+                    "src/functions/marshal_headers_from_sapi.php",
+                    "src/functions/marshal_method_from_sapi.php",
+                    "src/functions/marshal_protocol_version_from_sapi.php",
+                    "src/functions/marshal_uri_from_sapi.php",
+                    "src/functions/normalize_server.php",
+                    "src/functions/normalize_uploaded_files.php",
+                    "src/functions/parse_cookie_header.php",
+                    "src/functions/create_uploaded_file.legacy.php",
+                    "src/functions/marshal_headers_from_sapi.legacy.php",
+                    "src/functions/marshal_method_from_sapi.legacy.php",
+                    "src/functions/marshal_protocol_version_from_sapi.legacy.php",
+                    "src/functions/marshal_uri_from_sapi.legacy.php",
+                    "src/functions/normalize_server.legacy.php",
+                    "src/functions/normalize_uploaded_files.legacy.php",
+                    "src/functions/parse_cookie_header.legacy.php"
+                ],
+                "psr-4": {
+                    "Laminas\\Diactoros\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "PSR HTTP Message implementations",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "http",
+                "laminas",
+                "psr",
+                "psr-17",
+                "psr-7"
+            ],
+            "support": {
+                "chat": "https://laminas.dev/chat",
+                "docs": "https://docs.laminas.dev/laminas-diactoros/",
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/laminas/laminas-diactoros/issues",
+                "rss": "https://github.com/laminas/laminas-diactoros/releases.atom",
+                "source": "https://github.com/laminas/laminas-diactoros"
+            },
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2022-07-28T12:23:48+00:00"
+        },
+        {
             "name": "laravel/framework",
             "version": "v9.17.0",
             "source": {
@@ -2097,6 +2423,74 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2022-06-07T15:09:32+00:00"
+        },
+        {
+            "name": "laravel/nexmo-notification-channel",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/vonage-notification-channel.git",
+                "reference": "c1245b19bfa3c6f7a45ef103c6bbc3437b76040a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/vonage-notification-channel/zipball/c1245b19bfa3c6f7a45ef103c6bbc3437b76040a",
+                "reference": "c1245b19bfa3c6f7a45ef103c6bbc3437b76040a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/notifications": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0",
+                "php": "^8.0",
+                "vonage/client-core": "^3.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.2",
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Illuminate\\Notifications\\VonageChannelServiceProvider"
+                    ],
+                    "aliases": {
+                        "Vonage": "Illuminate\\Notifications\\Facades\\Vonage"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Notifications\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Vonage Notification Channel for laravel.",
+            "keywords": [
+                "laravel",
+                "nexmo",
+                "notifications",
+                "vonage"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/vonage-notification-channel/issues",
+                "source": "https://github.com/laravel/vonage-notification-channel/tree/v3.0.0"
+            },
+            "abandoned": "laravel/vonage-notification-channel",
+            "time": "2022-02-08T14:43:08+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2366,6 +2760,73 @@
                 "source": "https://github.com/laravel/tinker/tree/v2.7.2"
             },
             "time": "2022-03-23T12:38:24+00:00"
+        },
+        {
+            "name": "laravel/vonage-notification-channel",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/vonage-notification-channel.git",
+                "reference": "c1245b19bfa3c6f7a45ef103c6bbc3437b76040a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/vonage-notification-channel/zipball/c1245b19bfa3c6f7a45ef103c6bbc3437b76040a",
+                "reference": "c1245b19bfa3c6f7a45ef103c6bbc3437b76040a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/notifications": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0",
+                "php": "^8.0",
+                "vonage/client-core": "^3.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.2",
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Illuminate\\Notifications\\VonageChannelServiceProvider"
+                    ],
+                    "aliases": {
+                        "Vonage": "Illuminate\\Notifications\\Facades\\Vonage"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Notifications\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Vonage Notification Channel for laravel.",
+            "keywords": [
+                "laravel",
+                "nexmo",
+                "notifications",
+                "vonage"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/vonage-notification-channel/issues",
+                "source": "https://github.com/laravel/vonage-notification-channel/tree/v3.0.0"
+            },
+            "time": "2022-02-08T14:43:08+00:00"
         },
         {
             "name": "lcobucci/clock",
@@ -3148,6 +3609,154 @@
                 }
             ],
             "time": "2021-06-28T04:27:21+00:00"
+        },
+        {
+            "name": "mane-olawale/laravel-termii",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mane-Olawale/laravel-termii.git",
+                "reference": "a550747e93d25922ef6a9ff598a003661caf018f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mane-Olawale/laravel-termii/zipball/a550747e93d25922ef6a9ff598a003661caf018f",
+                "reference": "a550747e93d25922ef6a9ff598a003661caf018f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/notifications": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "mane-olawale/termii": "^1.2",
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~1.4",
+                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0",
+                "phpunit/phpunit": "~8.0|~9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ManeOlawale\\Laravel\\Termii\\TermiiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ManeOlawale\\Laravel\\Termii\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ilesanmi Olawale Adedotun",
+                    "email": "horlwaley001@gmail.com",
+                    "homepage": "https://twitter.com/mane_olawale"
+                }
+            ],
+            "description": "A Laravel package for Termii SMS API.",
+            "homepage": "https://github.com/mane-olawale/laravel-termii",
+            "support": {
+                "issues": "https://github.com/mane-olawale/laravel-termii/issues",
+                "source": "https://github.com/mane-olawale/laravel-termii"
+            },
+            "time": "2022-08-21T16:47:07+00:00"
+        },
+        {
+            "name": "mane-olawale/rest-response",
+            "version": "v0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mane-Olawale/rest-response.git",
+                "reference": "93f4ac3d6f9e756dd02bde4bc0714c4b7f6b8948"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mane-Olawale/rest-response/zipball/93f4ac3d6f9e756dd02bde4bc0714c4b7f6b8948",
+                "reference": "93f4ac3d6f9e756dd02bde4bc0714c4b7f6b8948",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6|~7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.4|^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ManeOlawale\\RestResponse\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ilesanmi Olawale Adedotun",
+                    "email": "horlawaley001@gmail.com"
+                }
+            ],
+            "description": "Base response classes for Rest API SDKs.",
+            "support": {
+                "issues": "https://github.com/Mane-Olawale/rest-response/issues",
+                "source": "https://github.com/Mane-Olawale/rest-response/tree/v0.1"
+            },
+            "time": "2022-03-28T10:15:57+00:00"
+        },
+        {
+            "name": "mane-olawale/termii",
+            "version": "v1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mane-Olawale/termii.git",
+                "reference": "cefc8e473025bb37616bf3572f7679195f9b86b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mane-Olawale/termii/zipball/cefc8e473025bb37616bf3572f7679195f9b86b1",
+                "reference": "cefc8e473025bb37616bf3572f7679195f9b86b1",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6|~7",
+                "mane-olawale/rest-response": "^0.1.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "phpunit/phpunit": "^8.4|^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ManeOlawale\\Termii\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ilesanmi Olawale Adedotun",
+                    "email": "horlwaley001@gmail.com",
+                    "homepage": "https://twitter.com/mane_olawale"
+                }
+            ],
+            "description": "A simple Object Oriented PHP Client for Termii SMS API.",
+            "homepage": "https://github.com/mane-olawale/termii",
+            "support": {
+                "issues": "https://github.com/mane-olawale/termii/issues",
+                "source": "https://github.com/mane-olawale/termii"
+            },
+            "time": "2022-03-29T14:23:37+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5561,16 +6170,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v6.0.9",
+            "version": "v6.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "3c6fc53a3deed2d3c1825d41ad8b3f23a6b038b5"
+                "reference": "49bef7df70f84a4f5d516eb268963779ca80320d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/3c6fc53a3deed2d3c1825d41ad8b3f23a6b038b5",
-                "reference": "3c6fc53a3deed2d3c1825d41ad8b3f23a6b038b5",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/49bef7df70f84a4f5d516eb268963779ca80320d",
+                "reference": "49bef7df70f84a4f5d516eb268963779ca80320d",
                 "shasum": ""
             },
             "require": {
@@ -5625,7 +6234,7 @@
             "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v6.0.9"
+                "source": "https://github.com/symfony/http-client/tree/v6.0.11"
             },
             "funding": [
                 {
@@ -5641,7 +6250,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-21T13:33:31+00:00"
+            "time": "2022-07-28T13:39:17+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -6778,6 +7387,71 @@
             "time": "2022-05-24T11:49:31+00:00"
         },
         {
+            "name": "symfony/postmark-mailer",
+            "version": "v6.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/postmark-mailer.git",
+                "reference": "8405569233efb0140e55eb6236c9e55693f058ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/postmark-mailer/zipball/8405569233efb0140e55eb6236c9e55693f058ff",
+                "reference": "8405569233efb0140e55eb6236c9e55693f058ff",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.2",
+                "symfony/mailer": "^5.4|^6.0"
+            },
+            "require-dev": {
+                "symfony/http-client": "^5.4|^6.0"
+            },
+            "type": "symfony-mailer-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Mailer\\Bridge\\Postmark\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Postmark Mailer Bridge",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/postmark-mailer/tree/v6.0.7"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-03-24T17:11:42+00:00"
+        },
+        {
             "name": "symfony/process",
             "version": "v6.0.8",
             "source": {
@@ -7648,6 +8322,119 @@
                 }
             ],
             "time": "2022-03-08T17:03:00+00:00"
+        },
+        {
+            "name": "vonage/client-core",
+            "version": "3.1.2",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:Vonage/vonage-php-sdk-core.git",
+                "reference": "83c12a4f7ff8e55978e4686a41a0344e98f3e6e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Vonage/vonage-php-sdk-core/zipball/83c12a4f7ff8e55978e4686a41a0344e98f3e6e3",
+                "reference": "83c12a4f7ff8e55978e4686a41a0344e98f3e6e3",
+                "shasum": ""
+            },
+            "require": {
+                "composer/package-versions-deprecated": "^1.11",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "laminas/laminas-diactoros": "^2.4",
+                "lcobucci/jwt": "^3.4|^4.0",
+                "php": "~7.4 || ~8.0 || ~8.1",
+                "psr/container": "^1.0 | ^2.0",
+                "psr/http-client-implementation": "^1.0",
+                "psr/log": "^1.1|^2.0|^3.0",
+                "vonage/nexmo-bridge": "^0.1.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": ">=6",
+                "helmich/phpunit-json-assert": "^3.3",
+                "php": "~7.4 || ~8.0 || ~8.1",
+                "php-http/mock-client": "^1.4",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^8.5|^9.4",
+                "roave/security-advisories": "dev-latest",
+                "softcreatr/jsonpath": "^0.7 || ^0.8",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Vonage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "James Seconde",
+                    "email": "jim.seconde@vonage.com",
+                    "role": "PHP Developer Advocate"
+                }
+            ],
+            "description": "PHP Client for using Vonage's API.",
+            "homepage": "https://developer.nexmo.com",
+            "support": {
+                "docs": "https://developer.vonage.com",
+                "email": "devrel@vonage.com",
+                "issues": "https://github.com/Vonage/vonage-php-sdk-core/issues",
+                "source": "https://github.com/Vonage/vonage-php-sdk-core"
+            },
+            "time": "2022-08-23T07:52:43+00:00"
+        },
+        {
+            "name": "vonage/nexmo-bridge",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nexmo/vonage-php-nexmo-bridge.git",
+                "reference": "36490dcc5915f12abeaa233c6098e0dce14bbb0a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nexmo/vonage-php-nexmo-bridge/zipball/36490dcc5915f12abeaa233c6098e0dce14bbb0a",
+                "reference": "36490dcc5915f12abeaa233c6098e0dce14bbb0a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12.39",
+                "phpunit/phpunit": "^7.4",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/autoload.php"
+                ],
+                "psr-4": {
+                    "Vonage\\NexmoBridge\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Tankersley",
+                    "email": "chris.tankersley@vonage.com"
+                }
+            ],
+            "description": "Provides a bridge for using the Vonage PHP SDK with the older Nexmo namespace",
+            "support": {
+                "issues": "https://github.com/Nexmo/vonage-php-nexmo-bridge/issues",
+                "source": "https://github.com/Nexmo/vonage-php-nexmo-bridge/tree/0.1.1"
+            },
+            "time": "2022-01-18T13:39:33+00:00"
         },
         {
             "name": "webmozart/assert",

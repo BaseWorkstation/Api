@@ -26,7 +26,7 @@ class TeamResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'logo' => new FileResource($this->logo),
-            'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
+            //'payment_methods' => new PaymentMethodCollection($this->paymentMethods),
         ];
     }
 }

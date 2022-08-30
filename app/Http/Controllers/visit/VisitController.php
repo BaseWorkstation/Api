@@ -82,14 +82,57 @@ class VisitController extends Controller
         $request->validate([
             'user_id' => 'required|integer',
             'unique_pin' => 'required',
-            'payer' => ["required", Rule::in(config('enums.paidByable_type'))],
-            'payment_method_type' => ["required_if:payer,User|integer", Rule::in(config('enums.payment_method_type'))],
-            'payment_method_id' => 'required_if:paymentable_method_type,plan|integer',
-            'team_id' => 'required_if:payer,Team|integer',
         ]);
 
         // run in the repository
         return $this->visitRepository->checkOut($request);
+    }
+
+    /**
+     * verify OTP.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Http\Repositories\VisitRepository
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function verifyOTP(Request $request)
+    {
+        // authorization
+        //$this->authorize('verifyOTP', Visit::findOrFail($id));
+
+        // validation
+        $request->validate([
+            'visit_id' => 'required|integer',
+            'otp' => 'required',
+        ]);
+
+        // run in the repository
+        return $this->visitRepository->verifyOTP($request);
+    }
+
+    /**
+     * pay for a visit.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Http\Repositories\VisitRepository
+     * 
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function payment(Request $request)
+    {
+        // validation
+        $request->validate([
+            'visit_id' => 'required|integer',
+            //'payer' => ["required", Rule::in(config('enums.paidByable_type'))],
+            'payment_method_type' => ["required", Rule::in(config('enums.payment_method_type'))],
+            'payment_method_id' => 'required_if:paymentable_method_type,plan|integer',
+            'payment_reference' => 'required_if:paymentable_method_type,PAYG_card',
+            'team_id' => 'required_if:payer,Team|integer',
+        ]);
+
+        // run in the repository
+        return $this->visitRepository->payment($request);
     }
 
     /**

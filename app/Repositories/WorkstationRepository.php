@@ -63,8 +63,17 @@ class WorkstationRepository
      */
     public function store(Request $request)
     {
+        // add +234 to phone number
+        $request->phone? $request->request->add(["phone" => '+234' . substr($request->phone, 1)]): null ;
+
         // persist request details and store in a variable
         $workstation = Workstation::create($request->all());
+
+        // add base markup details
+        $workstation->base_commission = config('enums.base_share_details.base_commission');
+        $workstation->base_markup = config('enums.base_share_details.base_markup');
+        $workstation->base_cheaper_compared_to_workstation = config('enums.base_share_details.base_cheaper_compared_to_workstation');
+        $workstation->save();
 
         // call event that a new workstation has been created
         event(new NewWorkstationCreatedEvent($request, $workstation));
@@ -176,14 +185,15 @@ class WorkstationRepository
         $metadata_for_qr_code = env('APP_URL_FRONT_END').'/check-in/?workstation_id='.$workstation->id.'&workstation_name='.$workstation->name;
 
         // generate new code
-        $qr_code = QrCode::size(500)
+        $qr_code = QrCode::size(600)
                             ->format('svg')
                             //->style('round')
                             //->color(25, 25, 112)
                             //->eyeColor(0, 169, 92, 104, 99, 3, 48)
                             //->eyeColor(1, 128, 0, 32, 191, 64, 191)
                             //->eyeColor(2, 170, 51, 106, 72, 50, 72)
-                            //->backgroundColor(229, 228, 226)
+                            ->backgroundColor(246,248,250)
+                            ->margin(5)
                             ->generate($metadata_for_qr_code);
 
         if (env('APP_INSTALLATION_LOCATION') === 'local') {
