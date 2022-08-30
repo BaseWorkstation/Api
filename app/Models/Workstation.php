@@ -37,7 +37,8 @@ class Workstation extends Model implements Auditable
     protected function phone(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => str_replace( '+234' , '0'  , $value ),
+            get: fn ($value) => str_replace( '+234' , '0'  , $value ), // remove +234 after fetching from db
+            set: fn ($value) => '+234' . substr($value, 1), // append with +234 before saving to db
         );
     }
 

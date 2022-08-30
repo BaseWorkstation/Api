@@ -63,9 +63,6 @@ class WorkstationRepository
      */
     public function store(Request $request)
     {
-        // add +234 to phone number
-        $request->phone? $request->request->add(["phone" => '+234' . substr($request->phone, 1)]): null ;
-
         // persist request details and store in a variable
         $workstation = Workstation::create($request->all());
 
