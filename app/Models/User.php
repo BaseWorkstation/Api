@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -51,6 +52,19 @@ class User extends Authenticatable implements Auditable
      * tells what default gaurd to use
      */
     protected $guard_name = 'web';
+
+    /**
+     * Interact with the workstation's phone.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function phone(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => str_replace( '+234' , '0'  , $value ), // remove +234 after fetching from db
+            set: fn ($value) => '+234' . substr($value, 1), // append with +234 before saving to db
+        );
+    }
 
     /**
      * Route notifications for the Vonage channel.
