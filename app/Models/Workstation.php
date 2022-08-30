@@ -30,14 +30,14 @@ class Workstation extends Model implements Auditable
     protected $with = ['retainers'];
 
     /**
-     * Interact with the workstation's coordinates.
+     * Interact with the workstation's phone.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    protected function coordinates(): Attribute
+    protected function phone(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => str_replace( array('(',')') , ''  , $value ),
+            get: fn ($value) => str_replace( '+234' , '0'  , $value ),
         );
     }
 
