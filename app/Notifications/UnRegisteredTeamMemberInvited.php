@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\Team;
 
-class UnRegisteredTeamMemberInvited extends Notification implements ShouldQueue
+class UnRegisteredTeamMemberInvited extends Notification
 {
     use Queueable;
 
