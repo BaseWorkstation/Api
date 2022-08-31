@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\User;
 
-class UserPinCreated extends Notification implements ShouldQueue
+class UserPinCreated extends Notification
 {
     use Queueable;
 

@@ -11,7 +11,7 @@ use App\Models\Visit;
 use App\Models\Workstation;
 use App\Models\User;
 
-class NotifyWorkstationOfNewVisit extends Notification implements ShouldQueue
+class NotifyWorkstationOfNewVisit extends Notification
 {
     use Queueable;
 

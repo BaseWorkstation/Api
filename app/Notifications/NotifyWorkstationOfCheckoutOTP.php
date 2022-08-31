@@ -12,7 +12,7 @@ use App\Models\Visit;
 use App\Models\Workstation;
 use App\Models\User;
 
-class NotifyWorkstationOfCheckoutOTP extends Notification implements ShouldQueue
+class NotifyWorkstationOfCheckoutOTP extends Notification
 {
     use Queueable;
 
@@ -37,7 +37,7 @@ class NotifyWorkstationOfCheckoutOTP extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'termii'];
+        return ['mail'];
     }
 
     /**
