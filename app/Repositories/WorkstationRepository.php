@@ -298,4 +298,23 @@ class WorkstationRepository
         $workstation->qr_code_path = str_replace('http://', 'https://', $image_result['url']);
         $workstation->save();
     }
+
+    /**
+     * Regenerate all workstations' qr codes.
+     *
+     * @return void
+     */
+    public function regenerateQRCodesForAllWorkstations()
+    {
+        // create a dummy request to pass as first parameter when calling the method that creates each workstation's qr code
+        $dummy_request = new Request();
+
+        // get all workstations
+        $workstations = Workstation::all();
+
+
+        foreach ($workstations as $workstation) {
+            $this->createQrCodeForWorkstation($dummy_request, $workstation);
+        }
+    }
 }
