@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Resources\Service\ServiceResource;
 use App\Http\Resources\Service\ServiceCollection;
 use App\Events\Service\NewServiceCreatedEvent;
+use App\Events\Service\ServiceUpdatedEvent;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Workstation;
@@ -99,6 +100,9 @@ class ServiceRepository
 
         // remove or filter null values from the request data then update the instance
         $service->update(array_filter($request->all()));
+
+        // call event that a service has been updated
+        event(new ServiceUpdatedEvent($request, $service));
 
         // return resource
         return new ServiceResource($service);

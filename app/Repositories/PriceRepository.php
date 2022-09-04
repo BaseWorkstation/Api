@@ -89,17 +89,18 @@ class PriceRepository
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
+     * @param  integer|decimal  $amount
      * @return \Illuminate\Http\Resources\Price\PriceResource
      */
-    public function update(Request $request, $id)
+    public function update($id, $amount)
     {
         // find the instance
         $price = $this->getPriceById($id);
 
-        // remove or filter null values from the request data then update the instance
-        $price->update(array_filter($request->all()));
+        // update the instance
+        $price->amount = $amount;
+        $price->save();
 
         // return resource
         return new PriceResource($price);
