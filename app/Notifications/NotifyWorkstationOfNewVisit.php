@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\VonageMessage;
+use ManeOlawale\Laravel\Termii\Messages\Message as TermiiMessage;
 use App\Models\Visit;
 use App\Models\Workstation;
 use App\Models\User;
@@ -36,7 +37,7 @@ class NotifyWorkstationOfNewVisit extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'termii'];
     }
 
     /**
@@ -67,6 +68,21 @@ class NotifyWorkstationOfNewVisit extends Notification
 
         return (new VonageMessage)
                     ->content(ucfirst($user->first_name).' '.ucfirst($user->last_name).' checked in to '.ucfirst($workstation->name).' at '. $this->visit['created_at']);
+    }
+
+    /**
+     * Get the termii sms representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \ManeOlawale\Laravel\Termii\Messages\Message
+     */
+    public function toTermii($notifiable)
+    {
+        $workstation = Workstation::findOrFail($this->visit['workstation_id']);
+        $user = User::findOrFail($this->visit['user_id']);
+        
+        return (new TermiiMessage)
+                    ->line(ucfirst($user->first_name).' '.ucfirst($user->last_name).' checked in to '.ucfirst($workstation->name).' at '. $this->visit['created_at']);
     }
 
     /**
