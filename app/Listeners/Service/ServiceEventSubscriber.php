@@ -55,9 +55,9 @@ class ServiceEventSubscriber
             NewServiceCreatedEvent::class,
             [ServiceEventSubscriber::class, 'storePrice']
         );
-        $events->listen(
+        /*$events->listen(
             ServiceUpdatedEvent::class,
             [ServiceEventSubscriber::class, 'updatePrice']
-        );
+        );*/
     }
 }
