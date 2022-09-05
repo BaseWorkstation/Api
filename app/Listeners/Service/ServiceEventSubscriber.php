@@ -4,6 +4,7 @@ namespace App\Listeners\Service;
  
 use App\Repositories\PriceRepository;
 use App\Events\Service\NewServiceCreatedEvent;
+use App\Events\Service\ServiceUpdatedEvent;
 use App\Listeners\Service\ServiceEventSubscriber;
  
 class ServiceEventSubscriber
@@ -33,6 +34,14 @@ class ServiceEventSubscriber
         // run in price repository
         $this->priceRepository->store($event->request, $event->service);
     }
+
+    /**
+     * Handle updating of prices.
+     */
+    public function updatePrice($event) {
+        // run in price repository
+        $this->priceRepository->update($event->service->prices()->first()->id, $event->request->price);
+    }
  
     /**
      * Register the listeners for the subscriber.
@@ -46,5 +55,9 @@ class ServiceEventSubscriber
             NewServiceCreatedEvent::class,
             [ServiceEventSubscriber::class, 'storePrice']
         );
+        /*$events->listen(
+            ServiceUpdatedEvent::class,
+            [ServiceEventSubscriber::class, 'updatePrice']
+        );*/
     }
 }

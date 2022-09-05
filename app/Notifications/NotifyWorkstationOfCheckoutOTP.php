@@ -37,7 +37,7 @@ class NotifyWorkstationOfCheckoutOTP extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'termii'];
     }
 
     /**
