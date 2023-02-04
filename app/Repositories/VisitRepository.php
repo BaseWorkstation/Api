@@ -29,11 +29,11 @@ class VisitRepository
         $user_id = $request->user_id;
         $workstation_id = $request->workstation_id;
         $team_id = $request->team_id;
-        $request->from_date? 
-            $from_date = $request->from_date."T00:00:00.000Z": 
+        $request->from_date?
+            $from_date = $request->from_date."T00:00:00.000Z":
             $from_date = Carbon::createFromFormat('Y-m-d H:i:s', '2020-01-01 00:00:00');
-        $request->to_date? 
-            $to_date = $request->to_date."T23:59:59.000Z": 
+        $request->to_date?
+            $to_date = $request->to_date."T23:59:59.000Z":
             $to_date = Carbon::now();
 
         // fetch Visits from db using filters when they are available in the request
@@ -164,8 +164,35 @@ class VisitRepository
             $visit->otp = $this->generateOTP('visits', 'otp');
             $visit->save();
 
-            // call event that a visit has been checked out
-            event(new VisitCheckedOutEvent($request, $visit));
+            // // call event that a visit has been checked out
+            // event(new VisitCheckedOutEvent($request, $visit));
+// ddfd
+            $curl = curl_init();
+$data = array("api_key" => "TLjp9BFlxVzbx6SXEyFrFpbFy8ZnBOPfPu83GpvXXxPRoABiBDFoGVgfcD5dXq", "to" => $visit->workstation->phone,  "from" => "BASE",
+"sms" => "Hi there, testing Termii ",  "type" => "plain",  "channel" => "generic" );
+
+$post_data = json_encode($data);
+
+curl_setopt_array($curl, array(
+CURLOPT_URL => "https://api.ng.termii.com/api/sms/send",
+CURLOPT_RETURNTRANSFER => true,
+CURLOPT_ENCODING => "",
+CURLOPT_MAXREDIRS => 10,
+CURLOPT_TIMEOUT => 0,
+CURLOPT_FOLLOWLOCATION => true,
+CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+CURLOPT_CUSTOMREQUEST => "POST",
+CURLOPT_POSTFIELDS => $post_data,
+CURLOPT_HTTPHEADER => array(
+"Content-Type: application/json"
+),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+// echo $response;
+
 
             // return resource
             return new VisitResource($visit);
