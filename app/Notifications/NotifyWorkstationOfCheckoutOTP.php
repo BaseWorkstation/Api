@@ -11,6 +11,7 @@ use ManeOlawale\Laravel\Termii\Messages\Message as TermiiMessage;
 use App\Models\Visit;
 use App\Models\Workstation;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class NotifyWorkstationOfCheckoutOTP extends Notification
 {
@@ -78,9 +79,10 @@ class NotifyWorkstationOfCheckoutOTP extends Notification
      */
     public function toTermii($notifiable)
     {
+        Log::info('yes');
         $workstation = Workstation::findOrFail($this->visit['workstation_id']);
         $user = User::findOrFail($this->visit['user_id']);
-        
+
         return (new TermiiMessage)
                     ->line(ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($workstation->name).'. Use OTP '. $this->visit['otp'].' to approve. ');
     }

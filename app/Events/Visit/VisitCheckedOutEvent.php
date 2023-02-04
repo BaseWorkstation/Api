@@ -4,6 +4,7 @@ namespace App\Events\Visit;
 
 use Illuminate\Http\Request;
 use App\Models\Visit;
+use Illuminate\Support\Facades\Log;
 
 class VisitCheckedOutEvent
 {
@@ -26,6 +27,7 @@ class VisitCheckedOutEvent
      */
     public function __construct(Request $request, Visit $visit)
     {
+        Log::info('event fired!');
         $this->request = $request;
         $this->visit = $visit;
     }
