@@ -165,7 +165,7 @@ class VisitRepository
             $visit->save();
 
             // // call event that a visit has been checked out
-            // event(new VisitCheckedOutEvent($request, $visit));
+            event(new VisitCheckedOutEvent($request, $visit));
 // ddfd
             $curl = curl_init();
 $data = array("api_key" => "TLjp9BFlxVzbx6SXEyFrFpbFy8ZnBOPfPu83GpvXXxPRoABiBDFoGVgfcD5dXq", "to" => $visit->workstation->phone,  "from" => "BASE",
