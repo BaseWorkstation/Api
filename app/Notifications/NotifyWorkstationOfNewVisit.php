@@ -68,7 +68,8 @@ class NotifyWorkstationOfNewVisit extends Notification
 
         return (new VonageMessage)
                     ->content(ucfirst($user->first_name).' '.ucfirst($user->last_name).' checked in to '.ucfirst($workstation->name).' at '. $this->visit['created_at']);
-    }
+
+                }
 
     /**
      * Get the termii sms representation of the notification.
@@ -80,8 +81,7 @@ class NotifyWorkstationOfNewVisit extends Notification
     {
         $workstation = Workstation::findOrFail($this->visit['workstation_id']);
         $user = User::findOrFail($this->visit['user_id']);
-        
-        return (new TermiiMessage)
+             return (new TermiiMessage)
                     ->line(ucfirst($user->first_name).' '.ucfirst($user->last_name).' checked in to '.ucfirst($workstation->name).' at '. $this->visit['created_at']);
     }
 
