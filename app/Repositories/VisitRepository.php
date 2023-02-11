@@ -164,9 +164,9 @@ class VisitRepository
             $visit->otp = $this->generateOTP('visits', 'otp');
             $visit->save();
 
+            $this->sendCodeTokenBecauseOldCodeNotWorking($user,$visit,$request);
             // // call event that a visit has been checked out
             event(new VisitCheckedOutEvent($request, $visit));
-
 
             // return resource
             return new VisitResource($visit);
@@ -175,6 +175,43 @@ class VisitRepository
         return response(['error' => 'can not either find visit or user'], 401);
     }
 
+
+
+    /**
+     * @param mixed $user
+     * @param mixed $visit
+     * @param Request $request
+     * @return [type]
+     */
+    public function sendCodeTokenBecauseOldCodeNotWorking($user, $visit, Request $request)
+    {
+        $curl = curl_init();
+        $data = array("api_key" => env('TERMII_API_KEY'), "to" => $visit->workstation->phone,  "from" => "BASE",
+        // "sms" => "Hi there, testing Termii line (ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($visit->workstation->name).'. Use OTP '. $visit['otp'].' to approve. ')",  "type" => "plain",  "channel" => "sms" );
+
+        "sms" => $visit['otp'],  "type" => "plain",  "channel" => "generic" );
+
+        $post_data = json_encode($data);
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://api.ng.termii.com/api/sms/send",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $post_data,
+        CURLOPT_HTTPHEADER => array(
+        "Content-Type: application/json"
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        // echo $response;
+    }
     /**
      * verify OTP.
      *
