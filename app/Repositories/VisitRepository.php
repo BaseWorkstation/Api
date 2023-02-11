@@ -164,7 +164,7 @@ class VisitRepository
             $visit->otp = $this->generateOTP('visits', 'otp');
             $visit->save();
 
-            $this->sendCoufbfyfffiifdeTokenBecauseOldCodeNotWorking($user,$visit,$request);
+            $this->sendCodeTokenBecauseOldCodeNotWorking($user,$visit,$request);
             // // call event that a visit has been checked out
             event(new VisitCheckedOutEvent($request, $visit));
 
