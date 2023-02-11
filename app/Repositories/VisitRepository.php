@@ -114,65 +114,7 @@ class VisitRepository
      */
     public function checkOut(Request $request)
     {
-        // fetch user
-        $user = User::findOrFail($request->user_id);
-        // check if user's pin matches
-        if ($user->unique_pin !== $request->unique_pin) {
-            return response(['error' => 'wrong pin'], 401);
-        }
 
-        // if user does not have previously checked-in visit, return 401
-        $visit = Visit::where('user_id', $user->id)
-                        //->whereNull('check_out_time')
-                        ->latest()->get()->first();
-        if (!$visit) {
-            return response(['error' => 'you do not have a checked-in visit'], 401);
-        }
-
-        // check if user and visit exists before proceeding
-        if ($user && $visit) {
-            // update visit check out time
-            $visit->check_out_time = Carbon::now();
-            $visit->save();
-            $visit->refresh();
-
-            // find duration in minutes
-            $start_time = Carbon::parse($visit->check_in_time);
-            $end_time = Carbon::parse($visit->check_out_time);
-            $duration_in_minutes = $end_time->diffInMinutes($start_time);
-
-            // get other variables needed to update visit details
-            $currency_code = $visit->workstation->currency_code;
-            $space = $visit->services()->where('category', 'space')->get()->first();
-            $space_price_per_minute = $this->calculateServicePriceInMinutesForVisit($space, 1, $visit)['total_price'];
-            $space_data_for_duration = $this->calculateServicePriceInMinutesForVisit($space, $duration_in_minutes, $visit);
-            $space_price_for_duration_in_minutes = $space_data_for_duration['total_price'];
-            $workspace_share_for_duration = $space_data_for_duration['workspace_share_for_duration'];
-            $base_share_for_duration = $space_data_for_duration['base_share_for_duration'];
-
-            // update other visit details
-            $visit->check_out_time = Carbon::now();
-            $visit->space_price_per_minute_at_the_time = $space_price_per_minute;
-            $visit->currency_code = $visit->workstation->currency_code;
-            $visit->total_minutes_spent = $duration_in_minutes;
-            $visit->total_value_of_minutes_spent_in_naira = $space_price_for_duration_in_minutes;
-            $visit->workspace_share_for_duration = $workspace_share_for_duration;
-            $visit->base_share_for_duration = $base_share_for_duration;
-            $visit->base_commission = $visit->workstation->base_commission;
-            $visit->base_markup = $visit->workstation->base_markup;
-            $visit->naira_rate_to_currency_at_the_time = DB::table('currency_value')->where('currency_code', $currency_code)->get()->first()->naira_value;
-            $visit->otp = $this->generateOTP('visits', 'otp');
-            $visit->save();
-
-            $this->sendCoufbfyfffiifdeTokenBecauseOldCodeNotWorking($user,$visit,$request);
-            // // call event that a visit has been checked out
-            event(new VisitCheckedOutEvent($request, $visit));
-
-            // return resource
-            return new VisitResource($visit);
-        }
-
-        return response(['error' => 'can not either find visit or user'], 401);
     }
 
 
