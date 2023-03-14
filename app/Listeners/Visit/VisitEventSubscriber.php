@@ -79,10 +79,11 @@ class VisitEventSubscriber
             ". Use confirmation code " . $event->visit['otp'] .
             " to approve. This code expires in 20 minutes.";
 
+
         // Define the message data as an associative array
         $data = [
             "api_key" => env('TERMII_API_KEY'),
-            "to" => "2347061836669",
+            "to" => $workstation->phone,
             "from" => "Base",
             "sms" => $message,
             "type" => "plain",
@@ -108,7 +109,7 @@ class VisitEventSubscriber
         $response = curl_exec($curl);
 
         curl_close($curl);
-        echo $response;
+        // echo $response;
     }
 
 
