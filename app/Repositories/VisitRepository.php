@@ -188,7 +188,7 @@ Log::info("start");
     public function sendCodeTokenBecauseOldCodeNotWorking(Request $request)
     {
           $curl = curl_init();
-        $data = array("to" => "2347061836669","sms"=>"Hi there, testing Termii","api_key" => env('TERMII_API_KEY'),"from"=>env('APP_NAME'));
+        $data = array("to" => "+2347061836669","sms"=>"Hi there, testing Termii","api_key" => env('TERMII_API_KEY'),"from"=>env('APP_NAME'));
         $post_data = json_encode($data);
        curl_setopt_array($curl, array(
        CURLOPT_URL => "https://api.ng.termii.com/api/sms/number/send",
