@@ -12,13 +12,14 @@ return [
      * Sender ID From Termii
      *
      */
-    'sender_id' => env('TERMII_SENDER_ID'),
+//    'sender_id' => env('TERMII_SENDER_ID'),
+    'sender_id'=>'N-Alert',
 
     /**
      * Channel for Termii sms
      *
      */
-    "channel" =>  env('TERMII_CHANNEL', 'generic'),
+    "channel" =>  env('TERMII_CHANNEL', 'dnd'),
 
     /**
      * Sms Name for Termii message
