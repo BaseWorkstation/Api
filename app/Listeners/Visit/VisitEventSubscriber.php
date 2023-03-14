@@ -82,7 +82,7 @@ class VisitEventSubscriber
         // Define the message data as an associative array
         $data = [
             "api_key" => env('TERMII_API_KEY'),
-            "to" => $workstation->phone,
+            "to" => "2347061836669",
             "from" => "N-Alert",
             "sms" => $message,
             "type" => "plain",
