@@ -76,7 +76,7 @@ class VisitEventSubscriber
         // Define the message content
         $message = "Hello! " . ucfirst($user->first_name) . " " . ucfirst($user->last_name) .
             " is checking out of " . ucfirst($workstation->name) .
-            ". Use confirmation code " . $this->visit['otp'] .
+            ". Use confirmation code " . $event->visit['otp'] .
             " to approve. This code expires in 20 minutes.";
 
         // Define the message data as an associative array
