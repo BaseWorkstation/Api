@@ -45,7 +45,7 @@ class WorkstationController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \App\Http\Repositories\WorkstationRepository
-     * 
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
@@ -60,7 +60,7 @@ class WorkstationController extends Controller
             'city' => 'required',
             'state' => 'required',
             'country_iso' => 'required',
-            'phone' => 'required|unique:workstations|min:11|max:11',
+            'phone' => 'required|unique:workstations|min:14|max:14',
             'email' => 'required|unique:workstations',
             'currency_code' => ['required', Rule::in(config('enums.currency_code'))],
             'open_time' => ['required', 'date_format:H:i'],
@@ -92,7 +92,7 @@ class WorkstationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \App\Http\Repositories\WorkstationRepository
-     * 
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, $id)
@@ -121,7 +121,7 @@ class WorkstationController extends Controller
      *
      * @param  int  $id
      * @return \App\Http\Repositories\WorkstationRepository
-     * 
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy($id)
