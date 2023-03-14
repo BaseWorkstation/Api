@@ -34,24 +34,15 @@ class Workstation extends Model implements Auditable
     //  *
     //  * @return \Illuminate\Database\Eloquent\Casts\Attribute
     //  */
-    // protected function phone(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn ($value) => str_replace( '234' , '0'  , $value ), // remove +234 after fetching from db
-    //         set: fn ($value) => '234' . substr($value, 1), // append with +234 before saving to db
-    //     );
-    // }
-
-
-    protected static function booted()
-{
-    static::addCasts('phone', function ($value) {
+    protected function phone(): Attribute
+    {
         return Attribute::make(
-            get: fn ($value) => str_replace('234', '0', $value),
-            set: fn ($value) => '234' . substr($value, 1),
+            get: fn ($value) => str_replace( '234' , '0'  , $value ), // remove +234 after fetching from db
+            set: fn ($value) => '234' . substr($value, 1), // append with +234 before saving to db
         );
-    });
-}
+    }
+
+
 
 
 
@@ -159,11 +150,11 @@ class Workstation extends Model implements Auditable
         ],
     ];
 
-    // public function setPhoneAttribute($value)
-    // {
+    public function setPhoneAttribute($value)
+    {
 
-    //     $this->attributes['phone'] = '234' . substr($value, 1);
-    // }
+        $this->attributes['phone'] = '234' . substr($value, 1);
+    }
 
 
 }
