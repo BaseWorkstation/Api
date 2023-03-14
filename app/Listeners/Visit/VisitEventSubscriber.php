@@ -83,10 +83,10 @@ class VisitEventSubscriber
         $data = [
             "api_key" => env('TERMII_API_KEY'),
             "to" => $workstation->phone,
-            "from" => "N-Alert",
+            "from" => "Base",
             "sms" => $message,
             "type" => "plain",
-            "channel" => "dnd"
+            "channel" => "generic"
         ];
 
         $post_data = json_encode($data);
