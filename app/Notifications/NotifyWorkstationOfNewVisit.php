@@ -7,10 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\VonageMessage;
+use Illuminate\Support\Facades\Log;
 use ManeOlawale\Laravel\Termii\Messages\Message as TermiiMessage;
 use App\Models\Visit;
 use App\Models\Workstation;
 use App\Models\User;
+
 
 class NotifyWorkstationOfNewVisit extends Notification
 {
@@ -79,6 +81,7 @@ class NotifyWorkstationOfNewVisit extends Notification
      */
     public function toTermii($notifiable)
     {
+        Log::info("sms working here!");
         $workstation = Workstation::findOrFail($this->visit['workstation_id']);
         $user = User::findOrFail($this->visit['user_id']);
              return (new TermiiMessage)

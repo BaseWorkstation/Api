@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace App\Listeners\Visit;
- 
+
 use App\Repositories\VisitRepository;
 use App\Events\Visit\VisitCheckedInEvent;
 use App\Events\Visit\VisitCheckedOutEvent;
@@ -9,7 +9,8 @@ use App\Listeners\Visit\VisitEventSubscriber;
 use App\Notifications\NotifyWorkstationOfNewVisit;
 use App\Notifications\NotifyWorkstationOfCheckoutOTP;
 use App\Models\Workstation;
- 
+use Illuminate\Support\Facades\Log;
+
 class VisitEventSubscriber
 {
     /**
@@ -33,7 +34,7 @@ class VisitEventSubscriber
     /**
      * Handle event.
      */
-    public function sendOTPNotificationToWorkstation($event) 
+    public function sendOTPNotificationToWorkstation($event)
     {
         // get workstation
         $workstation = Workstation::findOrFail($event->visit->workstation_id);
@@ -45,15 +46,17 @@ class VisitEventSubscriber
     /**
      * Handle event.
      */
-    public function sendCheckedInNotificationToWorkstation($event) 
+    public function sendCheckedInNotificationToWorkstation($event)
     {
+        Log::info("noftify working here!");
+
         // get workstation
         $workstation = Workstation::findOrFail($event->visit->workstation_id);
 
         // send notification to workstation
         $workstation->notify(new NotifyWorkstationOfNewVisit($event->visit));
     }
- 
+
     /**
      * Register the listeners for the subscriber.
      *

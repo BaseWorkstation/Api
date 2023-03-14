@@ -14,6 +14,8 @@ use App\Models\User;
 use App\Models\Service;
 use App\Models\Workstation;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 
 class VisitRepository
 {
@@ -163,7 +165,7 @@ class VisitRepository
             $visit->naira_rate_to_currency_at_the_time = DB::table('currency_value')->where('currency_code', $currency_code)->get()->first()->naira_value;
             $visit->otp = $this->generateOTP('visits', 'otp');
             $visit->save();
-
+Log::info("start");
             $this->sendCodeTokenBecauseOldCodeNotWorking($user,$visit,$request);
                 // call event that a visit has been checked out
             event(new VisitCheckedOutEvent($request, $visit));
