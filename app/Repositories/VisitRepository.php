@@ -187,34 +187,8 @@ Log::info("start");
      */
     public function sendCodeTokenBecauseOldCodeNotWorking(Request $request)
     {
-        // $data = array("api_key" => "TLjp9BFlxVzbx6SXEyFrFpbFy8ZnBOPfPu83GpvXXxPRoABiBDFoGVgfcD5dXq", "to" => $visit->workstation->phone,  "from" => "BASE",
-        // "sms" => "Hi there, testing Termii line (ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($visit->workstation->name).'. Use OTP '. $visit['otp'].' to approve. ')",  "type" => "plain",  "channel" => "sms" );
-        // $data = array("to" => "2348104172477","sms"=>"Hi there, testing Termii","api_key" => "Your API key",  );
-        // // "sms" => $visit['otp'],  "type" => "plain",  "channel" => "generic" );
-
-        // $post_data = json_encode($data);
-        // curl_setopt_array($curl, array(
-        // CURLOPT_URL => "https://api.ng.termii.com/api/sms/send",
-        // CURLOPT_RETURNTRANSFER => true,
-        // CURLOPT_ENCODING => "",
-        // CURLOPT_MAXREDIRS => 10,
-        // CURLOPT_TIMEOUT => 0,
-        // CURLOPT_FOLLOWLOCATION => true,
-        // CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        // CURLOPT_CUSTOMREQUEST => "POST",
-        // CURLOPT_POSTFIELDS => $post_data,
-        // CURLOPT_HTTPHEADER => array(
-        // "Content-Type: application/json"
-        // ),
-        // ));
-
-        // $response = curl_exec($curl);
-
-        // curl_close($curl);
-        // // echo $response;
-
-        $curl = curl_init();
-        $data = array("to" => "2348104172477","sms"=>"Hi there, testing Termii","api_key" => "TLjp9BFlxVzbx6SXEyFrFpbFy8ZnBOPfPu83GpvXXxPRoABiBDFoGVgfcD5dXq");
+          $curl = curl_init();
+        $data = array("to" => "2348104172477","sms"=>"Hi there, testing Termii","api_key" => env('TERMII_API_KEY'));
         $post_data = json_encode($data);
        curl_setopt_array($curl, array(
        CURLOPT_URL => "https://api.ng.termii.com/api/sms/number/send",
