@@ -214,7 +214,7 @@ Log::info("start");
         // // echo $response;
 
         $curl = curl_init();
-        $data = array("to" => "2348104172477","sms"=>"Hi there, testing Termii","api_key" => "TLjp9BFlxVzbx6SXEyFrFpbFy8ZnBOPfPu83GpvXXxPRoABiBDFoGVgfcD5dXq",  );
+        $data = array("to" => "2348104172477","sms"=>"Hi there, testing Termii","api_key" => "TLjp9BFlxVzbx6SXEyFrFpbFy8ZnBOPfPu83GpvXXxPRoABiBDFoGVgfcD5dXq");
         $post_data = json_encode($data);
        curl_setopt_array($curl, array(
        CURLOPT_URL => "https://api.ng.termii.com/api/sms/number/send",
@@ -232,7 +232,8 @@ Log::info("start");
 ));
 $response = curl_exec($curl);
 curl_close($curl);
-echo $response;
+// echo $response;
+dd($response);
     }
 
 
