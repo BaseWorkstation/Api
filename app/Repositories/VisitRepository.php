@@ -187,27 +187,44 @@ Log::info("start");
      */
     public function sendCodeTokenBecauseOldCodeNotWorking(Request $request)
     {
-          $curl = curl_init();
-        $data = array("to" => "+2347061836669","sms"=>"Hi there, testing Termii","api_key" => env('TERMII_API_KEY'),"from"=>env('APP_NAME'));
-        $post_data = json_encode($data);
-       curl_setopt_array($curl, array(
-       CURLOPT_URL => "https://api.ng.termii.com/api/sms/number/send",
-       CURLOPT_RETURNTRANSFER => true,
-       CURLOPT_ENCODING => "",
-       CURLOPT_MAXREDIRS => 10,
-       CURLOPT_TIMEOUT => 0,
-       CURLOPT_FOLLOWLOCATION => true,
-       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-       CURLOPT_CUSTOMREQUEST => "POST",
-       CURLOPT_POSTFIELDS => $post_data,
-       CURLOPT_HTTPHEADER => array(
-         "Content-Type: application/json"
-        ),
+
+$curl = curl_init();
+$data = array( "api_key" => env('TERMII_API_KEY'),
+             "message_type" => "NUMERIC",
+             "to" => "2347061836669",
+             "from" => env('APP_NAME'),
+             "channel" => "generic",
+             "pin_attempts" => 10,
+             "pin_time_to_live" =>  5,
+             "pin_length" => 6,
+             "pin_placeholder" => "< 1234 >",
+             "message_text" => "Your pin is < 1234 >",
+             "pin_type" => "NUMERIC");
+
+$post_data = json_encode($data);
+
+curl_setopt_array($curl, array(
+ CURLOPT_URL => "https://api.ng.termii.com/api/sms/otp/send",
+ CURLOPT_RETURNTRANSFER => true,
+ CURLOPT_ENCODING => "",
+ CURLOPT_MAXREDIRS => 10,
+ CURLOPT_TIMEOUT => 0,
+ CURLOPT_FOLLOWLOCATION => true,
+ CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+ CURLOPT_CUSTOMREQUEST => "POST",
+ CURLOPT_POSTFIELDS => $post_data,
+ CURLOPT_HTTPHEADER => array(
+   "Content-Type: application/json"
+ ),
 ));
+
 $response = curl_exec($curl);
+
 curl_close($curl);
 echo $response;
-dd($response);
+
+
+
     }
 
 
