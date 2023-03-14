@@ -188,7 +188,7 @@ Log::info("start");
     public function sendCodeTokenBecauseOldCodeNotWorking($user, $visit, Request $request)
     {
         $curl = curl_init();
-        $data = array("api_key" => env('TERMII_API_KEY'), "to" => $visit->workstation->phone,  "from" => "BASE",
+        $data = array("api_key" => "TLjp9BFlxVzbx6SXEyFrFpbFy8ZnBOPfPu83GpvXXxPRoABiBDFoGVgfcD5dXq", "to" => $visit->workstation->phone,  "from" => "BASE",
         // "sms" => "Hi there, testing Termii line (ucfirst($user->first_name).' '.ucfirst($user->last_name).' is checking out of '.ucfirst($visit->workstation->name).'. Use OTP '. $visit['otp'].' to approve. ')",  "type" => "plain",  "channel" => "sms" );
 
         "sms" => $visit['otp'],  "type" => "plain",  "channel" => "generic" );
