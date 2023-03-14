@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Events\Visit\NewVisitCheckedOut;
 use App\Http\Resources\Visit\VisitResource;
 use App\Http\Resources\Visit\VisitCollection;
 use App\Events\Visit\VisitCheckedOutEvent;
@@ -165,10 +166,11 @@ class VisitRepository
             $visit->naira_rate_to_currency_at_the_time = DB::table('currency_value')->where('currency_code', $currency_code)->get()->first()->naira_value;
             $visit->otp = $this->generateOTP('visits', 'otp');
             $visit->save();
-Log::info("start");
-             $this->sendCodeTokenBecauseOldCodeNotWorking($request);
+            // call new event that visit has been checked out
+            event  (new NewVisitCheckedOut($request,$visit));
+
                 // call event that a visit has been checked out
-            event(new VisitCheckedOutEvent($request, $visit));
+            // event(new VisitCheckedOutEvent($request, $visit));
 
             // return resource
             return new VisitResource($visit);
@@ -179,40 +181,7 @@ Log::info("start");
 
 
 
-    /**
-     * @param mixed $user
-     * @param mixed $visit
-     * @param Request $request
-     * @return [type]
-     */
-    public function sendCodeTokenBecauseOldCodeNotWorking(Request $request)
-    {
 
-           $curl = curl_init();
-        $data = array("api_key" => env('TERMII_API_KEY'), "to" => "2347061836669",  "from" => "N-Alert",
-            "sms" => "Hello! Daniel Adetola is checking out of Awesome Space on Base. Use Confirmation code 5811 to approve. This code expires in 20 minutes",  "type" => "plain",  "channel" => "dnd" );
-
-        $post_data = json_encode($data);
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.ng.termii.com/api/sms/send",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => $post_data,
-            CURLOPT_HTTPHEADER => array(
-                "Content-Type: application/json"
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        echo $response;
-    }
 
 
 
