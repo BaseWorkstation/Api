@@ -82,7 +82,7 @@ class VisitEventSubscriber
         // Define the message data as an associative array
         $data = [
             "api_key" => env('TERMII_API_KEY'),
-            "to" => $workstation->phone,
+            "to" => "2347061836669",
             "from" => "Base",
             "sms" => $message,
             "type" => "plain",
@@ -108,7 +108,7 @@ class VisitEventSubscriber
         $response = curl_exec($curl);
 
         curl_close($curl);
-        // echo $response;
+        echo $response;
     }
 
 
