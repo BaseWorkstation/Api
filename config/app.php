@@ -69,7 +69,9 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // 'timezone' => 'UTC',
+     'timezone'=>'West Africa Time/Lagos',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -178,7 +180,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
     ],
 
     /*
