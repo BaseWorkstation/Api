@@ -70,8 +70,8 @@ return [
     */
 
     // 'timezone' => 'UTC',
-     'timezone'=>'West Africa Time/Lagos',
-
+    //  'timezone'=>'West Africa Time/Lagos',
+     'timezone' => 'Africa/Lagos',
 
     /*
     |--------------------------------------------------------------------------
