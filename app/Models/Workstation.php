@@ -32,7 +32,6 @@ class Workstation extends Model implements Auditable
      /**
       * Interact with the workstation's phone.
       *
-      * @return \Illuminate\Database\Eloquent\Casts\Attribute
       */
     // protected function phone(): Attribute
     // {
@@ -150,11 +149,11 @@ class Workstation extends Model implements Auditable
         ],
     ];
 
-    public function setPhoneAttribute($value)
-    {
+    // public function setPhoneAttribute($value)
+    // {
 
-        $this->attributes['phone'] = '234' . substr($value, 1);
-    }
+    //     $this->attributes['phone'] = '234' . substr($value, 1);
+    // }
 
 
 }
